@@ -432,7 +432,9 @@ function getUserKey(k){ return (localStorage.getItem('currentUser')||'default')+
 <h3>🔒 Backup - PDF ma</h3>
 <button onclick="downloadPDFBackup()" style="background:#dc2626; color:white; padding:12px; width:100%; border:none; border-radius:8px; font-size:16px;">📄 PDF Backup Download Karo</button>
 <button onclick="downloadBackup()" style="background:#059669; color:white; padding:12px; width:100%; border:none; border-radius:8px; margin-top:8px;">📥 Puro Data Backup - JSON - Pacho Lavva Mate</button>
-
+<button onclick="exportBackup()" style="background:#2563eb">📤 Backup - File Download Karo</button>
+<input type="file" id="restoreFile" style="display:none" onchange="importBackup(event)">
+<button onclick="document.getElementById('restoreFile').click()" style="background:#f59e0b">📥 Restore - File Thi Data Pachu Lavo</button>
 <script>
 // ========== 2. DATA STORAGE ==========
 let avak=JSON.parse(localStorage.getItem('avak')||'[]');
@@ -535,6 +537,40 @@ html += `</table>`;
   setTimeout(()=>{
     w.print();
   }, 500);
+}// ===== BACKUP / RESTORE - RAJ SALES =====
+function exportBackup(){
+  // Tamara App ma je key thi data save thai che e ahi muko
+  // Jo tamara code ma localStorage key alag hoy to ahi badlo
+  let allData = {};
+  for(let i=0; i<localStorage.length; i++){
+    let k = localStorage.key(i);
+    allData[k] = localStorage.getItem(k);
+  }
+  let blob = new Blob([JSON.stringify(allData)], {type:"application/json"});
+  let a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Raj-Sales-Backup-" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  alert("Backup Download Thai Gayu ✅");
+}
+
+function importBackup(event){
+  let file = event.target.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = function(e){
+    try{
+      let data = JSON.parse(e.target.result);
+      for(let k in data){
+        localStorage.setItem(k, data[k]);
+      }
+      alert("Restore Thai Gayu ✅ Have App Refresh Karo");
+      location.reload();
+    }catch(err){
+      alert("File Khoti Che! Sahi Backup File Pasand Karo");
+    }
+  };
+  reader.readAsText(file);
 }
 // COPY-2 START
 function getUserKey(key){ var u = localStorage.getItem('currentUser') || 'guest'; return key + '_' + u; }
