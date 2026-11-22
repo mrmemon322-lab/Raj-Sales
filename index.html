@@ -66,53 +66,45 @@ button:active{opacity:0.8}
 <body>
 
 
-    <style>
-        #loginScreen{max-width:400px;margin:40px auto;background:#fff;padding:20px;border-radius:15px;text-align:center}
-        #loginScreen input{width:100%;padding:10px;margin:6px 0;border:1px solid #ccc;border-radius:8px}
-        #loginScreen button{width:100%;padding:10px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
-        #mainApp{display:none}
-        body.logged-in #mainApp{display:block}
-        body.logged-in #loginScreen{display:none}
-        </style>
-        
-        <div id="loginScreen">
-          <!-- 1. LOGIN -->
-          <div id="loginForm">
-            <h2>🔐 Login</h2>
-            <input id="login_num" type="number" placeholder="📱 Mobile Number">
-            <input id="login_pass" type="password" placeholder="🔑 Password">
-            <button onclick="doLogin()">Login Karo</button>
-            <button onclick="showSignup()" style="background:#059669;margin-top:8px">🆕 Create Account Karo</button>
-            <button onclick="showForget()" style="background:#f59e0b;margin-top:8px">❓ Forget Password?</button>
-            <p id="login_msg" style="color:red"></p>
-          </div>
-        
-          <!-- 2. CREATE ACCOUNT - ✅ AHYA EDIT KARYU -->
-          <div id="signupForm" style="display:none">
-            <h2>🆕 Account Banavo</h2>
-            <input id="signup_name" placeholder="👤 Dukandar nu Naam - Ex: Ramesh">
-            <input id="signup_shop" placeholder="🏪 Dukan nu Naam - Ex: Ramesh Kirana">
-            <input id="signup_num" type="number" placeholder="📱 Mobile Number - 10 Ank">
-            <input id="signup_pass" type="password" placeholder="🔑 Password Banavo">
-            <input id="signup_pass2" type="password" placeholder="🔑 Password Fari Lakho">
-            <button onclick="doSignup()" style="background:#059669">✅ Account Banavo</button>
-            <button onclick="showLogin()" style="background:#64748b;margin-top:8px">⬅️ Login Par Jao</button>
-            <p id="signup_msg" style="color:red"></p>
-          </div>
-        
-          <!-- 3. FORGET -->
-          <div id="forgetForm" style="display:none">
-            <h2>❓ Forget Password</h2>
-            <p>Number Lakho Ane Navo Password Banavo</p>
-            <input id="forget_num" type="number" placeholder="📱 Mobile Number">
-            <input id="forget_pass" type="password" placeholder="🔑 Navo Password">
-            <input id="forget_pass2" type="password" placeholder="🔑 Navo Password Fari">
-            <button onclick="doForget()" style="background:#f59e0b">🔄 Password Badlo</button>
-            <button onclick="showLogin()" style="background:#64748b;margin-top:8px">⬅️ Login Par Jao</button>
-            <p id="forget_msg" style="color:red"></p>
-          </div>
-        </div>
-        
+    <div id="loginBox" class="card">
+<h2>🔐 Raj Sales</h2>
+
+<!-- 3 Tab Button -->
+<div style="display:flex;gap:6px">
+<button type="button" onclick="showTab('login')" id="tabLogin" style="background:#2563eb;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Login</button>
+<button type="button" onclick="showTab('create')" id="tabCreate" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Create Account</button>
+<button type="button" onclick="showTab('forget')" id="tabForget" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Forget</button>
+</div>
+
+<!-- LOGIN -->
+<div id="tab-login">
+<input id="lPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
+<div style="display:flex;gap:6px"><input id="lPass" type="password" placeholder="🔒 Password" style="flex:1"><button type="button" onclick="togglePass('lPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
+<label style="font-size:14px"><input type="checkbox" id="rememberMe" checked style="width:auto"> Mane Yad Rakho</label>
+<button type="button" id="loginBtn" onclick="doLogin(this)" style="background:#16a34a;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">✅ Login Karo</button>
+<p style="text-align:center;font-size:13px;color:#666">Account Nathi? <b onclick="showTab('create')" style="color:#2563eb;cursor:pointer">Create Karo</b></p>
+</div>
+
+<!-- CREATE ACCOUNT -->
+<div id="tab-create" style="display:none">
+<input id="cName" placeholder="👤 Tamara Name">
+<input id="cPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
+<div style="display:flex;gap:6px"><input id="cPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('cPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
+<input id="cPass2" type="password" placeholder="🔒 Password Fari Lakho">
+<button type="button" id="createBtn" onclick="doCreate(this)" style="background:#2563eb;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🎉 Account Banavo</button>
+</div>
+
+<!-- FORGET PASSWORD -->
+<div id="tab-forget" style="display:none">
+<input id="fPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
+<input id="fName" placeholder="👤 Tamara Name - Confirm Mate">
+<div style="display:flex;gap:6px"><input id="fNewPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('fNewPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
+<button type="button" id="forgetBtn" onclick="doForget(this)" style="background:#f59e0b;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🔄 Password Badlo</button>
+</div>
+
+<p id="msg" style="text-align:center;font-weight:700;min-height:20px"></p>
+<p id="msg2" style="text-align:center;font-size:13px;color:#666"></p>
+</div>    
         <div id="mainApp">
           <!-- ✅ AHYA PAN EDIT - Dukandar + Dukan Be Dekhase -->
           <p>👋 <b id="user_name_show"></b> | 🏪 <span id="shop_name_show"></span> <button onclick="doLogout()" style="width:auto;background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:8px">Logout</button></p>
@@ -159,52 +151,45 @@ if(currentUser){
   showApp();
   if(typeof render === "function") render();
 }
+<div id="loginBox" class="card">
+<h2>🔐 Raj Sales</h2>
 
-function login(){
-  let ph = document.getElementById("phone").value.trim();
-  let ps = document.getElementById("pass").value.trim();
-  if(!ph || !ps){ alert("Number ane Password Lakho"); return; }
+<!-- 3 Tab Button -->
+<div style="display:flex;gap:6px">
+<button type="button" onclick="showTab('login')" id="tabLogin" style="background:#2563eb;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Login</button>
+<button type="button" onclick="showTab('create')" id="tabCreate" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Create Account</button>
+<button type="button" onclick="showTab('forget')" id="tabForget" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Forget</button>
+</div>
 
-  // Account hoy ke na hoy - Have Account Banavi Deshu, Error Nai Aapse
-  // Jo pahelathi account hoy to e j kholse, na hoy to navo banavse
-  let savedPass = localStorage.getItem("raj_pass_" + ph);
+<!-- LOGIN -->
+<div id="tab-login">
+<input id="lPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
+<div style="display:flex;gap:6px"><input id="lPass" type="password" placeholder="🔒 Password" style="flex:1"><button type="button" onclick="togglePass('lPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
+<label style="font-size:14px"><input type="checkbox" id="rememberMe" checked style="width:auto"> Mane Yad Rakho</label>
+<button type="button" id="loginBtn" onclick="doLogin(this)" style="background:#16a34a;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">✅ Login Karo</button>
+<p style="text-align:center;font-size:13px;color:#666">Account Nathi? <b onclick="showTab('create')" style="color:#2563eb;cursor:pointer">Create Karo</b></p>
+</div>
 
-  if(savedPass && savedPass !== ps){
-    alert("Password Khoto Che! Sahi Password Lakho");
-    return;
-  }
+<!-- CREATE ACCOUNT -->
+<div id="tab-create" style="display:none">
+<input id="cName" placeholder="👤 Tamara Name">
+<input id="cPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
+<div style="display:flex;gap:6px"><input id="cPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('cPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
+<input id="cPass2" type="password" placeholder="🔒 Password Fari Lakho">
+<button type="button" id="createBtn" onclick="doCreate(this)" style="background:#2563eb;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🎉 Account Banavo</button>
+</div>
 
-  // Account Save Kari De - Have Kadi Available Nahi Em Nai Ke
-  localStorage.setItem("raj_user", ph);
-  localStorage.setItem("raj_login_user", ph);
-  localStorage.setItem("raj_pass", ps);
-  localStorage.setItem("raj_pass_" + ph, ps);
-  // User List ma pan save kari de
-  let users = JSON.parse(localStorage.getItem("raj_all_users") || "[]");
-  if(!users.includes(ph)){ users.push(ph); localStorage.setItem("raj_all_users", JSON.stringify(users)); }
+<!-- FORGET PASSWORD -->
+<div id="tab-forget" style="display:none">
+<input id="fPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
+<input id="fName" placeholder="👤 Tamara Name - Confirm Mate">
+<div style="display:flex;gap:6px"><input id="fNewPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('fNewPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
+<button type="button" id="forgetBtn" onclick="doForget(this)" style="background:#f59e0b;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🔄 Password Badlo</button>
+</div>
 
-  currentUser = ph;
-  showApp();
-  if(typeof render === "function") render();
-  alert("Login Thai Gayu ✅");
-}
-
-function showApp(){
-  document.getElementById("loginBox").style.display = "none";
-  document.getElementById("appBox").style.display = "block";
-  document.getElementById("appBox").classList.remove("hide");
-  if(document.getElementById("userShow")) document.getElementById("userShow").innerText = currentUser;
-}
-
-// 2. Logout Dabso To Pan Data Delete Nai Thay - Fakt Bahar Nikalse
-function logout(){
-  if(!confirm("Logout Karvu Che? Tamaro Data Safe Rahese, Pachu Ej Number-Password Thi Login Thase.")) return;
-  // Data Delete NAI Kariye - Fakt Login Hatavie
-  localStorage.removeItem("raj_user");
-  localStorage.removeItem("raj_login_user");
-  // localStorage.removeItem("raj_pass") - E pan rakhie che jetli password yad rahe
-  location.reload();
-} </script>
+<p id="msg" style="text-align:center;font-weight:700;min-height:20px"></p>
+<p id="msg2" style="text-align:center;font-size:13px;color:#666"></p>
+</div> </script>
 <!-- ========== DASHBOARD ========== -->
 <div class="dashboard">
 <div class="card green"><small>Today Income</small><b id="dInc">Rs.0</b></div>
