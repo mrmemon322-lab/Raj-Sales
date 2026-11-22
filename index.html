@@ -142,54 +142,50 @@ function getData(key){
 
     
             // ===== LOGIN FIX - KADI LOGOUT NAI THAY, ACCOUNT HAMESHA MALSE =====
+// ===== TAB BUTTON FIX - HAVE 100% DABSE =====
+function showTab(t){
+  console.log("Tab Dabayo: " + t);
+  let login = document.getElementById("tab-login");
+  let create = document.getElementById("tab-create");
+  let forget = document.getElementById("tab-forget");
+  if(!login || !create || !forget){ alert("Tab Malya Nahi - Page Refresh Karo"); return; }
 
-// 1. Page Khole Etle J Auto Login Thai Jase
-let currentUser = localStorage.getItem("raj_user") || localStorage.getItem("raj_login_user") || "";
-let currentPass = localStorage.getItem("raj_pass") || "";
+  login.style.display = t==="login" ? "block" : "none";
+  create.style.display = t==="create" ? "block" : "none";
+  forget.style.display = t==="forget" ? "block" : "none";
 
-if(currentUser){
-  showApp();
-  if(typeof render === "function") render();
+  let b1 = document.getElementById("tabLogin");
+  let b2 = document.getElementById("tabCreate");
+  let b3 = document.getElementById("tabForget");
+  if(b1) b1.style.background = t==="login" ? "#2563eb" : "#64748b";
+  if(b2) b2.style.background = t==="create" ? "#2563eb" : "#64748b";
+  if(b3) b3.style.background = t==="forget" ? "#2563eb" : "#64748b";
+
+  let m = document.getElementById("msg");
+  if(m) m.innerText = "";
 }
-<div id="loginBox" class="card">
-<h2>🔐 Raj Sales</h2>
 
-<!-- 3 Tab Button -->
-<div style="display:flex;gap:6px">
-<button type="button" onclick="showTab('login')" id="tabLogin" style="background:#2563eb;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Login</button>
-<button type="button" onclick="showTab('create')" id="tabCreate" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Create Account</button>
-<button type="button" onclick="showTab('forget')" id="tabForget" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Forget</button>
-</div>
+// Button ne Sidhu Jodiye - onclick par bharoso nai
+window.addEventListener("load", function(){
+  let b1 = document.getElementById("tabLogin");
+  let b2 = document.getElementById("tabCreate");
+  let b3 = document.getElementById("tabForget");
 
-<!-- LOGIN -->
-<div id="tab-login">
-<input id="lPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
-<div style="display:flex;gap:6px"><input id="lPass" type="password" placeholder="🔒 Password" style="flex:1"><button type="button" onclick="togglePass('lPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
-<label style="font-size:14px"><input type="checkbox" id="rememberMe" checked style="width:auto"> Mane Yad Rakho</label>
-<button type="button" id="loginBtn" onclick="doLogin(this)" style="background:#16a34a;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">✅ Login Karo</button>
-<p style="text-align:center;font-size:13px;color:#666">Account Nathi? <b onclick="showTab('create')" style="color:#2563eb;cursor:pointer">Create Karo</b></p>
-</div>
+  if(b1) b1.onclick = function(e){ e.preventDefault(); showTab('login'); };
+  if(b2) b2.onclick = function(e){ e.preventDefault(); showTab('create'); };
+  if(b3) b3.onclick = function(e){ e.preventDefault(); showTab('forget'); };
 
-<!-- CREATE ACCOUNT -->
-<div id="tab-create" style="display:none">
-<input id="cName" placeholder="👤 Tamara Name">
-<input id="cPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
-<div style="display:flex;gap:6px"><input id="cPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('cPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
-<input id="cPass2" type="password" placeholder="🔒 Password Fari Lakho">
-<button type="button" id="createBtn" onclick="doCreate(this)" style="background:#2563eb;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🎉 Account Banavo</button>
-</div>
+  // Login / Create / Forget Button Pan Sidha Jodi Daie
+  let lb = document.getElementById("loginBtn");
+  let cb = document.getElementById("createBtn");
+  let fb = document.getElementById("forgetBtn");
+  if(lb) lb.onclick = function(e){ e.preventDefault(); doLogin(lb); };
+  if(cb) cb.onclick = function(e){ e.preventDefault(); doCreate(cb); };
+  if(fb) fb.onclick = function(e){ e.preventDefault(); doForget(fb); };
 
-<!-- FORGET PASSWORD -->
-<div id="tab-forget" style="display:none">
-<input id="fPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
-<input id="fName" placeholder="👤 Tamara Name - Confirm Mate">
-<div style="display:flex;gap:6px"><input id="fNewPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('fNewPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
-<button type="button" id="forgetBtn" onclick="doForget(this)" style="background:#f59e0b;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🔄 Password Badlo</button>
-</div>
-
-<p id="msg" style="text-align:center;font-weight:700;min-height:20px"></p>
-<p id="msg2" style="text-align:center;font-size:13px;color:#666"></p>
-</div> </script>
+  console.log("Badha Button Jodai Gaya ✅");
+});
+ </script>
 <!-- ========== DASHBOARD ========== -->
 <div class="dashboard">
 <div class="card green"><small>Today Income</small><b id="dInc">Rs.0</b></div>
