@@ -1390,10 +1390,7 @@ searchHistory();
 <script>
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('installBtn').style.display='block'; });
-function installApp(){
-if(deferredPrompt){ deferredPrompt.prompt(); }
-else{ alert('Chrome ma Upar 3 Dot > Add To Home Screen dabavo! App Home Screen ma Avi Jase!'); }
-}
+
 // Mobile ma Back Button / Refresh thi Data Na Jay - Save Rahe
 window.addEventListener('beforeunload', ()=>{ localStorage.setItem('lastOpen', new Date().toString()); });
 </script>
