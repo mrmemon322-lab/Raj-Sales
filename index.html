@@ -432,10 +432,8 @@ function getUserKey(k){ return (localStorage.getItem('currentUser')||'default')+
 <h3>🔒 Backup - PDF ma</h3>
 <button onclick="downloadPDFBackup()" style="background:#dc2626; color:white; padding:12px; width:100%; border:none; border-radius:8px; font-size:16px;">📄 PDF Backup Download Karo</button>
 <button onclick="downloadBackup()" style="background:#059669; color:white; padding:12px; width:100%; border:none; border-radius:8px; margin-top:8px;">📥 Puro Data Backup - JSON - Pacho Lavva Mate</button>
-<button onclick="exportBackup()" style="background:#2563eb">📤 Backup - File Download Karo</button>
-<input type="file" id="restoreFile" style="display:none" onchange="importBackup(event)">
-<button onclick="document.getElementById('restoreFile').click()" style="background:#f59e0b">📥 Restore - File Thi Data Pachu Lavo</button>
-<script>
+<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)">
+<button onclick="document.getElementById('restoreFile').click()" style="background:#f59e0b;color:#fff;width:100%;padding:12px;border:none;border-radius:10px;font-weight:700;font-size:16px">📥 RESTORE - File Thi Juno Data Pacho Lavo</button><script>
 // ========== 2. DATA STORAGE ==========
 let avak=JSON.parse(localStorage.getItem('avak')||'[]');
 let khata=JSON.parse(localStorage.getItem('khata')||'[]');
@@ -552,23 +550,102 @@ function exportBackup(){
   a.download = "Raj-Sales-Backup-" + new Date().toISOString().slice(0,10) + ".json";
   a.click();
   alert("Backup Download Thai Gayu ✅");
-}
-
-function importBackup(event){
+}// ===== FAKT RESTORE - NO ERROR, JUNO DATA PACHO =====
+function restoreData(event){
   let file = event.target.files[0];
   if(!file) return;
+
   let reader = new FileReader();
   reader.onload = function(e){
     try{
-      let data = JSON.parse(e.target.result);
-      for(let k in data){
-        localStorage.setItem(k, data[k]);
+      let text = e.target.result.trim();
+      let data = JSON.parse(text);
+      let newSales = [];
+
+      // 1. Jo file sidhi list hoy - [ {...}, {...} ]
+      if(Array.isArray(data)){
+        newSales = data;
       }
-      alert("Restore Thai Gayu ✅ Have App Refresh Karo");
+      // 2. Jo file ma sales key hoy - {sales: [...]}
+      else if(data && Array.isArray(data.sales)){
+        newSales = data.sales;
+      }
+      // 3. Jo file ma bija koi key ma list hoy
+      else if(data && typeof data === "object"){
+        for(let k in data){
+          try{
+            let v = data[k];
+            if(typeof v === "string") v = JSON.parse(v);
+            if(Array.isArray(v) && v.length > 0){ newSales = v; break; }
+            // Jo ek j hisab hoy to pan lai le
+            if(v && typeof v === "object" && v.name){ newSales = [v]; break; }
+          }catch(e){}
+        }
+      }
+
+      if(!newSales || newSales.length === 0){
+        alert("File ma Koi Hisab Malyo Nahi, Pan Kain Delete Thayu Nathi.");
+        event.target.value = "";
+        return;
+      }
+
+      // Have Tamara App ni Key Shodho - Je Key ma Data Save Thai Che
+      let mainKey = "";
+      // Pehla tamari j key shodhie
+      for(let i=0; i<localStorage.length; i++){
+        let k = localStorage.key(i);
+        let v = localStorage.getItem(k);
+        if(v && v.includes("name") && v.includes("amt")){
+          mainKey = k; break;
+        }
+      }
+      // Jo key na male to default key banavi de
+      if(!mainKey){
+        // Tamara juna code ma je key hoy e ahi aavi jase
+        // Jo tamne khabar hoy to ahi tamari key lakho, nahi to aa j chalse
+        mainKey = localStorage.getItem("raj_user") ? "raj_sales_" + localStorage.getItem("raj_user") : "raj_sales";
+      }
+
+      // Juno Data Lavo
+      let oldSales = [];
+      try{ oldSales = JSON.parse(localStorage.getItem(mainKey) || "[]"); }catch(e){ oldSales = []; }
+      if(!Array.isArray(oldSales)) oldSales = [];
+
+      // Juno + Navo Merge - Duplicate Nai Aave
+      let seen = new Set();
+      oldSales.forEach(s=>{ if(s.id) seen.add(String(s.id)); else seen.add(s.name+"-"+s.amt+"-"+s.date); });
+
+      let added = 0;
+      newSales.forEach(s=>{
+        if(!s || typeof s !== "object") return;
+        // id na hoy to banavi de
+        if(!s.id) s.id = Date.now() + Math.floor(Math.random()*100000);
+        let key = String(s.id);
+        if(!seen.has(key)){
+          seen.add(key);
+          oldSales.unshift(s);
+          added++;
+        }
+      });
+
+      localStorage.setItem(mainKey, JSON.stringify(oldSales));
+
+      // Bija badha key pan save kari de - jetli file ma hoy
+      // Tethi koi pan data khovai nahi
+      if(data && !Array.isArray(data) && !data.sales){
+        for(let k in data){
+          try{ if(!localStorage.getItem(k)) localStorage.setItem(k, typeof data[k]==="string" ? data[k] : JSON.stringify(data[k])); }catch(e){}
+        }
+      }
+
+      alert("Restore Thai Gayu ✅\nJuno Data: " + oldSales.length + " Hisab\nNavo Umeryo: " + added);
       location.reload();
+
     }catch(err){
-      alert("File Khoti Che! Sahi Backup File Pasand Karo");
+      // Koi pan error aave to pan app bandh nai thay
+      alert("File Vanchi Shakai Nahi. File .json j hovi joie. Pan Tamaro Juno Data Safe Che.");
     }
+    event.target.value = "";
   };
   reader.readAsText(file);
 }
