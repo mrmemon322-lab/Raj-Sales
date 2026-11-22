@@ -178,11 +178,13 @@ function getUserKey(k){ return (localStorage.getItem('currentUser')||'default')+
           let users=JSON.parse(localStorage.getItem('shop_users')||'{}');
           if(users[num]) return document.getElementById('signup_msg').innerText='Aa Number thi Account Pela thi Che!';
           users[num]={name:name,shop:shop,pass:pass};
-          // Save Karva Mate
-await saveData(getUserKey('pagar_staff'), all);
-
-// Levva Mate
-var all = await getData(getUserKey('pagar_staff')) || []; }
+  localStorage.setItem('shop_users',JSON.stringify(users));
+  document.getElementById('signup_msg').style.color='green';
+  document.getElementById('signup_msg').innerText='Account Bani Gayu! ✅ Have Login Karo!';
+  alert('Account Bani Gayu! ✅ Have Login Karo!');
+  showLogin();
+  document.getElementById('login_num').value=num;
+}
         function doLogin(){
           let num=document.getElementById('login_num').value.trim();
           let pass=document.getElementById('login_pass').value;
