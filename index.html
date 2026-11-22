@@ -147,84 +147,64 @@ function getData(key){
     req.onsuccess=function(){ res(req.result ? JSON.parse(req.result.val) : null); };
   });
 }
-// Junu getUserKey - Te j Rahese
-function getUserKey(k){ return (localStorage.getItem('currentUser')||'default')+'_'+k; }
-        function showLogin(){
-          document.getElementById('loginForm').style.display='block';
-          document.getElementById('signupForm').style.display='none';
-          document.getElementById('forgetForm').style.display='none';
-        }
-        function showSignup(){
-          document.getElementById('loginForm').style.display='none';
-          document.getElementById('signupForm').style.display='block';
-          document.getElementById('forgetForm').style.display='none';
-        }
-        function showForget(){
-          document.getElementById('loginForm').style.display='none';
-          document.getElementById('signupForm').style.display='none';
-          document.getElementById('forgetForm').style.display='block';
-        }
-        function doSignup(){
-          let name=document.getElementById('signup_name').value.trim();
-          let shop=document.getElementById('signup_shop').value.trim();
-          let num=document.getElementById('signup_num').value.trim();
-          let pass=document.getElementById('signup_pass').value;
-          let pass2=document.getElementById('signup_pass2').value;
-          if(!name) return document.getElementById('signup_msg').innerText='Dukandar nu Naam Lakho!';
-          if(!shop) return document.getElementById('signup_msg').innerText='Dukan nu Naam Lakho!';
-          if(num.length<10) return document.getElementById('signup_msg').innerText='10 Ank no Number Lakho!';
-          if(pass.length<4) return document.getElementById('signup_msg').innerText='Password 4 Ank no Rakho!';
-          if(pass!=pass2) return document.getElementById('signup_msg').innerText='Be Password Sarhka Nathi! ❌';
-          let users=JSON.parse(localStorage.getItem('shop_users')||'{}');
-          if(users[num]) return document.getElementById('signup_msg').innerText='Aa Number thi Account Pela thi Che!';
-          users[num]={name:name,shop:shop,pass:pass};
-  localStorage.setItem('shop_users',JSON.stringify(users));
-  document.getElementById('signup_msg').style.color='green';
-  document.getElementById('signup_msg').innerText='Account Bani Gayu! ✅ Have Login Karo!';
-  alert('Account Bani Gayu! ✅ Have Login Karo!');
-  showLogin();
-  document.getElementById('login_num').value=num;
+
+    
+            // ===== LOGIN FIX - KADI LOGOUT NAI THAY, ACCOUNT HAMESHA MALSE =====
+
+// 1. Page Khole Etle J Auto Login Thai Jase
+let currentUser = localStorage.getItem("raj_user") || localStorage.getItem("raj_login_user") || "";
+let currentPass = localStorage.getItem("raj_pass") || "";
+
+if(currentUser){
+  showApp();
+  if(typeof render === "function") render();
 }
-        function doLogin(){
-          let num=document.getElementById('login_num').value.trim();
-          let pass=document.getElementById('login_pass').value;
-          let users=JSON.parse(localStorage.getItem('shop_users')||'{}');
-          if(!users[num]) return document.getElementById('login_msg').innerText='Account Nathi! Pela Account Banavo.';
-          if(users[num].pass!=pass) return document.getElementById('login_msg').innerText='Password Khoto Che! ❌';
-          localStorage.setItem('currentUser',num);
-          document.body.classList.add('logged-in');
-          document.getElementById('user_name_show').innerText=users[num].name;
-          document.getElementById('shop_name_show').innerText=users[num].shop||'';
-        }
-        function doForget(){
-          let num=document.getElementById('forget_num').value.trim();
-          let pass=document.getElementById('forget_pass').value;
-          let pass2=document.getElementById('forget_pass2').value;
-          let users=JSON.parse(localStorage.getItem('shop_users')||'{}');
-          if(!users[num]) return document.getElementById('forget_msg').innerText='Aa Number thi Account Nathi!';
-          if(pass.length<4) return document.getElementById('forget_msg').innerText='Password 4 Ank no Rakho!';
-          if(pass!=pass2) return document.getElementById('forget_msg').innerText='Be Password Sarhka Nathi!';
-          users[num].pass=pass;
-          localStorage.setItem('shop_users',JSON.stringify(users));
-          alert('Password Badlai Gayo! ✅');
-          showLogin();
-          document.getElementById('login_num').value=num;
-        }
-        function doLogout(){
-          localStorage.removeItem('currentUser');
-          document.body.classList.remove('logged-in');
-          location.reload();
-        }
-        let currentUser=localStorage.getItem('currentUser')||'';
-        if(currentUser){
-          document.body.classList.add('logged-in');
-          let users=JSON.parse(localStorage.getItem('shop_users')||'{}');
-          if(users[currentUser]){
-            document.getElementById('user_name_show').innerText=users[currentUser].name;
-            document.getElementById('shop_name_show').innerText=users[currentUser].shop||'';
-          }
-          
-        }  </script>
+
+function login(){
+  let ph = document.getElementById("phone").value.trim();
+  let ps = document.getElementById("pass").value.trim();
+  if(!ph || !ps){ alert("Number ane Password Lakho"); return; }
+
+  // Account hoy ke na hoy - Have Account Banavi Deshu, Error Nai Aapse
+  // Jo pahelathi account hoy to e j kholse, na hoy to navo banavse
+  let savedPass = localStorage.getItem("raj_pass_" + ph);
+
+  if(savedPass && savedPass !== ps){
+    alert("Password Khoto Che! Sahi Password Lakho");
+    return;
+  }
+
+  // Account Save Kari De - Have Kadi Available Nahi Em Nai Ke
+  localStorage.setItem("raj_user", ph);
+  localStorage.setItem("raj_login_user", ph);
+  localStorage.setItem("raj_pass", ps);
+  localStorage.setItem("raj_pass_" + ph, ps);
+  // User List ma pan save kari de
+  let users = JSON.parse(localStorage.getItem("raj_all_users") || "[]");
+  if(!users.includes(ph)){ users.push(ph); localStorage.setItem("raj_all_users", JSON.stringify(users)); }
+
+  currentUser = ph;
+  showApp();
+  if(typeof render === "function") render();
+  alert("Login Thai Gayu ✅");
+}
+
+function showApp(){
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("appBox").style.display = "block";
+  document.getElementById("appBox").classList.remove("hide");
+  if(document.getElementById("userShow")) document.getElementById("userShow").innerText = currentUser;
+}
+
+// 2. Logout Dabso To Pan Data Delete Nai Thay - Fakt Bahar Nikalse
+function logout(){
+  if(!confirm("Logout Karvu Che? Tamaro Data Safe Rahese, Pachu Ej Number-Password Thi Login Thase.")) return;
+  // Data Delete NAI Kariye - Fakt Login Hatavie
+  localStorage.removeItem("raj_user");
+  localStorage.removeItem("raj_login_user");
+  // localStorage.removeItem("raj_pass") - E pan rakhie che jetli password yad rahe
+  location.reload();
+} </script>
 <!-- ========== DASHBOARD ========== -->
 <div class="dashboard">
 <div class="card green"><small>Today Income</small><b id="dInc">Rs.0</b></div>
