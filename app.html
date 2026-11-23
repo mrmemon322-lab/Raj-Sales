@@ -79,16 +79,9 @@ button:active{opacity:0.8}
 </style>
 </head>
 <body>
-    
- <!-- HEADER - UPAR -->
-<div style="background:#1a5c2a;color:#fff;padding:14px;border-radius:14px;display:flex;justify-content:space-between;align-items:center">
-  <b>🛍️ MY SHOP PRO</b>
-  <div style="display:flex;gap:6px;align-items:center">
-    <span id="userShow">User</span>
-    <!-- 👇 AA J LOGOUT BUTTON CHE 👇 -->
-    <button onclick="doLogout()" style="width:auto;padding:8px 14px;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer">🚪 Logout</button>
-  </div>
-</div>   
+    <!-- ✅ SACHU BUTTON - AA J MUKO -->
+<button onclick="doLogout()" style="width:auto;padding:10px 16px;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-weight:800">🚪 Logout</button>
+ 
  
 
 <!-- ========== DASHBOARD ========== -->
@@ -1153,17 +1146,25 @@ searchHistory();
     
 <script>
     if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
-    </script>
-    <script>
-      // 👇 LOGOUT FUNCTION - AA COPY KARO 👇
-      function doLogout(){
-        if(confirm("Logout Karvu Che? 🤔")){
-          localStorage.removeItem("raj_user");
-          alert("✅ Logout Thai Gayu!");
-          window.location.href = "index.html";
-        }
-      }
-      </script>
+    </script><script>
+function doLogout(){
+  // 1. Login Delete Karo
+  localStorage.removeItem("raj_user");
+  localStorage.removeItem("raj_saved_phone");
+  
+  // 2. Pachu Login Page Par Moklo - 2 Rit Thi Try Karse
+  // Jo Ek Na Chale To Biju Chalse
+  try{
+    window.location.href = "index.html";
+  }catch(e){
+    window.location.href = "./index.html";
+  }
+  // 3. Jo Have Pan Na Khule To 500ms Pachhi Force Kholo
+  setTimeout(function(){
+    window.location.replace("index.html");
+  }, 500);
+}
+</script>
       </body>
 
 </html>
