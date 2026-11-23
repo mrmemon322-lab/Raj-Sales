@@ -66,45 +66,324 @@ button:active{opacity:0.8}
 <body>
 
 
-    <div id="loginBox" class="card">
-<h2>🔐 Raj Sales</h2>
+    <!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raj Sales - Login</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui}
+body{margin:0;background:linear-gradient(135deg,#2563eb,#16a34a);min-height:100vh;padding:12px;display:flex;align-items:center;justify-content:center}
+.card{background:#fff;width:100%;max-width:420px;padding:20px;border-radius:20px;box-shadow:0 10px 30px #0003}
+.logo{text-align:center;font-size:42px;margin:0}
+h2{text-align:center;margin:6px 0 14px}
+.tabs{display:flex;gap:6px;margin-bottom:14px;background:#f1f5f9;padding:5px;border-radius:12px}
+.tabs button{flex:1;padding:11px;border:none;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;background:transparent;color:#64748b}
+.tabs button.active{background:#2563eb;color:#fff;box-shadow:0 3px 10px #2563eb55}
+input{width:100%;padding:13px;margin:6px 0;border:1.5px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none}
+input:focus{border-color:#2563eb}
+.passWrap{display:flex;gap:6px;align-items:center}
+.passWrap input{flex:1}
+.eye{width:52px;padding:13px 0;background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:12px;cursor:pointer;font-size:18px;text-align:center}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:800;font-size:16px;color:#fff;cursor:pointer;margin-top:8px;transition:.2s}
+.btn:active{transform:scale(.97)}
+.btn-green{background:#16a34a}
+.btn-blue{background:#2563eb}
+.btn-orange{background:#f59e0b}
+.btn:disabled{opacity:.6}
+.msg{text-align:center;font-weight:700;min-height:22px;margin:8px 0;font-size:14px}
+.msg.ok{color:#16a34a}.msg.err{color:#dc2626}
+.small{font-size:13px;color:#64748b;text-align:center}
+.small b{color:#2563eb;cursor:pointer}
+.strength{height:6px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin:4px 0}
+.strength div{height:100%;width:0%;transition:.3s}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin:6px 0}
+.hide{display:none}
+.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.badge{display:inline-block;background:#dcfce7;color:#16a34a;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+</style>
+</head>
+<body>
 
-<!-- 3 Tab Button -->
-<div style="display:flex;gap:6px">
-<button type="button" onclick="showTab('login')" id="tabLogin" style="background:#2563eb;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Login</button>
-<button type="button" onclick="showTab('create')" id="tabCreate" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Create Account</button>
-<button type="button" onclick="showTab('forget')" id="tabForget" style="background:#64748b;color:#fff;padding:12px;border:none;border-radius:10px;flex:1;font-weight:700">Forget</button>
+<!-- ===== LOGIN / CREATE / FORGET ===== -->
+<div id="loginBox" class="card">
+<p class="logo">🛍️</p>
+<h2>Raj Sales</h2>
+<p class="small"><span class="badge">🔒 100% Safe - Tamara Mobile ma j Data</span></p>
+
+<div class="tabs">
+<button id="tabLogin" class="active" type="button">Login</button>
+<button id="tabCreate" type="button">Create Account</button>
+<button id="tabForget" type="button">Forget</button>
 </div>
 
 <!-- LOGIN -->
 <div id="tab-login">
-<input id="lPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
-<div style="display:flex;gap:6px"><input id="lPass" type="password" placeholder="🔒 Password" style="flex:1"><button type="button" onclick="togglePass('lPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
-<label style="font-size:14px"><input type="checkbox" id="rememberMe" checked style="width:auto"> Mane Yad Rakho</label>
-<button type="button" id="loginBtn" onclick="doLogin(this)" style="background:#16a34a;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">✅ Login Karo</button>
-<p style="text-align:center;font-size:13px;color:#666">Account Nathi? <b onclick="showTab('create')" style="color:#2563eb;cursor:pointer">Create Karo</b></p>
+<input id="lPhone" placeholder="📱 Mobile Number - 10 Ank" type="tel" maxlength="10" inputmode="numeric">
+<div class="passWrap"><input id="lPass" type="password" placeholder="🔒 Password"><span class="eye" data-for="lPass">👁️</span></div>
+<div class="row"><label><input type="checkbox" id="rememberMe" checked style="width:auto"> Mane Yad Rakho</label><b onclick="showTab('forget')" style="color:#2563eb;cursor:pointer">Password Bhulai Gayo?</b></div>
+<button id="loginBtn" class="btn btn-green" type="button">✅ Login Karo</button>
+<p class="small">Account Nathi? <b onclick="showTab('create')">Have j Create Karo</b></p>
 </div>
 
-<!-- CREATE ACCOUNT -->
-<div id="tab-create" style="display:none">
-<input id="cName" placeholder="👤 Tamara Name">
-<input id="cPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
-<div style="display:flex;gap:6px"><input id="cPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('cPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
-<input id="cPass2" type="password" placeholder="🔒 Password Fari Lakho">
-<button type="button" id="createBtn" onclick="doCreate(this)" style="background:#2563eb;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🎉 Account Banavo</button>
+<!-- CREATE -->
+<div id="tab-create" class="hide">
+<input id="cName" placeholder="👤 Tamara Name - Ex: Raj Bhai">
+<input id="cPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10" inputmode="numeric">
+<div class="passWrap"><input id="cPass" type="password" placeholder="🔒 Navo Password"><span class="eye" data-for="cPass">👁️</span></div>
+<div class="strength"><div id="passBar"></div></div>
+<p id="passText" class="small" style="text-align:left"></p>
+<input id="cPass2" type="password" placeholder="🔒 Password Fari Lakho - Confirm">
+<button id="createBtn" class="btn btn-blue" type="button">🎉 Account Banavo</button>
+<p class="small">Account Che? <b onclick="showTab('login')">Login Karo</b></p>
 </div>
 
-<!-- FORGET PASSWORD -->
-<div id="tab-forget" style="display:none">
-<input id="fPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10">
-<input id="fName" placeholder="👤 Tamara Name - Confirm Mate">
-<div style="display:flex;gap:6px"><input id="fNewPass" type="password" placeholder="🔒 Navo Password" style="flex:1"><button type="button" onclick="togglePass('fNewPass',this)" style="width:50px;background:#e2e8f0;color:#000">👁️</button></div>
-<button type="button" id="forgetBtn" onclick="doForget(this)" style="background:#f59e0b;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-size:16px">🔄 Password Badlo</button>
+<!-- FORGET -->
+<div id="tab-forget" class="hide">
+<input id="fPhone" placeholder="📱 Mobile Number" type="tel" maxlength="10" inputmode="numeric">
+<input id="fName" placeholder="👤 Account Vakhte Je Name Lakhyu Tu">
+<div class="passWrap"><input id="fNewPass" type="password" placeholder="🔒 Navo Password"><span class="eye" data-for="fNewPass">👁️</span></div>
+<button id="forgetBtn" class="btn btn-orange" type="button">🔄 Password Badlo</button>
+<p class="small">Password Yad Avi Gayu? <b onclick="showTab('login')">Login Karo</b></p>
 </div>
 
-<p id="msg" style="text-align:center;font-weight:700;min-height:20px"></p>
-<p id="msg2" style="text-align:center;font-size:13px;color:#666"></p>
-</div>    
+<p id="msg" class="msg"></p>
+<p class="small">Create karso etle tamaro hisab tamara number par save thase.</p>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="appBox" class="card hide">
+<h2>👋 Welcome <span id="userShow"></span></h2>
+<p class="small">Login Thai Gayu ✅</p>
+<input id="cItem" placeholder="Item / Mal">
+<input id="cAmt" type="number" placeholder="Amount ₹">
+<button class="btn btn-green" onclick="addSale()">💾 Save Karo</button>
+<div id="list" style="margin-top:12px"></div>
+<h3 id="total">Total: ₹0</h3>
+<button class="btn" style="background:#dc2626" onclick="logout()">Logout</button>
+</div>
+
+<script>
+// ===== NAVA FEATURE WALA AUTH - NO OTP =====
+function getUsers(){ try{ return JSON.parse(localStorage.getItem("raj_users")||"{}"); }catch(e){ return {}; } }
+function saveUsers(u){ localStorage.setItem("raj_users", JSON.stringify(u)); }
+function showMsg(t, ok){
+  let m = document.getElementById("msg");
+  m.innerText = t; m.className = "msg " + (ok ? "ok" : "err");
+  let box = document.getElementById("loginBox");
+  box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+}
+function showTab(t){
+  document.getElementById("tab-login").classList.toggle("hide", t!=="login");
+  document.getElementById("tab-create").classList.toggle("hide", t!=="create");
+  document.getElementById("tab-forget").classList.toggle("hide", t!=="forget");
+  document.getElementById("tabLogin").classList.toggle("active", t==="login");
+  document.getElementById("tabCreate").classList.toggle("active", t==="create");
+  document.getElementById("tabForget").classList.toggle("active", t==="forget");
+  document.getElementById("msg").innerText = "";
+}
+function btnBusy(btn, txt){
+  btn.disabled = true; let old = btn.innerText; btn.innerText = txt;
+  setTimeout(()=>{ btn.disabled=false; btn.innerText=old; }, 900);
+}
+
+// Password Show / Hide - Badha Eye Button Mate
+document.querySelectorAll(".eye").forEach(eye=>{
+  eye.addEventListener("click", ()=>{
+    let inp = document.getElementById(eye.dataset.for);
+    inp.type = inp.type==="password" ? "text" : "password";
+    eye.innerText = inp.type==="password" ? "👁️" : "🙈";
+  });
+});
+
+// Password Strength - Nava Feature
+document.getElementById("cPass").addEventListener("input", function(){
+  let v = this.value, bar = document.getElementById("passBar"), txt = document.getElementById("passText");
+  let s = 0; if(v.length>=4) s+=30; if(v.length>=6) s+=30; if(/[0-9]/.test(v)) s+=20; if(/[A-Z]/.test(v)) s+=20;
+  bar.style.width = s+"%"; bar.style.background = s<40 ? "#dc2626" : s<70 ? "#f59e0b" : "#16a34a";
+  txt.innerText = v ? (s<40 ? "⚠️ Nabdo Password" : s<70 ? "🟡 Madhyam Password" : "✅ Majboot Password") : "";
+});
+
+// Tab Button Click - 100% Response
+document.getElementById("tabLogin").addEventListener("click", ()=>showTab('login'));
+document.getElementById("tabCreate").addEventListener("click", ()=>showTab('create'));
+document.getElementById("tabForget").addEventListener("click", ()=>showTab('forget'));
+
+// CREATE ACCOUNT
+document.getElementById("createBtn").addEventListener("click", function(){
+  btnBusy(this, "⏳ Account Banavai Rahyu Che...");
+  let name = document.getElementById("cName").value.trim();
+  let ph = document.getElementById("cPhone").value.trim();
+  let p1 = document.getElementById("cPass").value.trim();
+  let p2 = document.getElementById("cPass2").value.trim();
+  if(!name) return showMsg("❌ Name Lakho");
+  if(ph.length!==10 || isNaN(ph)) return showMsg("❌ Sacho 10 Ank No Number Lakho");
+  if(p1.length<4) return showMsg("❌ Password 4 Ank No Rakho");
+  if(p1!==p2) return showMsg("❌ Be Password Sarhka Nathi!");
+  let users = getUsers();
+  if(users[ph]){ showMsg("⚠️ Aa Number Thi Account Che! Login Karo"); showTab('login'); return; }
+  users[ph] = {name:name, pass:p1, created:new Date().toISOString()};
+  saveUsers(users);
+  localStorage.setItem("raj_user", ph);
+  showMsg("✅ Account Bani Gayu! Welcome "+name, true);
+  setTimeout(()=>openApp(ph), 700);
+});
+
+// ===== RAJ SALES - LOGIN / CREATE / FORGET - NAVA FEATURE WALA JS =====
+
+function getUsers(){ try{ return JSON.parse(localStorage.getItem("raj_users")||"{}"); }catch(e){ return {}; } }
+function saveUsers(u){ localStorage.setItem("raj_users", JSON.stringify(u)); }
+
+function showMsg(t, ok){
+  let m = document.getElementById("msg");
+  if(!m) return;
+  m.innerText = t;
+  m.style.color = ok ? "#16a34a" : "#dc2626";
+  let box = document.getElementById("loginBox");
+  if(box){ box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); }
+}
+
+function showTab(t){
+  document.getElementById("tab-login").classList.toggle("hide", t!=="login");
+  document.getElementById("tab-create").classList.toggle("hide", t!=="create");
+  document.getElementById("tab-forget").classList.toggle("hide", t!=="forget");
+  document.getElementById("tabLogin").classList.toggle("active", t==="login");
+  document.getElementById("tabCreate").classList.toggle("active", t==="create");
+  document.getElementById("tabForget").classList.toggle("active", t==="forget");
+  let m = document.getElementById("msg"); if(m) m.innerText = "";
+}
+
+function btnBusy(btn, txt){
+  if(!btn) return;
+  btn.disabled = true;
+  let old = btn.innerText;
+  btn.innerText = txt;
+  setTimeout(()=>{ btn.disabled=false; btn.innerText=old; }, 900);
+}
+
+// Eye Button - Password Batavo / Chupavo
+document.querySelectorAll(".eye").forEach(eye=>{
+  eye.addEventListener("click", ()=>{
+    let inp = document.getElementById(eye.dataset.for);
+    if(!inp) return;
+    inp.type = inp.type==="password" ? "text" : "password";
+    eye.innerText = inp.type==="password" ? "👁️" : "🙈";
+  });
+});
+
+// Password Strength Bar
+let cPassEl = document.getElementById("cPass");
+if(cPassEl){
+  cPassEl.addEventListener("input", function(){
+    let v = this.value;
+    let bar = document.getElementById("passBar");
+    let txt = document.getElementById("passText");
+    if(!bar || !txt) return;
+    let s = 0;
+    if(v.length>=4) s+=30;
+    if(v.length>=6) s+=30;
+    if(/[0-9]/.test(v)) s+=20;
+    if(/[A-Z]/.test(v)) s+=20;
+    bar.style.width = s+"%";
+    bar.style.background = s<40 ? "#dc2626" : s<70 ? "#f59e0b" : "#16a34a";
+    txt.innerText = v ? (s<40 ? "⚠️ Nabdo Password" : s<70 ? "🟡 Madhyam Password" : "✅ Majboot Password") : "";
+  });
+}
+
+// Tab Button - 100% Response
+document.getElementById("tabLogin").addEventListener("click", ()=>showTab('login'));
+document.getElementById("tabCreate").addEventListener("click", ()=>showTab('create'));
+document.getElementById("tabForget").addEventListener("click", ()=>showTab('forget'));
+
+// CREATE ACCOUNT
+document.getElementById("createBtn").addEventListener("click", function(){
+  btnBusy(this, "⏳ Account Banavai Rahyu Che...");
+  let name = document.getElementById("cName").value.trim();
+  let ph = document.getElementById("cPhone").value.trim();
+  let p1 = document.getElementById("cPass").value.trim();
+  let p2 = document.getElementById("cPass2").value.trim();
+  if(!name) return showMsg("❌ Name Lakho");
+  if(ph.length!==10 || isNaN(ph)) return showMsg("❌ Sacho 10 Ank No Number Lakho");
+  if(p1.length<4) return showMsg("❌ Password 4 Ank No Rakho");
+  if(p1!==p2) return showMsg("❌ Be Password Sarhka Nathi!");
+  let users = getUsers();
+  if(users[ph]){ showMsg("⚠️ Aa Number Thi Account Che! Login Karo"); setTimeout(()=>showTab('login'),800); return; }
+  users[ph] = {name:name, pass:p1, created:new Date().toISOString()};
+  saveUsers(users);
+  localStorage.setItem("raj_user", ph);
+  showMsg("✅ Account Bani Gayu! Welcome "+name, true);
+  setTimeout(()=>openApp(ph), 700);
+});
+
+// LOGIN
+document.getElementById("loginBtn").addEventListener("click", function(){
+  btnBusy(this, "⏳ Login Thai Rahyu Che...");
+  let ph = document.getElementById("lPhone").value.trim();
+  let ps = document.getElementById("lPass").value.trim();
+  if(ph.length!==10) return showMsg("❌ Sacho Number Lakho");
+  if(!ps) return showMsg("❌ Password Lakho");
+  let users = getUsers();
+  if(!users[ph]){ showMsg("❌ Account Nathi! Pehla Create Karo"); setTimeout(()=>showTab('create'),800); return; }
+  if(users[ph].pass !== ps) return showMsg("❌ Password Khoto Che! Forget Karo");
+  localStorage.setItem("raj_user", ph);
+  showMsg("✅ Login Thai Gayu!", true);
+  setTimeout(()=>openApp(ph), 600);
+});
+
+// FORGET PASSWORD
+document.getElementById("forgetBtn").addEventListener("click", function(){
+  btnBusy(this, "⏳ Password Badlai Rahyo Che...");
+  let ph = document.getElementById("fPhone").value.trim();
+  let name = document.getElementById("fName").value.trim();
+  let np = document.getElementById("fNewPass").value.trim();
+  if(ph.length!==10) return showMsg("❌ Sacho Number Lakho");
+  let users = getUsers();
+  if(!users[ph]) return showMsg("❌ Account Nathi! Pehla Create Karo");
+  if(users[ph].name.toLowerCase() !== name.toLowerCase()) return showMsg("❌ Name Khotu Che! Account Vakhte Walu Name Lakho");
+  if(np.length<4) return showMsg("❌ Navo Password 4 Ank No Rakho");
+  users[ph].pass = np;
+  saveUsers(users);
+  showMsg("✅ Password Badlai Gayu! Have Login Karo", true);
+  setTimeout(()=>{ showTab('login'); document.getElementById("lPhone").value = ph; }, 800);
+});
+
+function openApp(ph){
+  document.getElementById("loginBox").classList.add("hide");
+  let app = document.getElementById("appBox");
+  if(app) app.classList.remove("hide");
+  if(document.getElementById("userShow")) document.getElementById("userShow").innerText = (getUsers()[ph]?.name || ph);
+  if(typeof render==="function") render();
+}
+
+function logout(){ localStorage.removeItem("raj_user"); location.reload(); }
+
+function getSales(){ let ph = localStorage.getItem("raj_user")||"guest"; return JSON.parse(localStorage.getItem("raj_sales_"+ph)||"[]"); }
+
+function addSale(){
+  let item = document.getElementById("cItem").value.trim();
+  let amt = Number(document.getElementById("cAmt").value);
+  if(!item || !amt) return alert("Item ane Amount Lakho");
+  let ph = localStorage.getItem("raj_user")||"guest";
+  let arr = getSales(); arr.unshift({id:Date.now(), item, amt});
+  localStorage.setItem("raj_sales_"+ph, JSON.stringify(arr));
+  render(); alert("Save Thai Gayu ✅");
+}
+
+function render(){
+  let arr = getSales(); let h=""; let tot=0;
+  arr.forEach(s=>{ tot+=s.amt; h+="<div style='display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee'><b>"+s.item+"</b><b>₹"+s.amt+"</b></div>"; });
+  document.getElementById("list").innerHTML = h || "Haju Koi Hisab Nathi";
+  document.getElementById("total").innerText = "Total: ₹"+tot;
+}
+
+window.addEventListener("load", ()=>{
+  let saved = localStorage.getItem("raj_user");
+  if(saved && getUsers()[saved]) openApp(saved);
+});</script>
+</body>
+</html>    
         <div id="mainApp">
           <!-- ✅ AHYA PAN EDIT - Dukandar + Dukan Be Dekhase -->
           <p>👋 <b id="user_name_show"></b> | 🏪 <span id="shop_name_show"></span> <button onclick="doLogout()" style="width:auto;background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:8px">Logout</button></p>
