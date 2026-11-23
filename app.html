@@ -79,10 +79,9 @@ button:active{opacity:0.8}
 </style>
 </head>
 <body>
-    <!-- ✅ SACHU BUTTON - AA J MUKO -->
+    
+ <!-- ✅ SACHU BUTTON - AA J MUKO -->
 <button onclick="doLogout()" style="width:auto;padding:10px 16px;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-weight:800">🚪 Logout</button>
- 
- 
 
 <!-- ========== DASHBOARD ========== -->
 <div class="dashboard">
@@ -1142,29 +1141,34 @@ searchHistory();
     }
     
     showAttendance();
-    </script>
-    
-<script>
-    if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
     </script><script>
 function doLogout(){
-  // 1. Login Delete Karo
+  // 1. Badhu Delete Karo
   localStorage.removeItem("raj_user");
   localStorage.removeItem("raj_saved_phone");
-  
-  // 2. Pachu Login Page Par Moklo - 2 Rit Thi Try Karse
-  // Jo Ek Na Chale To Biju Chalse
-  try{
-    window.location.href = "index.html";
-  }catch(e){
-    window.location.href = "./index.html";
-  }
-  // 3. Jo Have Pan Na Khule To 500ms Pachhi Force Kholo
-  setTimeout(function(){
-    window.location.replace("index.html");
-  }, 500);
-        window.location.href = "index.html?v=" + Date.now();
+  sessionStorage.clear();
+
+  // 2. History Ma Pachu Na Jai E Mate - replace Vaparo - href Nahi!
+  // href = Pachu Jai Sakay - replace = Pachu Jai j Nahi!
+  window.location.replace("index.html?v=" + Date.now());
 }
+
+// 👇 AA Sauthi Jaruri Che - Back Dabse To Pan App Nahi Khule 👇
+window.addEventListener("pageshow", function(e){
+  var ph = localStorage.getItem("raj_user");
+  if(!ph){
+    // Jo Login Nathi To Pachu Login Par Moklo
+    window.location.replace("index.html?v=" + Date.now());
+  }
+});
+
+// Back Button Dabse To Pan Login Par j Moklse
+window.addEventListener("popstate", function(){
+  var ph = localStorage.getItem("raj_user");
+  if(!ph){
+    window.location.replace("index.html?v=" + Date.now());
+  }
+});
 </script>
       </body>
 
