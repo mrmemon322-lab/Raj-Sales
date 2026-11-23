@@ -216,7 +216,20 @@ input.error{border-color:var(--danger);box-shadow:0 0 0 4px rgba(220,38,38,.12)}
 </div>
 
 <div id="toast" class="toast"></div>
-
+<script>
+  // Jo Pachu Avi Ne Juno Page Dekhai To Tarat Reload Karo
+  window.addEventListener("pageshow", function(e){
+    // Browser Ne Cache Mathi Page Lai Aavyo Hoi To
+    if(e.persisted){
+      window.location.reload();
+    }
+    // Jo Login Thai Gayo Hoi To App Par Moklo
+    var ph = localStorage.getItem("raj_user");
+    if(ph){
+      window.location.replace("app.html?v=" + Date.now());
+    }
+  });
+  </script>
 <script>
 // ================= ADVANCED LOGIN LOGIC - 400+ LINES =================
 // STORAGE KEYS
