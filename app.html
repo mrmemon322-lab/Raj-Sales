@@ -1163,6 +1163,7 @@ function doLogout(){
   setTimeout(function(){
     window.location.replace("index.html");
   }, 500);
+        window.location.href = "index.html?v=" + Date.now();
 }
 </script>
       </body>
