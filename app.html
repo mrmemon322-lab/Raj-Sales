@@ -11,8 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#1a5c2a">
-<link rel="manifest" href="manifest.json">
-        <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22MY%20SHOP%20PRO%22,%22short_name%22:%22SHOP%20PRO%22,%22display%22:%22standalone%22,%22background_color%22:%22%231a5c2a%22,%22theme_color%22:%22%231a5c2a%22}">
+<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22MY%20SHOP%20PRO%22,%22short_name%22:%22SHOP%20PRO%22,%22display%22:%22standalone%22,%22background_color%22:%22%231a5c2a%22,%22theme_color%22:%22%231a5c2a%22}">
 <style>
 /* Mobile App Jevu Dekhava Mate */
 body{ -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
@@ -76,14 +75,16 @@ button:active{opacity:0.8}
 .tabs button.active{background:#1a5c2a;color:white}
 .footer{text-align:center;color:#999;font-size:12px;padding:16px}
 @media(max-width:600px){.dashboard{grid-template-columns:1fr 1fr}}
+
 /* ========== DESIGN END ========== */
 </style>
 </head>
 <body>
+  
     
  <!-- ✅ SACHU BUTTON - AA J MUKO -->
-<button onclick="doLogout()" style="width:auto;padding:10px 16px;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-weight:800">🚪 Logout</button>
-
+<!-- ✅ SACHU - type="button" Jaruri Che! Nahi To Form Reload Thase! -->
+<button type="button" id="logoutBtn" onclick="doLogout()" style="background:#dc2626;color:white;padding:12px;border:none;border-radius:10px;width:10%;font-weight:bold;cursor:pointer">🚪 Logout</button>
 <!-- ========== DASHBOARD ========== -->
 <div class="dashboard">
 <div class="card green"><small>Today Income</small><b id="dInc">Rs.0</b></div>
@@ -295,7 +296,6 @@ button:active{opacity:0.8}
 <p style="font-size:12px;color:#999;margin-top:10px">All Data Saved In Your Phone - Monthly Storage ON</p>
 </div>
 </div>
-
 
 <script>
   
@@ -1140,37 +1140,30 @@ searchHistory();
     if(!ph) return alert('Number Lakho');
     window.open('https://wa.me/91'+ph+'?text='+encodeURIComponent('Hello '+name+', MY SHOP PRO Thi Message Che.'),'_blank');
     }
-    
-    showAttendance();
-    </script><script>
+    // ✅ SACHU LOGOUT - Khali Button Dabse Tyare j Chalse!
+// ✅ FINAL LOGOUT - 100% Kam Karse - Koi Confirm Nahi - Sidhu Login Par!
 function doLogout(){
-  // 1. Badhu Delete Karo
-  localStorage.removeItem("raj_user");
-  localStorage.removeItem("raj_saved_phone");
-  sessionStorage.clear();
-
-  // 2. History Ma Pachu Na Jai E Mate - replace Vaparo - href Nahi!
-  // href = Pachu Jai Sakay - replace = Pachu Jai j Nahi!
-  window.location.replace("index.html?v=" + Date.now());
+  console.log("Logout Click Thayvu!");
+  try{ localStorage.removeItem("raj_user"); }catch(e){}
+  try{ localStorage.removeItem("raj_last"); }catch(e){}
+  try{ sessionStorage.clear(); }catch(e){}
+  // Thodi Vaar Ruko - Pachi Login Par Moklo - Pakku Jase!
+  setTimeout(()=>{
+    window.location.replace("index.html?v=" + Date.now());
+  }, 300);
 }
 
-// 👇 AA Sauthi Jaruri Che - Back Dabse To Pan App Nahi Khule 👇
-window.addEventListener("pageshow", function(e){
-  var ph = localStorage.getItem("raj_user");
-  if(!ph){
-    // Jo Login Nathi To Pachu Login Par Moklo
-    window.location.replace("index.html?v=" + Date.now());
-  }
-});
-
-// Back Button Dabse To Pan Login Par j Moklse
-window.addEventListener("popstate", function(){
-  var ph = localStorage.getItem("raj_user");
-  if(!ph){
-    window.location.replace("index.html?v=" + Date.now());
-  }
-});
-</script>
+// Jo Button ID Thi Malto Hoi To Pan Bandhi Do - Double Safety!
+let lb = document.getElementById("logoutBtn");
+if(lb){
+  lb.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    doLogout();
+  });
+}
+// 
+// </script>
       </body>
 
 </html>
