@@ -1,28 +1,32 @@
 {
-  "name": "Raj Sales - KhataBook",
-  "short_name": "Raj Sales",
-  "start_url": ".",
+  "name": "MY SHOP PRO",
+  "short_name": "MY SHOP",
+  "description": "MY SHOP PRO - Bill, Hisab Ane Khata Mate Best App. Raj Sales No Official App.",
+  "id": "/Raj-Sales/",
+  "start_url": "/Raj-Sales/index.html",
+  "scope": "/Raj-Sales/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#d32f2f",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
   "icons": [
     {
-      "src": "icon-maskable-192x192.png",
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-maskable-512.png",
+      "src": "icon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-maskable-144x144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable"
     }
   ]
 }
