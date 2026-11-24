@@ -142,16 +142,35 @@ function quickLogin(){ document.getElementById("lPhone").value="9876543210"; doc
 
 function showCreate(){ document.getElementById("mode-pass").classList.add("hidden"); document.getElementById("createBox").classList.remove("hidden"); document.getElementById("forgotBox").classList.add("hidden"); }
 function hideCreate(){ document.getElementById("createBox").classList.add("hidden"); document.getElementById("mode-pass").classList.remove("hidden"); }
-
+// ✅ FIXED doCreate - Juno Account Hoi To Pan Navo Password Save Thase!
 async function doCreate(){
-  let name=document.getElementById("cName").value.trim(); let ph=cleanPhone(document.getElementById("cPhone").value);
-  let shop=document.getElementById("cShop").value.trim()||"MY SHOP PRO"; let p1=document.getElementById("cPass").value.trim(); let p2=document.getElementById("cPass2").value.trim();
-  if(!name){showMsg("❌ Name Lakho");return} if(ph.length!==10){showMsg("❌ Sacho Number Lakho");return} if(p1.length<4){showMsg("❌ Password 4 Ank No Rakho");return} if(p1!==p2){showMsg("❌ Be Password Sarhka Nathi");return}
-  let u=getUsers(); if(u[ph]){ showMsg("⚠️ Account Che! Login Karo"); hideCreate(); document.getElementById("lPhone").value=ph; return; }
-  let hashed=await hashPass(p1); u[ph]={name, passHash:hashed, shop, device:getDeviceId(), created:Date.now()}; saveUsers(u);
-  localStorage.removeItem(KEY_USER); localStorage.setItem(KEY_ATTEMPTS,"0");
-  showMsg("✅ Account Bani Gayu! Have Ej Number + Password Thi Login Karo",true); showToast("✅ Account Bani Gayu!");
-  setTimeout(()=>{ hideCreate(); document.getElementById("lPhone").value=ph; document.getElementById("lPass").value=""; document.getElementById("lPass").focus(); },800);
+  let name=document.getElementById("cName").value.trim();
+  let ph=cleanPhone(document.getElementById("cPhone").value);
+  let shop=document.getElementById("cShop").value.trim()||"MY SHOP PRO";
+  let p1=document.getElementById("cPass").value.trim();
+  let p2=document.getElementById("cPass2").value.trim();
+  if(!name){showMsg("❌ Name Lakho");return}
+  if(ph.length!==10){showMsg("❌ Sacho Number Lakho");return}
+  if(p1.length<4){showMsg("❌ Password 4 Ank No Rakho");return}
+  if(p1!==p2){showMsg("❌ Be Password Sarhka Nathi");return}
+
+  let u=getUsers();
+  let hashed=await hashPass(p1);
+
+  // ✅ HAVE - Jo Account Hoi To Pan UPDATE Kari Do - Nava Password Thi!
+  if(u[ph]){
+    u[ph].name=name; u[ph].passHash=hashed; delete u[ph].pass; u[ph].shop=shop;
+    saveUsers(u);
+    showMsg("✅ Juno Account Update Thai Gayo! Have Navo Password Thi Login Karo",true);
+  } else {
+    u[ph]={name, passHash:hashed, shop, device:getDeviceId(), created:Date.now()};
+    saveUsers(u);
+    showMsg("✅ Navu Account Bani Gayu! Have Ej Password Thi Login Karo",true);
+  }
+  localStorage.removeItem(KEY_USER);
+  localStorage.setItem(KEY_ATTEMPTS,"0");
+  showToast("✅ Save Thai Gayu!");
+  setTimeout(()=>{ hideCreate(); document.getElementById("lPhone").value=ph; document.getElementById("lPass").value=p1; document.getElementById("lPass").focus(); },800);
 }
 
 // ✅ FORGOT PASSWORD - FULL FIX
