@@ -167,12 +167,13 @@ button:active{opacity:0.8}
   </div>
 <!-- ========== HISAB TAB ========== -->
 <!-- Hisab Tab Ma - Upar - <h2> Ni Niche Mukko -->
+    <div id="tabHisab" class="box hidden">
   <div style="display:flex; gap:8px; margin:10px 0;">
     <div style="flex:1; background:#dcfce7; padding:12px; border-radius:12px; text-align:center;"><small>🟢 AAJ NI AVAK</small><br><b id="todayAvakTop" style="font-size:18px; color:green;">Rs.0</b></div>
     <div style="flex:1; background:#fee2e2; padding:12px; border-radius:12px; text-align:center;"><small>🔴 AAJ NI JAVAK</small><br><b id="todayJavakTop" style="font-size:18px; color:red;">Rs.0</b></div>
     <div style="flex:1; background:#dbeafe; padding:12px; border-radius:12px; text-align:center;"><small>💰 AAJ NO PROFIT</small><br><b id="todayProfitTop" style="font-size:18px; color:blue;">Rs.0</b></div>
   </div>
-<div id="tabHisab" class="box hidden">
+
     <h2>💰 2. Daily Income / Expense - Avak Javak</h2>
     <select id="month"><option value="2026-11">November 2026</option><option value="2026-10">October 2026</option><option value="2026-12">December 2026</option><option value="2027-01">January 2027</option><option value="2027-02">February 2027</option><option value="2027-03">March 2027</option></select>
     <select id="type">
@@ -237,18 +238,20 @@ button:active{opacity:0.8}
     <h3 style="margin-top:15px">📋 Badha Customer na Khata</h3>
     <div id="all_khata_list">Koi Khata Nathi</div>
     </div>
+
 <!-- ========== PAGAR TAB ========== -->
 <!-- 🔍 GOOGLE JEVU SEARCH + HISTORY -->
-
+<div id="tabPagar" class="box hidden">
   <h2>👷 4. Staff Pagar + Hajri</h2>
 <h3 style="margin-top:15px;">🔍 Staff Shodho - Naam Lakho</h3>
+
 <div style="position:relative;">
   <input id="staffSearch" placeholder="Staff Nu Naam Lakho - Jevu Ke Su... - Niche Naam Avse" oninput="staffSearchSuggest()" onfocus="staffSearchSuggest()" autocomplete="off">
   <div id="staffSuggestBox" style="display:none; position:absolute; top:100%; left:0; right:0; background:white; border:1px solid #ccc; border-radius:8px; z-index:99; max-height:180px; overflow:auto;"></div>
 </div>
 <button onclick="showStaffHistory(document.getElementById('staffSearch').value)" style="background:#7c3aed;">👤 Full History Juo</button>
 <div id="staffHistoryBox" style="margin-top:10px;"></div>
-<div id="tabPagar" class="box hidden">
+
     <h2>👷 4. Staff Pagar + Hajri - Aakhu Automatic</h2>
     
     <!-- 1. STAFF ADD -->
