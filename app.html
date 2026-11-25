@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- ===== MOBILE APP CODE START ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>    <!-- ===== MOBILE APP CODE START ===== -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -84,7 +81,7 @@ button:active{opacity:0.8}
     
  <!-- ✅ SACHU BUTTON - AA J MUKO -->
 <!-- ✅ SACHU - type="button" Jaruri Che! Nahi To Form Reload Thase! -->
-<button type="button" id="logoutBtn" onclick="doLogout()" style="background:#dc2626;color:white;padding:12px;border:none;border-radius:10px;width:30%;font-weight:bold;cursor:pointer">🚪 Logout</button>
+<button type="button" id="logoutBtn" onclick="doLogout()" style="background:#dc2626;color:white;padding:12px;border:none;border-radius:10px;width:10%;font-weight:bold;cursor:pointer">🚪 Logout</button>
 <!-- ========== DASHBOARD ========== -->
 <div class="dashboard">
 <div class="card green"><small>Today Income</small><b id="dInc">Rs.0</b></div>
@@ -104,45 +101,84 @@ button:active{opacity:0.8}
 <button onclick="showTab('tabReport',this)">📊 Report</button>
 <button onclick="showTab('tabSettings',this)">⚙️ Settings
   <!-- ===== BACKUP - PDF WALA ===== -->
-<h3>🔒 Backup </h3>
-<button onclick="downloadPDFBackup()" style="background:#dc2626; color:white; padding:12px; width:100%; border:none; border-radius:8px; font-size:16px;">📄 PDF Backup Download Karo</button>
-<button onclick="downloadBackup()" style="background:#059669; color:white; padding:12px; width:100%; border:none; border-radius:8px; margin-top:8px;">📥 Puro Data Backup - JSON - Pacho Lavva Mate</button>
-<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restoreData(event)">
-<button onclick="document.getElementById('restoreFile').click()" style="background:#f59e0b;color:#fff;width:100%;padding:12px;border:none;border-radius:10px;font-weight:700;font-size:16px">📥 RESTORE - File Thi Juno Data Pacho Lavo</button>
 
-</button>
 </div>
 
-========== BILL TAB ==========
+<!-- ===== MY SHOP PRO - ADVANCE BILL ===== -->
+<!-- ===== BILL TAB - NAVO - AA J MUKKO ===== -->
 <div id="tabBill" class="box">
-<h2>🧾 1. Bill Generator - Customer Bill</h2>
-<input id="bill_cust" placeholder="Customer Name - Ex: Ramesh Bhai">
-<input id="bill_phone" placeholder="Customer Mobile - Ex: 9876543210">
-<input id="bill_item" placeholder="Product Name - Ex: Rice / Milk / Oil">
-<input id="bill_price" type="number" placeholder="Price Per Piece - Ex: 55">
-<input id="bill_qty" type="number" placeholder="Quantity - Ex: 2">
-<input id="bill_discount" type="number" placeholder="Discount Rs. - Ex: 10 (Optional)">
-<button class="teal" onclick="addBill()">Add To Bill +</button>
-<div class="bill"><b>MY SHOP PRO - BILL</b><br><span id="bill_cust_show">Customer: -</span><br><span id="bill_date_show">Date: -</span><div id="bill_list"></div><hr><p>Sub Total: <b id="bill_sub">Rs.0</b></p><p>Discount: <b id="bill_disc_show">Rs.0</b></p><p class="total" id="bill_total">Total Bill: Rs.0</p><p style="text-align:center;font-size:12px">Thank You - Visit Again!</p></div>
-<div class="row"><button onclick="window.print()">🖨️ Print Bill</button><button class="wgreen" onclick="sendBillWhatsApp()">📲 Bill on WhatsApp</button></div>
-<button class="grey" onclick="newBill()">New Bill - Clear</button>
+  <h2>🧾 1. Bill Banavo</h2>
 
+  
+  <input id="billCustName" placeholder="Customer Nu Naam" style="width:100%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #ccc;">
+  <input id="billCustMobile" placeholder="Customer Mobile - 98765 43210" style="width:100%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #ccc;">
+  
+  <div style="display:flex; gap:5px;">
+    <input id="billItemName" placeholder="Item - Jevu Ke Maggi" style="flex:2; padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <input id="billItemPrice" type="number" placeholder="Price" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <input id="billItemQty" type="number" value="1" style="width:60px; padding:10px; border-radius:8px; border:1px solid #ccc;">
+  </div>
+  <button onclick="addToBill()" style="width:100%; padding:12px; background:#25D366; color:white; border:none; border-radius:8px; margin:8px 0; font-weight:bold;">+ ITEM ADD KARO</button>
+
+  <select id="billPayMode" style="width:100%; padding:10px; border-radius:8px; margin:5px 0;">
+    <option>💵 Cash</option>
+    <option>📱 UPI / GPay / PhonePe</option>
+    <option>📒 Udhar</option>
+  </select>
+
+  <input id="billDiscount" type="number" placeholder="Discount Rs. - Jevu Ke 10" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;">
+
+  <!-- BILL PREVIEW - KHALI BILL DEKHASE -->
+  <div id="finalBillBox" style="display:none; background:white; color:black; padding:18px; border:1px solid #ddd; border-radius:10px; margin-top:10px; font-family:monospace;">
+    <div style="text-align:center;">
+      <h2 style="margin:0; font-family:Arial;">🏪 MY SHOP PRO</h2>
+      <p style="margin:2px; font-size:12px;">Rehan Memon | Mumbai</p>
+      <p style="margin:2px; font-size:12px;">Mo: 98765 43210</p>
+      <p id="billNoShow" style="font-weight:bold; margin:5px;"></p>
+      <p style="border-top:1px dashed black; border-bottom:1px dashed black; padding:5px; font-size:12px;">--------------------------------</p>
+    </div>
+    <p id="finalCustShow"></p>
+    <p id="finalDateShow" style="font-size:12px;"></p>
+    <div id="finalItems"></div>
+    <p style="border-top:1px dashed black;"></p>
+    <p id="finalSub" style="text-align:right; margin:2px;"></p>
+    <p id="finalDisc" style="text-align:right; margin:2px; color:green;"></p>
+    <h3 id="finalTotal" style="text-align:right; margin:5px 0;"></h3>
+    <p id="finalPayShow" style="text-align:center; font-size:13px;"></p>
+    <p style="text-align:center; border-top:1px dashed black; padding-top:8px;">Thank You! Visit Again 🙏<br>MY SHOP PRO - Digital Bill</p>
+  </div>
+
+  <div style="display:flex; gap:8px; margin-top:10px;">
+    <button onclick="makeFinalBill()" style="flex:1; padding:13px; background:black; color:white; border:none; border-radius:8px; font-weight:bold;">👀 BILL JUO</button>
+    <button onclick="shareFinalBill()" style="flex:1; padding:13px; background:#25D366; color:white; border:none; border-radius:8px; font-weight:bold;">📲 WHATSAPP PAR MOKLO</button>
+  </div>
+  <button onclick="clearBill()">🗑️ Navu Bill</button>
+  <ul id="bill_list" style="display:none;"></ul>
+  <p id="bill_total" style="display:none;">0</p>
 </div>
+<!-- ^^ BILL TAB AHI BANDH ^^ -->
 
+<!-- Customer History Vala Box Ne Pan - Bill Tab Ni Andar j Rakhvo Hoi To - Upar Vala </div> Ni Pela Mukko -->
+<!-- Nahi To E Pan Badha Tab Ma Dekhase! -->
 <div class="box">
     <h2>📜 11. Customer Full History</h2>
     <input id="histSearch" oninput="searchHistory()" placeholder="Customer Name Lakho - Ex: Ramesh">
     <div id="histList"></div>
   </div>
 <!-- ========== HISAB TAB ========== -->
+<!-- Hisab Tab Ma - Upar - <h2> Ni Niche Mukko -->
+  <div style="display:flex; gap:8px; margin:10px 0;">
+    <div style="flex:1; background:#dcfce7; padding:12px; border-radius:12px; text-align:center;"><small>🟢 AAJ NI AVAK</small><br><b id="todayAvakTop" style="font-size:18px; color:green;">Rs.0</b></div>
+    <div style="flex:1; background:#fee2e2; padding:12px; border-radius:12px; text-align:center;"><small>🔴 AAJ NI JAVAK</small><br><b id="todayJavakTop" style="font-size:18px; color:red;">Rs.0</b></div>
+    <div style="flex:1; background:#dbeafe; padding:12px; border-radius:12px; text-align:center;"><small>💰 AAJ NO PROFIT</small><br><b id="todayProfitTop" style="font-size:18px; color:blue;">Rs.0</b></div>
+  </div>
 <div id="tabHisab" class="box hidden">
     <h2>💰 2. Daily Income / Expense - Avak Javak</h2>
     <select id="month"><option value="2026-11">November 2026</option><option value="2026-10">October 2026</option><option value="2026-12">December 2026</option><option value="2027-01">January 2027</option><option value="2027-02">February 2027</option><option value="2027-03">March 2027</option></select>
-    
-    <select id="type"><option value="income">🟢 Income (Avak - Received)</option><option value="expense">🔴 Expense (Javak - Paid)</option></select>
-    <input id="avak_desc" placeholder="What did you sell / buy? Ex: Milk, Rent, Light Bill">
-    <input id="avak_amt" type="number" placeholder="Amount - Ex: 500">
-    <input id="avak_note" placeholder="Note - Optional">
+    <select id="type">
+      <option value="income">🟢 Income (Avak)</option>
+      <option value="expense">🔴 Expense (Javak)</option>
+    </select>
     
     <!-- ✅ DATE + TIME -->
     <input id="avak_date" type="date">
@@ -202,6 +238,16 @@ button:active{opacity:0.8}
     <div id="all_khata_list">Koi Khata Nathi</div>
     </div>
 <!-- ========== PAGAR TAB ========== -->
+<!-- 🔍 GOOGLE JEVU SEARCH + HISTORY -->
+
+  <h2>👷 4. Staff Pagar + Hajri</h2>
+<h3 style="margin-top:15px;">🔍 Staff Shodho - Naam Lakho</h3>
+<div style="position:relative;">
+  <input id="staffSearch" placeholder="Staff Nu Naam Lakho - Jevu Ke Su... - Niche Naam Avse" oninput="staffSearchSuggest()" onfocus="staffSearchSuggest()" autocomplete="off">
+  <div id="staffSuggestBox" style="display:none; position:absolute; top:100%; left:0; right:0; background:white; border:1px solid #ccc; border-radius:8px; z-index:99; max-height:180px; overflow:auto;"></div>
+</div>
+<button onclick="showStaffHistory(document.getElementById('staffSearch').value)" style="background:#7c3aed;">👤 Full History Juo</button>
+<div id="staffHistoryBox" style="margin-top:10px;"></div>
 <div id="tabPagar" class="box hidden">
     <h2>👷 4. Staff Pagar + Hajri - Aakhu Automatic</h2>
     
@@ -294,6 +340,20 @@ button:active{opacity:0.8}
 <button class="purple" onclick="clearAll()">DELETE ALL DATA (New Month)</button>
 <button class="black" onclick="logout()">Logout</button>
 <p style="font-size:12px;color:#999;margin-top:10px">All Data Saved In Your Phone - Monthly Storage ON</p>
+<h3>🔒 Backup </h3>
+<button onclick="downloadPDFBackup()" style="background:#dc2626; color:white; padding:12px; width:100%; border:none; border-radius:8px; font-size:16px;">📄 PDF Backup Download Karo</button>
+<button onclick="downloadBackup()" style="background:#059669; color:white; padding:12px; width:100%; border:none; border-radius:8px; margin-top:8px;">📥 Puro Data Backup - JSON - Pacho Lavva Mate</button>
+
+</button>
+
+<!-- Junu: accept=".json" -->
+
+<!-- Navu: -->
+<input type="file" id="restoreFile" accept=".json,.pdf" style="display:none" onchange="restoreData(event)">
+<button onclick="document.getElementById('restoreFile').click()" style="background:#f59e0b;color:#fff;width:100%;padding:12px;border:none;border-radius:10px;font-weight:700;">📥 RESTORE - JSON / PDF Thi Data Pacho Lavo</button>
+
+<!-- 🆕 NAVU - RESTORE PREVIEW - Pela Jovo - Pachi Restore Karo -->
+<div id="restorePreview" style="display:none; background:#fffbe6; padding:12px; border-radius:12px; margin-top:10px;"></div>
 </div>
 </div>
 
@@ -308,7 +368,73 @@ let profits=JSON.parse(localStorage.getItem('profits')||'[]');
 let bill=[]; let billTotal=0; let billSub=0; let billDisc=0;
 var td = document.getElementById('todayDate');
 if(td) td.innerText = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-// ===== BACKUP - FAKT PHONE MA =====
+//restore mate 
+// ===== PDF - TEXT + IMAGE - BANE VANCHSE =====
+async function readPDFText(file){
+  var buf = await file.arrayBuffer();
+  var pdf = await pdfjsLib.getDocument({data: buf}).promise;
+  var full = '';
+
+  for(var i=1; i<=pdf.numPages; i++){
+    var page = await pdf.getPage(i);
+    var content = await page.getTextContent();
+    var pageText = '';
+    content.items.forEach(function(it){ pageText += it.str + ' '; });
+    full += pageText + '\n';
+
+    // ✅ JO TEXT NA MALYO - ETELE IMAGE PDF CHE - TO OCR KARO!
+    if(pageText.trim().length < 20){
+      document.getElementById('restorePreview').innerHTML = '⏳ Page '+i+' Photo Che - OCR Thi Vanchu Chu... Thodu Roko... 📸';
+      var canvas = document.createElement('canvas');
+      var viewport = page.getViewport({scale: 2}); // Saaf Dekhava Mate 2x
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({canvasContext: canvas.getContext('2d'), viewport: viewport}).promise;
+      try{
+        var result = await Tesseract.recognize(canvas, 'eng+guj', {logger: function(m){}});
+        full += result.data.text + '\n';
+      }catch(e){ console.log('OCR Error', e); }
+    }
+  }
+  return full;
+}
+function parsePDFBackup(text){
+  var out = {};
+  var avak = [], udhaar = [], pagar = [];
+  var lines = text.split('\n');
+
+  lines.forEach(function(line){
+    line = line.trim();
+    if(!line) return;
+    // Date Shodho - 2026-11-26 Ke 26/11/2026 Ke 26-11-2026
+    var dm = line.match(/(\d{4}-\d{2}-\d{2})|(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/);
+    var amtM = line.match(/Rs\.?\s*(\d+)|(\d{3,})/);
+    if(!dm || !amtM) return;
+
+    var dateStr = dm[0];
+    // 26/11/2026 Ne 2026-11-26 Banavo
+    if(dateStr.includes('/')){
+      var p = dateStr.split('/');
+      dateStr = p[2].length==2 ? '20'+p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0') : p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+    }
+    var amt = Number((amtM[1]||amtM[2]).replace(/,/g,''));
+    var low = line.toLowerCase();
+
+    if(low.includes('pagar') || low.includes('upad') || low.includes('staff') || low.includes('nokar')){
+      pagar.push({name: line.slice(0,30), amt: amt, date: dateStr, time: '12:00', type: 'paid'});
+    } else if(low.includes('udhaar') || low.includes('udhar') || low.includes('khata') || low.includes('baki')){
+      udhaar.push({name: line.slice(0,30), name_l: line.slice(0,30).toLowerCase(), type: 'udhaar', item: line.slice(0,40), amt: amt, date: dateStr, time: '12:00'});
+    } else {
+      var isInc = low.includes('avak') || low.includes('income') || low.includes('aavy') || low.includes('vech');
+      avak.push({m: dateStr.slice(0,7), t: isInc ? 'income' : 'expense', d: line.slice(0,50), a: amt, note: 'PDF Thi Restore', date: dateStr, time: '12:00', fromStaff: false});
+    }
+  });
+
+  if(avak.length) out['avak'] = avak;
+  if(udhaar.length) out['udhaar'] = udhaar;
+  if(pagar.length) out['pagar_upad'] = pagar;
+  return out;
+}// ===== BACKUP - FAKT PHONE MA ===
 // ===== PDF BACKUP - SUNDAR TABLE MA =====
 async function downloadPDFBackup(){
   // 1. Badho Data Bhego Karo - LocalStorage + IndexedDB
@@ -536,7 +662,24 @@ function addUpad(){
   var all=JSON.parse(localStorage.getItem(getUserKey('pagar_upad'))||'[]');
   all.push({name:name,name_l:name.toLowerCase(),amt:amt,date:date,time:time,type:'upad'});
   localStorage.setItem(getUserKey('pagar_upad'),JSON.stringify(all));
+  pushHisabJavak('👷 Upad - ' + name, amt, date, time);
   document.getElementById('upad_amt').value='';
+  // ===== AUTO JAVAK - UPAD =====
+function pushHisabJavak(desc, amt, date, time){
+  try{
+    var key = (typeof getUserKey==='function') ? getUserKey('avak') : 'avak';
+    var all = JSON.parse(localStorage.getItem(key)||'[]');
+    // Duplicate Rokva
+    var dup = all.some(function(x){ return x.fromStaff && x.d===desc && x.a===amt && x.date===date; });
+    if(!dup){
+      all.push({m: date.slice(0,7), t:'expense', d:desc, a:amt, note:'Staff Pagar Thi Auto', date:date, time:time, fromStaff:true});
+      localStorage.setItem(key, JSON.stringify(all));
+      // Juno key pan hoy to - tya pan update karo - Hisab tab juna key thi chalse to
+      try{ localStorage.setItem('avak', JSON.stringify(all)); }catch(e){}
+      if(typeof showAvak==='function') showAvak();
+    }
+  }catch(e){ console.log(e); }
+}
   showPagar(); alert(name+' ne Rs.'+amt+' Upad Aapyo! Pagar mathi Katase!');
 }
 function addPagarPaid(){
@@ -598,92 +741,102 @@ function delPagarStaff(name_l){
   staff=staff.filter(function(x){ return x.name_l!==name_l; });
   localStorage.setItem(getUserKey('pagar_staff'),JSON.stringify(staff));
   showPagar();
+  
 }
+// ===== GOOGLE JEVU SUGGESTION + FULL HISTORY =====
+function staffSearchSuggest(){
+  var q = document.getElementById('staffSearch').value.trim().toLowerCase();
+  var box = document.getElementById('staffSuggestBox');
+  var staff = JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  if(!q){ box.style.display='none'; return; }
+  var match = staff.filter(function(s){ return s.name.toLowerCase().includes(q); });
+  if(match.length==0){ box.style.display='none'; return; }
+  var h='';
+  match.forEach(function(s){
+    h += '<div onclick="pickStaffName(\''+s.name.replace(/'/g,"")+'\')" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;">👷 <b>'+s.name+'</b> <small>- Salary Rs.'+s.salary+'</small></div>';
+  });
+  box.innerHTML = h;
+  box.style.display = 'block';
+}
+function pickStaffName(n){
+  document.getElementById('staffSearch').value = n;
+  document.getElementById('staffSuggestBox').style.display='none';
+  // Badha Input Ma Pan Naam Bhari Do - Time Bachse!
+  ['att_staff','upad_name','pay_name'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=n; });
+  showStaffHistory(n);
+}
+
+function showStaffHistory(name){
+  name = (name||'').trim();
+  if(!name){ alert('Pela Staff Nu Naam Lakho!'); return; }
+  var staff = JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  var att = JSON.parse(localStorage.getItem(getUserKey('pagar_att'))||'[]');
+  var upad = JSON.parse(localStorage.getItem(getUserKey('pagar_upad'))||'[]');
+  var s = staff.find(function(x){ return x.name.toLowerCase()===name.toLowerCase(); });
+  var box = document.getElementById('staffHistoryBox');
+  if(!s){ box.innerHTML = '<p>❌ '+name+' - Staff List Ma Nathi. Pela Staff Add Karo.</p>'; return; }
+  var nl = s.name_l;
+  var myAtt = att.filter(function(x){ return x.name_l===nl; });
+  var present = myAtt.filter(function(x){ return x.status==='Present'; }).length;
+  var absent = myAtt.filter(function(x){ return x.status==='Absent'; }).length;
+  var half = myAtt.filter(function(x){ return x.status==='Half'; }).length;
+  var raja = myAtt.filter(function(x){ return x.status==='Raja'; }).length;
+  var perDay = s.salary/30;
+  var cut = (absent*perDay)+(raja*perDay)+(half*perDay*0.5);
+  var myUpad = upad.filter(function(x){ return x.name_l===nl && x.type==='upad'; });
+  var myPaid = upad.filter(function(x){ return x.name_l===nl && x.type==='paid'; });
+  var tUpad=0, tPaid=0;
+  myUpad.forEach(function(x){ tUpad+=Number(x.amt); });
+  myPaid.forEach(function(x){ tPaid+=Number(x.amt); });
+  var baki = s.salary - cut - tUpad - tPaid;
+
+  var h = '<div style="background:#f8f8ff; padding:12px; border-radius:12px; border:1px solid #7c3aed;">'
+    + '<h3>👷 '+s.name+' - FULL HISTORY</h3>'
+    + '<p><b>Monthly Salary:</b> Rs.'+s.salary+' | <b>1 Divas:</b> Rs.'+Math.round(perDay)+'</p>'
+    + '<p>✅ Present: '+present+' | ❌ Absent: '+absent+' | 🌓 Half: '+half+' | 🏖️ Raja: '+raja+'</p>'
+    + '<p>✂️ Hajri Kat: Rs.'+Math.round(cut)+' | 💰 Upad: Rs.'+tUpad+' | 💸 Pagar Aapyo: Rs.'+tPaid+'</p>'
+    + '<h3 style="color:'+(baki>0?'red':'green')+'">🔴 BAKI AAPVANO: Rs.'+Math.round(baki)+'</h3>'
+    + '<p><b>Upad History:</b><br>'+ (myUpad.length ? myUpad.map(function(x){ return 'Rs.'+x.amt+' - '+x.date+' '+x.time; }).join('<br>') : 'Koi Upad Nahi') +'</p>'
+    + '<p><b>Pagar Paid History:</b><br>'+ (myPaid.length ? myPaid.map(function(x){ return 'Rs.'+x.amt+' - '+x.date+' '+x.time; }).join('<br>') : 'Have Pagar Nathi Aapyo') +'</p>'
+    + '<p><b>Chhelli 5 Hajri:</b><br>'+ ([...myAtt].reverse().slice(0,5).map(function(x){ return x.status+' - '+x.date; }).join('<br>') || 'Nathi') +'</p>'
+    + '<button onclick="shareStaffHistory(\''+s.name+'\')" style="background:#25D366; width:100%; padding:10px; color:white; border:none; border-radius:8px;">📲 WhatsApp Par History Moklo</button>'
+    + '</div>';
+  box.innerHTML = h;
+}
+
+// 🆕 ADVANCE: Staff History WhatsApp Par
+function shareStaffHistory(name){
+  var staff = JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  var s = staff.find(function(x){ return x.name===name; });
+  if(!s) return;
+  var msg = '👷 *Staff History - '+s.name+'*\n------------------------\nSalary: Rs.'+s.salary+'\nBaki Aapvano: Check App Ma\nMY SHOP PRO';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// Bahar Click Karo To Suggestion Bandh Thai Jase
+document.addEventListener('click', function(e){
+  var box = document.getElementById('staffSuggestBox');
+  if(box && !e.target.closest('#staffSearch')) box.style.display='none';
+});
+// ===== HISAB - PERFECT + ADVANCE - 1 VAAR J =====
+let editAvakIndex = -1;
+
 function addAvak(){
-  let d = document.getElementById('avak_desc').value;
+  let d = document.getElementById('avak_desc').value.trim();
   let a = Number(document.getElementById('avak_amt').value);
   let note = document.getElementById('avak_note').value;
-  let type = document.getElementById('type').value;
+  let type = document.getElementById('type').value; // Khali income / expense
   let month = document.getElementById('month').value;
-  let date = document.getElementById('avak_date').value;
-  let time = document.getElementById('avak_time').value;
-  if(!date){ date = new Date().toISOString().split('T')[0]; }
-  if(!time){ time = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  let date = document.getElementById('avak_date').value || new Date().toISOString().split('T')[0];
+  let time = document.getElementById('avak_time').value || new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   if(!d || !a) return alert('Pela Description ane Amount Lakho!');
   let all = JSON.parse(localStorage.getItem('avak')||'[]');
-  all.push({m:month, t:type, d:d, a:a, note:note, date:date, time:time});
+  all.push({m:month, t:type, d:d, a:a, note:note, date:date, time:time, fromStaff:false});
   localStorage.setItem('avak', JSON.stringify(all));
-  document.getElementById('avak_desc').value='';
-  document.getElementById('avak_amt').value='';
-  document.getElementById('hisab_date').value = date; // Aa Date no Hisab Dekhadse
+  document.getElementById('avak_desc').value=''; document.getElementById('avak_amt').value='';
+  document.getElementById('hisab_date').value = date;
   showAvak();
-  alert('Save Thai Gayu! 📅 '+date+' ⏰ '+time);
-}
-
-function setTodayHisab(){
-  let today = new Date().toISOString().split('T')[0];
-  document.getElementById('hisab_date').value = today;
-  document.getElementById('avak_date').value = today;
-  showAvak();
-}
-
-function showAvak(){
-  let all = JSON.parse(localStorage.getItem('avak')||'[]');
-  let month = document.getElementById('month').value;
-  let selDate = document.getElementById('hisab_date').value || new Date().toISOString().split('T')[0];
-  if(!document.getElementById('hisab_date').value){ document.getElementById('hisab_date').value = selDate; }
-
-  // --- MONTH TOTAL ---
-  let mInc=0, mExp=0;
-  all.filter(x=>x.m==month).forEach(x=>{ if(x.t=='income') mInc+=x.a; else mExp+=x.a; });
-  document.getElementById('month_total').innerText = 'Rs.'+(mInc-mExp);
-  document.getElementById('month_detail').innerText = 'Avak '+mInc+' - Javak '+mExp;
-
-  // --- DAY BY DAY CALCULATION + CARRY FORWARD ---
-  let dates = [...new Set(all.filter(x=>x.m==month).map(x=>x.date))].sort();
-  let carry = 0;
-  let dayHtml = '';
-  let todayNet = 0, todayInc=0, todayExp=0, yestNet = 0;
-
-  dates.forEach(dt=>{
-    let dInc=0, dExp=0;
-    all.filter(x=>x.date==dt).forEach(x=>{ if(x.t=='income') dInc+=x.a; else dExp+=x.a; });
-    let opening = carry;
-    let closing = opening + dInc - dExp;
-    carry = closing; // Aaj no Closing = Avti Kal no Opening
-
-    if(dt == selDate){ todayNet = closing; todayInc=dInc; todayExp=dExp; }
-    // Gai Kal
-    let sel = new Date(selDate); sel.setDate(sel.getDate()-1);
-    let yestStr = sel.toISOString().split('T')[0];
-    if(dt == yestStr){ yestNet = closing; }
-
-    dayHtml += '<div class="item"><span><b>📅 '+dt+'</b><br><small>Opening: Rs.'+opening+' + Avak Rs.'+dInc+' - Javak Rs.'+dExp+'</small></span><b style="color:'+(closing>=0?'green':'red')+'">Closing: Rs.'+closing+'</b></div>';
-  });
-
-  document.getElementById('daywise_list').innerHTML = dayHtml || 'Have Sudhi Koi Entry Nathi';
-  document.getElementById('today_total').innerText = 'Rs.'+todayNet;
-  document.getElementById('today_detail').innerText = 'Avak '+todayInc+' - Javak '+todayExp+' | '+selDate;
-  document.getElementById('yesterday_total').innerText = 'Rs.'+yestNet;
-  document.getElementById('yesterday_date').innerText = 'Gai Kal no Closing';
-
-  // --- SELECTED DATE NI ENTRY LIST ---
-  let list = all.filter(x=>x.date==selDate);
-  let box = document.getElementById('avak_list');
-  if(list.length==0){ box.innerHTML='Aa Divase Koi Entry Nathi'; return; }
-  let h='';
-  list.forEach(x=>{
-    let idx = all.indexOf(x);
-    h += '<div class="item"><span>'+(x.t=='income'?'🟢':'🔴')+' '+x.d+'<br><small style=color:blue>📅 '+x.date+' ⏰ '+x.time+'</small><br><small>'+(x.note||'')+'</small></span><b>Rs.'+x.a+'<br><button onclick="delAvak('+idx+')" style="width:auto;padding:4px 8px;background:#ef4444;font-size:12px">Delete</button></b></div>';
-  });
-  box.innerHTML=h;
-}
-
-function delAvak(i){
-  let all = JSON.parse(localStorage.getItem('avak')||'[]');
-  all.splice(i,1);
-  localStorage.setItem('avak', JSON.stringify(all));
-  showAvak();
+  alert('Save Thai Gayu! ✅');
 }
 // ✅ 11. CUSTOMER FULL HISTORY - PER USER
 function searchHistory(){
@@ -742,10 +895,10 @@ function save(){localStorage.setItem('avak',JSON.stringify(avak));localStorage.s
 function showTab(id,btn){document.querySelectorAll('.box').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(e=>e.classList.remove('active'));if(btn)btn.classList.add('active');}
 function globalSearch(){let q=document.getElementById('globalSearch').value.toLowerCase();if(!q){show();return}let all=[...avak.map(x=>x.d),...khata.map(x=>x.n),...stock.map(x=>x.n)];let found=all.filter(x=>x.toLowerCase().includes(q));alert('Found: '+found.join(', '))}
 
-// // ========== BILL ==========
-// function addBill(){let c=document.getElementById('bill_cust').value;let item=document.getElementById('bill_item').value;let p=Number(document.getElementById('bill_price').value);let q=Number(document.getElementById('bill_qty').value);let disc=Number(document.getElementById('bill_discount').value||0);if(!c||!item||!p||!q)return alert('Fill Bill Details');document.getElementById('bill_cust_show').innerText='Customer: '+c;document.getElementById('bill_date_show').innerText='Date: '+new Date().toLocaleDateString('en-IN');let tot=p*q;bill.push({item,p,q,tot});billSub+=tot;billDisc=disc;billTotal=billSub-billDisc;let h='';bill.forEach(x=>{h+='<div class=item><span>'+x.item+' x '+x.q+' @ Rs.'+x.p+'</span><b>Rs.'+x.tot+'</b></div>'});document.getElementById('bill_list').innerHTML=h;document.getElementById('bill_sub').innerText='Rs.'+billSub;document.getElementById('bill_disc_show').innerText='Rs.'+billDisc;document.getElementById('bill_total').innerText='Total Bill: Rs.'+billTotal;document.getElementById('bill_item').value='';document.getElementById('bill_price').value='';document.getElementById('bill_qty').value='';}
-// function newBill(){bill=[];billTotal=0;billSub=0;billDisc=0;document.getElementById('bill_list').innerHTML='';document.getElementById('bill_total').innerText='Total Bill: Rs.0';document.getElementById('bill_cust').value='';}
-// function sendBillWhatsApp(){let c=document.getElementById('bill_cust').value;let ph=document.getElementById('bill_phone').value;let msg='Hello '+c+', Your Bill at MY SHOP PRO is Rs.'+billTotal+'. Thank You!';window.open('https://wa.me/91'+ph+'?text='+encodeURIComponent(msg),'_blank');}
+// ========== BILL ==========
+function addBill(){let c=document.getElementById('bill_cust').value;let item=document.getElementById('bill_item').value;let p=Number(document.getElementById('bill_price').value);let q=Number(document.getElementById('bill_qty').value);let disc=Number(document.getElementById('bill_discount').value||0);if(!c||!item||!p||!q)return alert('Fill Bill Details');document.getElementById('bill_cust_show').innerText='Customer: '+c;document.getElementById('bill_date_show').innerText='Date: '+new Date().toLocaleDateString('en-IN');let tot=p*q;bill.push({item,p,q,tot});billSub+=tot;billDisc=disc;billTotal=billSub-billDisc;let h='';bill.forEach(x=>{h+='<div class=item><span>'+x.item+' x '+x.q+' @ Rs.'+x.p+'</span><b>Rs.'+x.tot+'</b></div>'});document.getElementById('bill_list').innerHTML=h;document.getElementById('bill_sub').innerText='Rs.'+billSub;document.getElementById('bill_disc_show').innerText='Rs.'+billDisc;document.getElementById('bill_total').innerText='Total Bill: Rs.'+billTotal;document.getElementById('bill_item').value='';document.getElementById('bill_price').value='';document.getElementById('bill_qty').value='';}
+function newBill(){bill=[];billTotal=0;billSub=0;billDisc=0;document.getElementById('bill_list').innerHTML='';document.getElementById('bill_total').innerText='Total Bill: Rs.0';document.getElementById('bill_cust').value='';}
+function sendBillWhatsApp(){let c=document.getElementById('bill_cust').value;let ph=document.getElementById('bill_phone').value;let msg='Hello '+c+', Your Bill at MY SHOP PRO is Rs.'+billTotal+'. Thank You!';window.open('https://wa.me/91'+ph+'?text='+encodeURIComponent(msg),'_blank');}
 
 // ========== HISAB ==========
 function addAvak(){let m=document.getElementById('month').value;let t=document.getElementById('type').value;let d=document.getElementById('avak_desc').value;let a=Number(document.getElementById('avak_amt').value);let note=document.getElementById('avak_note').value;if(!d||!a)return alert('Fill all');avak.push({m,t,d,a,note,date:new Date().toLocaleDateString('en-IN')});save();document.getElementById('avak_desc').value='';document.getElementById('avak_amt').value='';document.getElementById('avak_note').value='';}
@@ -1091,23 +1244,59 @@ searchHistory();
     window.open(url,'_blank');
     }
     
-    // ===== PHOTO BILL =====
-    function takePhotoBill(){
-    let c = document.getElementById('photoCust').value || 'Customer';
-    document.getElementById('photoCustShow').innerText = 'Customer: '+c;
-    document.getElementById('photoDateShow').innerText = 'Date: '+new Date().toLocaleDateString('en-IN')+' Time: '+new Date().toLocaleTimeString('en-IN');
-    let billItems = document.getElementById('bill_list') ? document.getElementById('bill_list').innerHTML : 'No Items';
-    document.getElementById('photoItems').innerHTML = billItems || 'No Items Added';
-    let total = document.getElementById('bill_total') ? document.getElementById('bill_total').innerText : 'Total: Rs.0';
-    document.getElementById('photoTotal').innerText = total;
-    alert('Photo Bill Taiyar Che! Have Print Dabavi ne Photo / PDF Save Karo!');
-    }
-    function sharePhotoBill(){
-    let c = document.getElementById('photoCust').value || 'Customer';
-    let total = document.getElementById('photoTotal').innerText;
-    let msg = 'Hello '+c+', '+total+' - MY SHOP PRO Bill. Thank You!';
-    window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
-    }
+    // ===== ADVANCE PHOTO BILL - ONLY BILL =====
+function takePhotoBill(){
+  let c = document.getElementById('photoCust').value || 'Customer';
+  let items = document.querySelectorAll('#bill_list li');
+  
+  if(items.length == 0){
+    alert('Pehla Item Add Karo Bhai!');
+    return;
+  }
+
+  let html = '<table style="width:100%; border-collapse:collapse;">';
+  html += '<tr><th style="text-align:left; border-bottom:1px solid black;">Item</th><th>Qty</th><th style="text-align:right;">Price</th></tr>';
+  
+  let subTotal = 0;
+  items.forEach(it => {
+    // Item nu naam ane price kadho - button hatavi ne
+    let text = it.innerText.replace('❌','').replace('Delete','').trim();
+    html += '<tr><td style="padding:4px 0;">'+text+'</td></tr>';
+    // Total mate - bill_total mathi lesu
+  });
+  html += '</table>';
+  
+  let totalText = document.getElementById('bill_total') ? document.getElementById('bill_total').innerText : 'Rs.0';
+  let totalNum = parseInt(totalText.replace(/[^0-9]/g,'')) || 0;
+  let discount = Math.round(totalNum * 0.05); // 5% Discount Auto
+  let gst = Math.round((totalNum - discount) * 0.05); // 5% GST
+  let finalTotal = totalNum - discount + gst;
+
+  document.getElementById('photoCustShow').innerText = 'Customer: ' + c;
+  document.getElementById('photoDateShow').innerText = 'Date: ' + new Date().toLocaleDateString('en-IN') + ' | Time: ' + new Date().toLocaleTimeString('en-IN');
+  document.getElementById('photoItems').innerHTML = html;
+  document.getElementById('photoSubTotal').innerText = 'Sub Total: Rs.' + totalNum;
+  document.getElementById('photoDiscount').innerText = 'Discount (5%): - Rs.' + discount;
+  document.getElementById('photoGst').innerText = 'GST (5%): + Rs.' + gst;
+  document.getElementById('photoTotal').innerText = 'TOTAL: Rs.' + finalTotal;
+
+  let box = document.getElementById('photoBillBox');
+  box.style.display = 'block';
+  box.scrollIntoView({behavior:'smooth'});
+  alert('Photo Bill Taiyar Che! Have Screenshot Lo Ke Download Dabo!');
+}
+
+function sharePhotoBill(){
+  let c = document.getElementById('photoCust').value || 'Customer';
+  let total = document.getElementById('photoTotal').innerText;
+  let msg = 'Hello ' + c + ' 🙏\nMY SHOP PRO Bill\n' + total + '\nDate: ' + new Date().toLocaleDateString('en-IN') + '\nThank You! Visit Again!';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function downloadPhotoBill(){
+  window.print(); // Print Ma - Khali Bill Dekhase
+  alert('Print Ma - Photo Bill Select Karine PDF Save Karo!');
+}
     
     // ===== BARCODE =====
     function makeBarcode(){
