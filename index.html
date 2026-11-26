@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>    <!-- ===== MOBILE APP CODE START ===== -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1a5c2a">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a"><style>
+/* Mobile App Jevu Dekhava Mate */
+body{ -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button{ min-height: 48px; } /* Mobile ma Button Mota */
+input{ font-size: 17px !important; } /* Zoom Nahi Thay */
+.installBtn{ background: #1a5c2a !important; position: fixed; bottom: 12px; left: 12px; right: 12px; z-index: 999; box-shadow: 0 4px 16px #0005; }
+</style>
+<!-- ===== MOBILE APP CODE END ===== -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY SHOP PRO - 5000 Line Full App</title>
+<style>
+/* ========== 1. DESIGN START ========== */
+*{box-sizing:border-box;margin:0;padding:0}
+.tabs{display:flex;gap:6px;background:#f1f5f9;padding:5px;border-radius:12px;margin-bottom:12px}
+.tabs button{flex:1;padding:11px;border:none;border-radius:9px;font-weight:700;cursor:pointer;background:transparent;color:#64748b}
+.tabs button.active{background:#2563eb;color:#fff}
+.passBox{display:flex;gap:6px}
+.passBox input{flex:1}
+.eye{width:52px;padding:11px 0;text-align:center;background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:11px;cursor:pointer}
+.btn{width:100%;padding:14px;border:none;border-radius:11px;font-weight:800;font-size:16px;color:#fff;cursor:pointer;margin-top:8px}
+.btn:active{transform:scale(.98)}
+.green{background:#16a34a}.blue{background:#2563eb}.orange{background:#f59e0b}
+.msg{text-align:center;font-weight:700;min-height:22px;margin:8px 0;font-size:14px}
+.small{font-size:13px;color:#64748b;text-align:center}
+.small b{color:#2563eb;cursor:pointer}
+.hide{display:none !important}
+.bar{height:6px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin:4px 0}
+.bar div{height:100%;width:0%;transition:.3s}
+.row{font-size:13px;display:flex;justify-content:space-between;align-items:center;margin:6px 0}
+body{background:#eef2f7;font-family:Arial, sans-serif;padding:10px;color:#222}
+h1{color:#1a5c2a;text-align:center;font-size:28px;margin:10px 0}
+h2{font-size:19px;margin-bottom:10px}
+h3{font-size:16px;margin:8px 0}
+.subtitle{text-align:center;color:#555;margin-bottom:12px}
+.topbar{background:#1a5c2a;color:white;padding:14px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.topbar b{font-size:18px}
+.topbar span{font-size:13px;background:#ffffff22;padding:6px 10px;border-radius:20px}
+.dashboard{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.card{background:white;padding:14px;border-radius:14px;text-align:center;box-shadow:0 2px 8px #00000011}
+.card small{color:#777}
+.card b{font-size:20px;display:block;margin-top:4px}
+.card.green b{color:green}.card.red b{color:red}.card.blue b{color:#2980b9}.card.orange b{color:#e67e22}
+.box{background:white;padding:18px;border-radius:14px;margin:12px 0;text-align:left;box-shadow:0 2px 8px #00000011}
+input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:9px;font-size:16px}
+button{width:100%;padding:13px;background:green;color:white;border:none;border-radius:9px;font-size:17px;font-weight:bold;margin-top:6px;cursor:pointer}
+button:active{opacity:0.8}
+.red{background:#e74c3c}.blue{background:#2980b9}.orange{background:#e67e22}.purple{background:#8e44ad}.teal{background:#009688}.wgreen{background:#25D366}.black{background:#222}.grey{background:#777}
+.row{display:flex;gap:8px}.row button{flex:1}
+.item{background:#f9f9f9;padding:11px;border-radius:9px;margin:6px 0;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.item small{color:#777;display:block}
+.total{font-size:19px;font-weight:bold;color:green;text-align:center;margin:8px 0}
+.bar{height:24px;border-radius:7px;margin:6px 0;color:white;padding:4px 8px;font-size:13px;font-weight:bold}
+.bill{border:2px dashed #000;padding:14px;background:#fffbe6;border-radius:10px}
+.badge{background:#ffeb3b;padding:3px 8px;border-radius:20px;font-size:12px;font-weight:bold}
+.low{color:red;font-weight:bold}
+.searchbar{position:sticky;top:0;z-index:5;background:#eef2f7;padding:6px 0}
+.hidden{display:none}
+.tabs{display:flex;gap:6px;overflow:auto;padding:4px 0}
+.tabs button{white-space:nowrap;padding:10px 14px;font-size:14px;background:#ddd;color:#222}
+.tabs button.active{background:#1a5c2a;color:white}
+.footer{text-align:center;color:#999;font-size:12px;padding:16px}
+@media(max-width:600px){.dashboard{grid-template-columns:1fr 1fr}}
+
+/* ========== DESIGN END ========== */
+</style>
+</head>
+<body>
+  
+    
+ <!-- ✅ SACHU BUTTON - AA J MUKO -->
+<!-- ✅ SACHU - type="button" Jaruri Che! Nahi To Form Reload Thase! -->
+<button type="button" id="logoutBtn" onclick="doLogout()" style="background:#dc2626;color:white;padding:12px;border:none;border-radius:10px;width:10%;font-weight:bold;cursor:pointer">🚪 Logout</button>
+<!-- ========== DASHBOARD ========== -->
+<div class="dashboard">
+<div class="card green"><small>Today Income</small><b id="dInc">Rs.0</b></div>
+<div class="card red"><small>Today Expense</small><b id="dExp">Rs.0</b></div>
+<div class="card blue"><small>Total Udhar</small><b id="dUdhar">Rs.0</b></div>
+<div class="card orange"><small>Total Stock</small><b id="dStock">0 Items</b></div>
+</div>
+
+<!-- ========== TABS ========== -->
+<div class="tabs">
+<button class="active" onclick="showTab('tabBill',this)">🧾 Bill</button>
+<button onclick="showTab('tabHisab',this)">💰 Hisab</button>
+<button onclick="showTab('tabKhata',this)">📒 Khata</button>
+<button onclick="showTab('tabPagar',this)">👷 Pagar</button>
+<button onclick="showTab('tabStock',this)">📦 Stock</button>
+<button onclick="showTab('tabProfit',this)">🧮 Profit</button>
+<button onclick="showTab('tabReport',this)">📊 Report</button>
+<button onclick="showTab('tabSettings',this)">⚙️ Settings
+  <!-- ===== BACKUP - PDF WALA ===== -->
+
+</div>
+
+<!-- ===== MY SHOP PRO - ADVANCE BILL ===== -->
+<!-- ===== BILL TAB - NAVO - AA J MUKKO ===== -->
+<div id="tabBill" class="box">
+  <h2>🧾 1. Bill Banavo</h2>
+
+  
+  <input id="billCustName" placeholder="Customer Nu Naam" style="width:100%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #ccc;">
+  <input id="billCustMobile" placeholder="Customer Mobile - 98765 43210" style="width:100%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #ccc;">
+  
+  <div style="display:flex; gap:5px;">
+    <input id="billItemName" placeholder="Item - Jevu Ke Maggi" style="flex:2; padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <input id="billItemPrice" type="number" placeholder="Price" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ccc;">
+    <input id="billItemQty" type="number" value="1" style="width:60px; padding:10px; border-radius:8px; border:1px solid #ccc;">
+  </div>
+  <button onclick="addToBill()" style="width:100%; padding:12px; background:#25D366; color:white; border:none; border-radius:8px; margin:8px 0; font-weight:bold;">+ ITEM ADD KARO</button>
+
+  <select id="billPayMode" style="width:100%; padding:10px; border-radius:8px; margin:5px 0;">
+    <option>💵 Cash</option>
+    <option>📱 UPI / GPay / PhonePe</option>
+    <option>📒 Udhar</option>
+  </select>
+
+  <input id="billDiscount" type="number" placeholder="Discount Rs. - Jevu Ke 10" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;">
+
+  <!-- BILL PREVIEW - KHALI BILL DEKHASE -->
+  <div id="finalBillBox" style="display:none; background:white; color:black; padding:18px; border:1px solid #ddd; border-radius:10px; margin-top:10px; font-family:monospace;">
+    <div style="text-align:center;">
+      <h2 style="margin:0; font-family:Arial;">🏪 MY SHOP PRO</h2>
+      <p style="margin:2px; font-size:12px;">Rehan Memon | Mumbai</p>
+      <p style="margin:2px; font-size:12px;">Mo: 98765 43210</p>
+      <p id="billNoShow" style="font-weight:bold; margin:5px;"></p>
+      <p style="border-top:1px dashed black; border-bottom:1px dashed black; padding:5px; font-size:12px;">--------------------------------</p>
+    </div>
+    <p id="finalCustShow"></p>
+    <p id="finalDateShow" style="font-size:12px;"></p>
+    <div id="finalItems"></div>
+    <p style="border-top:1px dashed black;"></p>
+    <p id="finalSub" style="text-align:right; margin:2px;"></p>
+    <p id="finalDisc" style="text-align:right; margin:2px; color:green;"></p>
+    <h3 id="finalTotal" style="text-align:right; margin:5px 0;"></h3>
+    <p id="finalPayShow" style="text-align:center; font-size:13px;"></p>
+    <p style="text-align:center; border-top:1px dashed black; padding-top:8px;">Thank You! Visit Again 🙏<br>MY SHOP PRO - Digital Bill</p>
+  </div>
+
+  <div style="display:flex; gap:8px; margin-top:10px;">
+    <button onclick="makeFinalBill()" style="flex:1; padding:13px; background:black; color:white; border:none; border-radius:8px; font-weight:bold;">👀 BILL JUO</button>
+    <button onclick="shareFinalBill()" style="flex:1; padding:13px; background:#25D366; color:white; border:none; border-radius:8px; font-weight:bold;">📲 WHATSAPP PAR MOKLO</button>
+  </div>
+  <button onclick="clearBill()">🗑️ Navu Bill</button>
+  <ul id="bill_list" style="display:none;"></ul>
+  <p id="bill_total" style="display:none;">0</p>
+</div>
+<!-- ^^ BILL TAB AHI BANDH ^^ -->
+
+<!-- Customer History Vala Box Ne Pan - Bill Tab Ni Andar j Rakhvo Hoi To - Upar Vala </div> Ni Pela Mukko -->
+<!-- Nahi To E Pan Badha Tab Ma Dekhase! -->
+<div class="box">
+    <h2>📜 11. Customer Full History</h2>
+    <input id="histSearch" oninput="searchHistory()" placeholder="Customer Name Lakho - Ex: Ramesh">
+    <div id="histList"></div>
+  </div>
+<!-- ========== HISAB TAB ========== -->
+<!-- Hisab Tab Ma - Upar - <h2> Ni Niche Mukko -->
+    <div id="tabHisab" class="box hidden">
+  <div style="display:flex; gap:8px; margin:10px 0;">
+    <div style="flex:1; background:#dcfce7; padding:12px; border-radius:12px; text-align:center;"><small>🟢 AAJ NI AVAK</small><br><b id="todayAvakTop" style="font-size:18px; color:green;">Rs.0</b></div>
+    <div style="flex:1; background:#fee2e2; padding:12px; border-radius:12px; text-align:center;"><small>🔴 AAJ NI JAVAK</small><br><b id="todayJavakTop" style="font-size:18px; color:red;">Rs.0</b></div>
+    <div style="flex:1; background:#dbeafe; padding:12px; border-radius:12px; text-align:center;"><small>💰 AAJ NO PROFIT</small><br><b id="todayProfitTop" style="font-size:18px; color:blue;">Rs.0</b></div>
+  </div>
+
+    <h2>💰 2. Daily Income / Expense - Avak Javak</h2>
+    <select id="month"><option value="2026-11">November 2026</option><option value="2026-10">October 2026</option><option value="2026-12">December 2026</option><option value="2027-01">January 2027</option><option value="2027-02">February 2027</option><option value="2027-03">March 2027</option></select>
+    <select id="type">
+      <option value="income">🟢 Income (Avak)</option>
+      <option value="expense">🔴 Expense (Javak)</option>
+    </select>
+    
+    <!-- ✅ DATE + TIME -->
+    <input id="avak_date" type="date">
+    <input id="avak_time" type="time">
+    <button onclick="addAvak()">Add Entry</button>
+    
+    <!-- ✅ NAVU: DATE SELECT KARO -->
+    <p style="font-weight:bold;margin-top:10px">👉 Hisab Jova Mate Tarikh Pasand Karo:</p>
+    <input id="hisab_date" type="date" onchange="showAvak()">
+    <button onclick="setTodayHisab()" style="background:#059669">📅 Aaj no Hisab Jovo</button>
+    
+    <!-- ✅ NAVU: 3 BOX - GAI KAL + AAJ + MONTH -->
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <div style="flex:1;background:#fef3c7;padding:10px;border-radius:10px;text-align:center"><small>⏮️ GAI KAL NO BAKI</small><br><b id="yesterday_total">Rs.0</b><br><small id="yesterday_date"></small></div>
+      <div style="flex:1;background:#dcfce7;padding:10px;border-radius:10px;text-align:center"><small>📅 AAJ NO TOTAL</small><br><b id="today_total">Rs.0</b><br><small id="today_detail"></small></div>
+      <div style="flex:1;background:#dbeafe;padding:10px;border-radius:10px;text-align:center"><small>📆 AAKHA MAHINA NO</small><br><b id="month_total">Rs.0</b><br><small id="month_detail"></small></div>
+    </div>
+    
+    <!-- ✅ NAVU: DAY BY DAY LIST -->
+    <h3 style="margin-top:15px">📊 Day By Day Hisab (Carry Forward)</h3>
+    <div id="daywise_list"></div>
+    
+    <h3 style="margin-top:15px">📋 Aa Divas ni Entry</h3>
+    <div id="avak_list"></div>
+    <!-- COPY-1 START
+<hr>
+<h2>💳 Udhaar / Khata</h2>
+<h3>🟢 Udhaar Aapyo</h3> -->
+<div id="all_khata_list"></div>
+<!-- COPY-1 END -->
+    </div>
+<!-- ========== KHATA TAB ========== -->
+<!-- ========== KHATA TAB ========== -->
+<div id="tabKhata" class="box hidden">
+    <h2>💳 Udhaar / Khata - Darek Customer nu Alag Khata</h2>
+    
+    <h3>🟢 Udhaar Aapyo - Vastu Aapi</h3>
+    <input id="u_name" placeholder="Customer nu Naam - Ex: Ramesh">
+    <input id="u_item" placeholder="Shu Aapyu? - Ex: 5kg Chokha">
+    <input id="u_amt" type="number" placeholder="Ketla Rupiya? - Ex: 500">
+    <input id="u_date" type="date">
+    <input id="u_time" type="time">
+    <button onclick="addUdhaar()" style="background:#dc2626">Add Udhaar</button>
+    
+    <h3 style="margin-top:15px">🔵 Paisa Aavya - Jama Karo</h3>
+    <input id="p_name" placeholder="Customer nu Naam - Ex: Ramesh">
+    <input id="p_amt" type="number" placeholder="Ketla Paisa Aavya? - Ex: 200">
+    <input id="p_date" type="date">
+    <input id="p_time" type="time">
+    <button onclick="addPayment()" style="background:#059669">Paisa Jama Karo</button>
+    
+    <h3 style="margin-top:15px">🔍 Khata Jovo</h3>
+    <input id="khata_search" oninput="showKhata()" placeholder="Customer nu Naam Lakho">
+    <div id="khata_list"><p>Naam Lakho Etle Khata Dekhase!</p></div>
+    
+    <h3 style="margin-top:15px">📋 Badha Customer na Khata</h3>
+    <div id="all_khata_list">Koi Khata Nathi</div>
+    </div>
+
+<!-- ========== PAGAR TAB ========== -->
+<!-- 🔍 GOOGLE JEVU SEARCH + HISTORY -->
+<div id="tabPagar" class="box hidden">
+  <h2>👷 4. Staff Pagar + Hajri</h2>
+<h3 style="margin-top:15px;">🔍 Staff Shodho - Naam Lakho</h3>
+
+<div style="position:relative;">
+  <input id="staffSearch" placeholder="Staff Nu Naam Lakho - Jevu Ke Su... - Niche Naam Avse" oninput="staffSearchSuggest()" onfocus="staffSearchSuggest()" autocomplete="off">
+  <div id="staffSuggestBox" style="display:none; position:absolute; top:100%; left:0; right:0; background:white; border:1px solid #ccc; border-radius:8px; z-index:99; max-height:180px; overflow:auto;"></div>
+</div>
+<button onclick="showStaffHistory(document.getElementById('staffSearch').value)" style="background:#7c3aed;">👤 Full History Juo</button>
+<div id="staffHistoryBox" style="margin-top:10px;"></div>
+
+    <h2>👷 4. Staff Pagar + Hajri - Aakhu Automatic</h2>
+    
+    <!-- 1. STAFF ADD -->
+    <h3>👤 Navo Staff Add Karo</h3>
+    <input id="nokar_name" placeholder="Staff Name - Ex: Suresh">
+    <input id="nokar_pagar" type="number" placeholder="Monthly Salary - Ex: 12000">
+    <button class="blue" onclick="addStaff()">Staff Add Karo</button>
+    
+    <!-- 2. DARROJ HAJRI -->
+    <h3 style="margin-top:15px">✅ Darroj ni Hajri - Aaj ni</h3>
+    <input id="att_staff" placeholder="Staff Naam - Ex: Suresh">
+    <select id="att_status">
+    <option value="Present">✅ Present - Aavyo</option>
+    <option value="Absent">❌ Absent - Nathi Aavyo - Paisa Katase</option>
+    <option value="Half">🌓 Half Day - Adha Paisa Katase</option>
+    <option value="Raja">🏖️ Raja / Leave - Paisa Katase</option>
+    </select>
+    <input id="att_date" type="date">
+    <input id="att_time" type="time">
+    <button onclick="addAttendance()" style="background:#059669">Hajri Add Karo</button>
+    
+    <!-- 3. UPAD / ADVANCE -->
+    <h3 style="margin-top:15px">💰 Upad / Advance Aapyo</h3>
+    <input id="upad_name" placeholder="Staff nu Naam - Ex: Suresh">
+    <input id="upad_amt" type="number" placeholder="Ketla Upad Aapya? - Ex: 2000">
+    <input id="upad_date" type="date">
+    <input id="upad_time" type="time">
+    <button onclick="addUpad()" style="background:#e67e22">Upad Aapyo - Pagar mathi Katase</button>
+    
+    <!-- 4. PAGAR AAPYO -->
+    <h3 style="margin-top:15px">💸 Pagar Aapyo - Final</h3>
+    <input id="pay_name" placeholder="Staff nu Naam - Ex: Suresh">
+    <input id="pay_amt" type="number" placeholder="Ketla Pagar Aapya? - Ex: 10000">
+    <input id="pay_date" type="date">
+    <input id="pay_time" type="time">
+    <button onclick="addPagarPaid()" style="background:#2563eb">Pagar Aapyo</button>
+    
+    <h3 style="margin-top:15px">📋 Badha Staff no Hisab - Automatic</h3>
+    <div id="pagar_list"></div>
+    
+    <h3 style="margin-top:15px">📅 Hajri List</h3>
+    <div id="att_list"></div>
+    
+    <p style="font-size:13px;color:#555">Formula: Monthly / 30 = 1 Divas no Pagar. Absent/Raja = 1 Divas Kat, Half = 0.5 Divas Kat, Upad = Pagar mathi Kat.</p>
+    </div><!-- ========== STOCK TAB ========== -->
+<div id="tabStock" class="box hidden">
+<h2>📦 5. Stock Management - Maal No Stock</h2>
+<input id="stock_name" placeholder="Product Name - Ex: Rice">
+<input id="stock_qty" type="number" placeholder="Quantity - Ex: 50">
+<input id="stock_price" type="number" placeholder="Buy Price - Ex: 40">
+<input id="stock_sell" type="number" placeholder="Sell Price - Ex: 55">
+<input id="stock_min" type="number" placeholder="Minimum Stock Alert - Ex: 5">
+<button class="orange" onclick="addStock()">Add To Stock</button>
+<div id="stock_list"></div>
+</div>
+
+<!-- ========== PROFIT TAB ========== -->
+<div id="tabProfit" class="box hidden">
+<h2>🧮 6. Sell Calculation - Nafa Hisab</h2>
+<input id="sell_name" placeholder="Product Name - Ex: Rice">
+<input id="buy" type="number" placeholder="Buy Price - Ex: 40">
+<input id="sell" type="number" placeholder="Sell Price - Ex: 55">
+<input id="qty" type="number" placeholder="Quantity - Ex: 100">
+<input id="transport" type="number" placeholder="Transport / Other Expense - Ex: 200">
+<button class="teal" onclick="calcProfit()">Calculate Profit</button>
+<p class="total" id="profit_result">Profit Will Show Here</p>
+<div id="profit_history"></div>
+</div>
+
+<!-- ========== REPORT TAB ========== -->
+<div id="tabReport" class="box hidden">
+<h2>📊 7. Monthly Report + Graph</h2>
+<div id="graph"></div>
+<p class="total" id="report_total">Report</p>
+<div class="row"><button onclick="exportData()">⬇️ Export Data</button><button class="blue" onclick="downloadBackup()">💾 Backup Download</button></div>
+<h3>Daily Report List</h3>
+<div id="report_list"></div>
+</div>
+
+
+<!-- ========== SETTINGS TAB ========== -->
+<div id="tabSettings" class="box hidden">
+<h2>⚙️ 8. Settings - Dukan Details</h2>
+<input id="shopName" placeholder="Shop Name - Ex: MY SHOP PRO">
+<input id="ownerName" placeholder="Owner Name">
+<input id="ownerPhone" placeholder="Owner Phone">
+<textarea id="shopAddress" placeholder="Shop Address"></textarea>
+<button onclick="saveSettings()">Save Settings</button>
+<button class="purple" onclick="clearAll()">DELETE ALL DATA (New Month)</button>
+<button class="black" onclick="logout()">Logout</button>
+<p style="font-size:12px;color:#999;margin-top:10px">All Data Saved In Your Phone - Monthly Storage ON</p>
+<h3>🔒 Backup </h3>
+<button onclick="downloadPDFBackup()" style="background:#dc2626; color:white; padding:12px; width:100%; border:none; border-radius:8px; font-size:16px;">📄 PDF Backup Download Karo</button>
+<button onclick="downloadBackup()" style="background:#059669; color:white; padding:12px; width:100%; border:none; border-radius:8px; margin-top:8px;">📥 Puro Data Backup - JSON - Pacho Lavva Mate</button>
+
+</button>
+
+<!-- Junu: accept=".json" -->
+
+<!-- Navu: -->
+<input type="file" id="restoreFile" accept=".json,.pdf" style="display:none" onchange="restoreData(event)">
+<button onclick="document.getElementById('restoreFile').click()" style="background:#f59e0b;color:#fff;width:100%;padding:12px;border:none;border-radius:10px;font-weight:700;">📥 RESTORE - JSON / PDF Thi Data Pacho Lavo</button>
+
+<!-- 🆕 NAVU - RESTORE PREVIEW - Pela Jovo - Pachi Restore Karo -->
+<div id="restorePreview" style="display:none; background:#fffbe6; padding:12px; border-radius:12px; margin-top:10px;"></div>
+</div>
+</div>
+
+<script>
+  
+// ========== 2. DATA STORAGE ==========
+let avak=JSON.parse(localStorage.getItem('avak')||'[]');
+let khata=JSON.parse(localStorage.getItem('khata')||'[]');
+let pagar=JSON.parse(localStorage.getItem('pagar')||'[]');
+let stock=JSON.parse(localStorage.getItem('stock')||'[]');
+let profits=JSON.parse(localStorage.getItem('profits')||'[]');
+let bill=[]; let billTotal=0; let billSub=0; let billDisc=0;
+var td = document.getElementById('todayDate');
+if(td) td.innerText = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+//restore mate 
+// ===== PDF - TEXT + IMAGE - BANE VANCHSE =====
+async function readPDFText(file){
+  var buf = await file.arrayBuffer();
+  var pdf = await pdfjsLib.getDocument({data: buf}).promise;
+  var full = '';
+
+  for(var i=1; i<=pdf.numPages; i++){
+    var page = await pdf.getPage(i);
+    var content = await page.getTextContent();
+    var pageText = '';
+    content.items.forEach(function(it){ pageText += it.str + ' '; });
+    full += pageText + '\n';
+
+    // ✅ JO TEXT NA MALYO - ETELE IMAGE PDF CHE - TO OCR KARO!
+    if(pageText.trim().length < 20){
+      document.getElementById('restorePreview').innerHTML = '⏳ Page '+i+' Photo Che - OCR Thi Vanchu Chu... Thodu Roko... 📸';
+      var canvas = document.createElement('canvas');
+      var viewport = page.getViewport({scale: 2}); // Saaf Dekhava Mate 2x
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({canvasContext: canvas.getContext('2d'), viewport: viewport}).promise;
+      try{
+        var result = await Tesseract.recognize(canvas, 'eng+guj', {logger: function(m){}});
+        full += result.data.text + '\n';
+      }catch(e){ console.log('OCR Error', e); }
+    }
+  }
+  return full;
+}
+function parsePDFBackup(text){
+  var out = {};
+  var avak = [], udhaar = [], pagar = [];
+  var lines = text.split('\n');
+
+  lines.forEach(function(line){
+    line = line.trim();
+    if(!line) return;
+    // Date Shodho - 2026-11-26 Ke 26/11/2026 Ke 26-11-2026
+    var dm = line.match(/(\d{4}-\d{2}-\d{2})|(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/);
+    var amtM = line.match(/Rs\.?\s*(\d+)|(\d{3,})/);
+    if(!dm || !amtM) return;
+
+    var dateStr = dm[0];
+    // 26/11/2026 Ne 2026-11-26 Banavo
+    if(dateStr.includes('/')){
+      var p = dateStr.split('/');
+      dateStr = p[2].length==2 ? '20'+p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0') : p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+    }
+    var amt = Number((amtM[1]||amtM[2]).replace(/,/g,''));
+    var low = line.toLowerCase();
+
+    if(low.includes('pagar') || low.includes('upad') || low.includes('staff') || low.includes('nokar')){
+      pagar.push({name: line.slice(0,30), amt: amt, date: dateStr, time: '12:00', type: 'paid'});
+    } else if(low.includes('udhaar') || low.includes('udhar') || low.includes('khata') || low.includes('baki')){
+      udhaar.push({name: line.slice(0,30), name_l: line.slice(0,30).toLowerCase(), type: 'udhaar', item: line.slice(0,40), amt: amt, date: dateStr, time: '12:00'});
+    } else {
+      var isInc = low.includes('avak') || low.includes('income') || low.includes('aavy') || low.includes('vech');
+      avak.push({m: dateStr.slice(0,7), t: isInc ? 'income' : 'expense', d: line.slice(0,50), a: amt, note: 'PDF Thi Restore', date: dateStr, time: '12:00', fromStaff: false});
+    }
+  });
+
+  if(avak.length) out['avak'] = avak;
+  if(udhaar.length) out['udhaar'] = udhaar;
+  if(pagar.length) out['pagar_upad'] = pagar;
+  return out;
+}// ===== BACKUP - FAKT PHONE MA ===
+// ===== PDF BACKUP - SUNDAR TABLE MA =====
+async function downloadPDFBackup(){
+  // 1. Badho Data Bhego Karo - LocalStorage + IndexedDB
+  let allData = {};
+  
+  // LocalStorage mathi
+  for(let i=0;i<localStorage.length;i++){
+    let k = localStorage.key(i);
+    try{ allData[k] = JSON.parse(localStorage.getItem(k)); }
+    catch(e){ allData[k] = localStorage.getItem(k); }
+  }
+  // IndexedDB mathi - Jo Hoi To
+  if(typeof DB !== 'undefined' && DB){
+    try{
+      let tx = DB.transaction(['data'],'readonly');
+      let req = tx.objectStore('data').getAll();
+      await new Promise(res=>{ req.onsuccess=function(){ req.result.forEach(r=>{ try{ allData[r.key]=JSON.parse(r.val);}catch(e){ allData[r.key]=r.val; } }); res(); }; });
+    }catch(e){}
+  }
+
+  // 2. PDF mate Sundar Page Banavo
+  let user = localStorage.getItem('currentUser') || 'Maro KhataBook';
+  let date = new Date().toLocaleDateString('en-IN', {day:'numeric', month:'long', year:'numeric'});
+  
+  let html = `
+  <html><head><title>KhataBook Backup</title>
+  <style>
+    body{font-family:Arial; padding:20px; color:#111;}
+    h1{text-align:center; color:#2563eb; margin-bottom:2px;}
+    p.center{text-align:center; color:#666;}
+    h2{background:#2563eb; color:white; padding:8px 12px; border-radius:6px; margin-top:25px;}
+    table{width:100%; border-collapse:collapse; margin-top:10px; font-size:13px;}
+    th{background:#f1f5f9; padding:8px; border:1px solid #ddd; text-align:left;}
+    td{padding:8px; border:1px solid #ddd;}
+    .footer{text-align:center; margin-top:30px; color:#888; font-size:12px; border-top:1px solid #ddd; padding-top:10px;}
+  </style></head><body>
+  <h1>📒 Maro KhataBook - Backup</h1>
+  <p class="center">User: <b>${user}</b> | Date: <b>${date}</b></p>
+  `;
+
+  // 3. Darekh Data ne Table ma Muk
+  let found = false;
+  for(let key in allData){
+    let val = allData[key];
+    // Fakt User no Data - currentUser vagere Na Dekhadvo
+    if(key === 'currentUser' || key === 'currentUserName') continue;
+    if(!val) continue;
+    
+    // Jo Array Hoi - Etle Khata / Pagar / Staff
+    if(Array.isArray(val) && val.length > 0){
+      found = true;
+      let title = key.replace(user+'_','').replaceAll('_',' ').toUpperCase();
+      html += `<h2>${title} - Total: ${val.length}</h2><table><tr>`;
+      
+      // Header - Pahila Item na Key
+      let keys = Object.keys(val[0]);
+      keys.forEach(k=>{ html += `<th>${k}</th>`; });
+      html += `</tr>`;
+      
+      // Row
+val.forEach(item=>{
+  html += `<tr>`;
+  keys.forEach(k=>{
+    let v = item[k];
+    if(typeof v === 'object' && v !== null) v = JSON.stringify(v);
+    if(v === null || v === undefined) v = '';
+    html += `<td>${v}</td>`;
+  });
+  html += `</tr>`;
+});
+html += `</table>`;
+}
+    // Jo Eklo Object / Text Hoi
+    else if(typeof val === 'object' && Object.keys(val).length > 0){
+      html += `<h2>${key}</h2><p>${JSON.stringify(val)}</p>`;
+    }
+  }
+
+  if(!found) html += `<h2 style="text-align:center; background:none; color:#666;">Haji Koi Data Nathi</h2>`;
+  
+  html += `<div class="footer">Aa Backup Fakt Tamara Phone Mate Che - Kyaay Moklavo Nahi 🔒<br>Generated by Maro KhataBook</div>
+  </body></html>`;
+
+  // 4. Navi Window Kholi ne Print Karo - Etle PDF Banse
+  let w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  
+  // Thodu Roko - Pachhi Print
+  setTimeout(()=>{
+    w.print();
+  }, 500);
+}
+function getUsers(){ try{ return JSON.parse(localStorage.getItem("raj_users")||"{}"); }catch(e){ return {}; } }
+function saveUsers(u){ localStorage.setItem("raj_users", JSON.stringify(u)); }
+function showMsg(t, ok){
+  var m = document.getElementById("msg");
+  m.innerText = t; m.style.color = ok ? "#16a34a" : "#dc2626";
+}
+
+
+// COPY-2 START
+function getUserKey(key){ var u = localStorage.getItem('currentUser') || 'guest'; return key + '_' + u; }
+function addUdhaar(){
+  var name=document.getElementById('u_name').value.trim();
+  var item=document.getElementById('u_item').value.trim();
+  var amt=Number(document.getElementById('u_amt').value);
+  var date=document.getElementById('u_date').value;
+  var time=document.getElementById('u_time').value;
+  if(!date){ date=new Date().toISOString().split('T')[0]; }
+  if(!time){ time=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!name){ alert('Customer nu Naam Lakho!'); return; }
+  if(!item){ alert('Shu Aapyu E Lakho!'); return; }
+  if(!amt){ alert('Ketla Rupiya Lakho!'); return; }
+  var all=JSON.parse(localStorage.getItem(getUserKey('udhaar'))||'[]');
+  all.push({name:name,name_l:name.toLowerCase(),type:'udhaar',item:item,amt:amt,date:date,time:time});
+  localStorage.setItem(getUserKey('udhaar'),JSON.stringify(all));
+  document.getElementById('u_item').value='';
+  document.getElementById('u_amt').value='';
+  document.getElementById('khata_search').value=name;
+  showKhata();
+  alert(name+' na Khata ma Add Thai Gayu! Rs.'+amt);
+}
+function addPayment(){
+  var name=document.getElementById('p_name').value.trim();
+  var amt=Number(document.getElementById('p_amt').value);
+  var date=document.getElementById('p_date').value;
+  var time=document.getElementById('p_time').value;
+  if(!date){ date=new Date().toISOString().split('T')[0]; }
+  if(!time){ time=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!name){ alert('Customer nu Naam Lakho!'); return; }
+  if(!amt){ alert('Ketla Paisa Aavya E Lakho!'); return; }
+  var all=JSON.parse(localStorage.getItem(getUserKey('udhaar'))||'[]');
+  all.push({name:name,name_l:name.toLowerCase(),type:'payment',item:'Paisa Jama - Paid',amt:amt,date:date,time:time});
+  localStorage.setItem(getUserKey('udhaar'),JSON.stringify(all));
+  document.getElementById('p_amt').value='';
+  document.getElementById('khata_search').value=name;
+  showKhata();
+  alert(name+' na Khata mathi Rs.'+amt+' Baad Thai Gaya!');
+}
+function openKhata(name){ document.getElementById('khata_search').value=name; showKhata(); }
+function showKhata(){
+  var q=document.getElementById('khata_search').value.trim().toLowerCase();
+  var all=JSON.parse(localStorage.getItem(getUserKey('udhaar'))||'[]');
+  var box=document.getElementById('khata_list');
+  var allBox=document.getElementById('all_khata_list');
+  var customers=[];
+  all.forEach(function(x){ if(customers.indexOf(x.name_l)===-1){ customers.push(x.name_l); } });
+  var allHtml='';
+  customers.forEach(function(cname){
+    var list=all.filter(function(x){ return x.name_l===cname; });
+    var tU=0,tP=0;
+    list.forEach(function(x){ if(x.type==='udhaar'){ tU+=Number(x.amt); } else { tP+=Number(x.amt); } });
+    var baki=tU-tP;
+    var dName=list[0].name;
+    var col=baki>0?'red':'green';
+    allHtml+='<div class="item" onclick="openKhata(\''+dName+'\')"><span><b>'+dName+'</b><br><small>Udhaar Rs.'+tU+' - Jama Rs.'+tP+'</small></span><b style="color:'+col+'">Baki: Rs.'+baki+'</b></div>';
+  });
+  allBox.innerHTML=allHtml||'Koi Khata Nathi';
+  if(!q){ box.innerHTML='<p>Upar Naam Lakho Etle Khata Dekhase!</p>'; return; }
+  var list2=all.filter(function(x){ return x.name_l===q; });
+  if(list2.length===0){ box.innerHTML='<p style="color:red">Khata Nathi!</p>'; return; }
+  list2.sort(function(a,b){ return (b.date+b.time).localeCompare(a.date+a.time); });
+  var tU2=0,tP2=0;
+  list2.forEach(function(x){ if(x.type==='udhaar'){ tU2+=Number(x.amt); } else { tP2+=Number(x.amt); } });
+  var baki2=tU2-tP2;
+  var h='<div style="display:flex;gap:8px;margin:10px 0">'
+    +'<div style="flex:1;background:#fee2e2;padding:10px;border-radius:10px;text-align:center"><small>KUL UDHAAR</small><br><b>Rs.'+tU2+'</b></div>'
+    +'<div style="flex:1;background:#dcfce7;padding:10px;border-radius:10px;text-align:center"><small>KUL JAMA</small><br><b>Rs.'+tP2+'</b></div>'
+    +'<div style="flex:1;background:#fef3c7;padding:10px;border-radius:10px;text-align:center"><small>BAKI</small><br><b>Rs.'+baki2+'</b></div></div>';
+  list2.forEach(function(x){
+    var realIdx=all.indexOf(x);
+    var label=x.type==='udhaar'?'Udhaar':'Jama';
+    var amtText=x.type==='udhaar'?'+ Rs.'+x.amt:'- Rs.'+x.amt;
+    var amtColor=x.type==='udhaar'?'red':'green';
+    h+='<div class="item"><span>'+label+' - '+x.item+'<br><small>'+x.date+' '+x.time+'</small></span><span style="text-align:right"><b style="color:'+amtColor+'">'+amtText+'</b><br><button onclick="delUdhaar('+realIdx+')" style="width:auto;padding:3px 8px;background:#ef4444;font-size:11px;margin-top:4px">Delete</button></span></div>';
+  });
+  box.innerHTML=h;
+}
+function delUdhaar(i){
+  if(!confirm('Delete Karvi Che?')){ return; }
+  var all=JSON.parse(localStorage.getItem(getUserKey('udhaar'))||'[]');
+  all.splice(i,1);
+  localStorage.setItem(getUserKey('udhaar'),JSON.stringify(all));
+  showKhata();
+}
+// COPY-2 END
+// ===== PAGAR + HAJRI - AUTOMATIC =====
+function addStaff(){
+  var name=document.getElementById('nokar_name').value.trim();
+  var sal=Number(document.getElementById('nokar_pagar').value);
+  if(!name){ alert('Staff nu Naam Lakho!'); return; }
+  if(!sal){ alert('Monthly Salary Lakho!'); return; }
+  var all=JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  var ex=all.find(function(x){ return x.name_l===name.toLowerCase(); });
+  if(ex){ ex.salary=sal; } else { all.push({name:name,name_l:name.toLowerCase(),salary:sal}); }
+  localStorage.setItem(getUserKey('pagar_staff'),JSON.stringify(all));
+  document.getElementById('nokar_name').value=''; document.getElementById('nokar_pagar').value='';
+  showPagar(); alert(name+' Add Thai Gayo! Salary Rs.'+sal);
+}
+function addAttendance(){
+  var name=document.getElementById('att_staff').value.trim();
+  var st=document.getElementById('att_status').value;
+  var date=document.getElementById('att_date').value;
+  var time=document.getElementById('att_time').value;
+  if(!date){ date=new Date().toISOString().split('T')[0]; }
+  if(!time){ time=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!name){ alert('Staff nu Naam Lakho!'); return; }
+  var all=JSON.parse(localStorage.getItem(getUserKey('pagar_att'))||'[]');
+  all=all.filter(function(x){ return !(x.name_l===name.toLowerCase() && x.date===date); });
+  all.push({name:name,name_l:name.toLowerCase(),status:st,date:date,time:time});
+  localStorage.setItem(getUserKey('pagar_att'),JSON.stringify(all));
+  document.getElementById('att_staff').value='';
+  showPagar(); alert(name+' - '+st+' - '+date+' '+time);
+}
+function addUpad(){
+  var name=document.getElementById('upad_name').value.trim();
+  var amt=Number(document.getElementById('upad_amt').value);
+  var date=document.getElementById('upad_date').value;
+  var time=document.getElementById('upad_time').value;
+  if(!date){ date=new Date().toISOString().split('T')[0]; }
+  if(!time){ time=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!name){ alert('Staff nu Naam Lakho!'); return; }
+  if(!amt){ alert('Ketla Upad Aapya Lakho!'); return; }
+  var all=JSON.parse(localStorage.getItem(getUserKey('pagar_upad'))||'[]');
+  all.push({name:name,name_l:name.toLowerCase(),amt:amt,date:date,time:time,type:'upad'});
+  localStorage.setItem(getUserKey('pagar_upad'),JSON.stringify(all));
+  pushHisabJavak('👷 Upad - ' + name, amt, date, time);
+  document.getElementById('upad_amt').value='';
+  // ===== AUTO JAVAK - UPAD =====
+function pushHisabJavak(desc, amt, date, time){
+  try{
+    var key = (typeof getUserKey==='function') ? getUserKey('avak') : 'avak';
+    var all = JSON.parse(localStorage.getItem(key)||'[]');
+    // Duplicate Rokva
+    var dup = all.some(function(x){ return x.fromStaff && x.d===desc && x.a===amt && x.date===date; });
+    if(!dup){
+      all.push({m: date.slice(0,7), t:'expense', d:desc, a:amt, note:'Staff Pagar Thi Auto', date:date, time:time, fromStaff:true});
+      localStorage.setItem(key, JSON.stringify(all));
+      // Juno key pan hoy to - tya pan update karo - Hisab tab juna key thi chalse to
+      try{ localStorage.setItem('avak', JSON.stringify(all)); }catch(e){}
+      if(typeof showAvak==='function') showAvak();
+    }
+  }catch(e){ console.log(e); }
+}
+  showPagar(); alert(name+' ne Rs.'+amt+' Upad Aapyo! Pagar mathi Katase!');
+}
+function addPagarPaid(){
+  var name=document.getElementById('pay_name').value.trim();
+  var amt=Number(document.getElementById('pay_amt').value);
+  var date=document.getElementById('pay_date').value;
+  var time=document.getElementById('pay_time').value;
+  if(!date){ date=new Date().toISOString().split('T')[0]; }
+  if(!time){ time=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!name){ alert('Staff nu Naam Lakho!'); return; }
+  if(!amt){ alert('Ketla Pagar Aapya Lakho!'); return; }
+  var all=JSON.parse(localStorage.getItem(getUserKey('pagar_upad'))||'[]');
+  all.push({name:name,name_l:name.toLowerCase(),amt:amt,date:date,time:time,type:'paid'});
+  localStorage.setItem(getUserKey('pagar_upad'),JSON.stringify(all));
+  document.getElementById('pay_amt').value='';
+  showPagar(); alert(name+' ne Rs.'+amt+' Pagar Aapyo! '+date+' '+time);
+}
+function showPagar(){
+  var staff=JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  var att=JSON.parse(localStorage.getItem(getUserKey('pagar_att'))||'[]');
+  var upad=JSON.parse(localStorage.getItem(getUserKey('pagar_upad'))||'[]');
+  var box=document.getElementById('pagar_list');
+  var attBox=document.getElementById('att_list');
+  if(!box) return;
+  if(staff.length===0){ box.innerHTML='Have Sudhi Koi Staff Nathi'; attBox.innerHTML=''; return; }
+  var h='';
+  staff.forEach(function(s){
+    var perDay=s.salary/30;
+    var myAtt=att.filter(function(x){ return x.name_l===s.name_l; });
+    var present=myAtt.filter(function(x){ return x.status==='Present'; }).length;
+    var absent=myAtt.filter(function(x){ return x.status==='Absent'; }).length;
+    var half=myAtt.filter(function(x){ return x.status==='Half'; }).length;
+    var raja=myAtt.filter(function(x){ return x.status==='Raja'; }).length;
+    var cut=(absent*perDay)+(raja*perDay)+(half*perDay*0.5);
+    var myUpad=upad.filter(function(x){ return x.name_l===s.name_l && x.type==='upad'; });
+    var myPaid=upad.filter(function(x){ return x.name_l===s.name_l && x.type==='paid'; });
+    var totalUpad=0,totalPaid=0;
+    myUpad.forEach(function(x){ totalUpad+=Number(x.amt); });
+    myPaid.forEach(function(x){ totalPaid+=Number(x.amt); });
+    var baki=s.salary - cut - totalUpad - totalPaid;
+    h+='<div class="item" style="display:block"><b>👷 '+s.name+' - Salary Rs.'+s.salary+'</b><br>'
+    +'<small>✅ Present: '+present+' | ❌ Absent: '+absent+' | 🏖️ Raja: '+raja+' | 🌓 Half: '+half+'</small><br>'
+    +'<small>1 Divas: Rs.'+Math.round(perDay)+' | Hajri Kat: Rs.'+Math.round(cut)+' | Upad: Rs.'+totalUpad+' | Pagar Aapyo: Rs.'+totalPaid+'</small><br>'
+    +'<b style="color:'+(baki>0?'red':'green')+'">🔴 BAKI AAPVANO: Rs.'+Math.round(baki)+'</b><br>'
+    +'<small>Upad List: '+myUpad.map(function(x){ return 'Rs.'+x.amt+' ('+x.date+' '+x.time+')'; }).join(', ')+'</small></div>';
+  });
+  box.innerHTML=h;
+  var ah='';
+  var sorted=[...att].sort(function(a,b){ return (b.date+b.time).localeCompare(a.date+a.time); });
+  sorted.slice(0,20).forEach(function(x){
+    var label=x.status==='Present'?'✅ Present':x.status==='Absent'?'❌ Absent':x.status==='Half'?'🌓 Half':'🏖️ Raja';
+    ah+='<div class="item"><span>'+label+' - '+x.name+'<br><small>'+x.date+' '+x.time+'</small></span></div>';
+  });
+  attBox.innerHTML=ah||'Koi Hajri Nathi';
+}
+function delPagarStaff(name_l){
+  if(!confirm('Staff Delete Karvo Che?')) return;
+  var staff=JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  staff=staff.filter(function(x){ return x.name_l!==name_l; });
+  localStorage.setItem(getUserKey('pagar_staff'),JSON.stringify(staff));
+  showPagar();
+  
+}
+// ===== GOOGLE JEVU SUGGESTION + FULL HISTORY =====
+function staffSearchSuggest(){
+  var q = document.getElementById('staffSearch').value.trim().toLowerCase();
+  var box = document.getElementById('staffSuggestBox');
+  var staff = JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  if(!q){ box.style.display='none'; return; }
+  var match = staff.filter(function(s){ return s.name.toLowerCase().includes(q); });
+  if(match.length==0){ box.style.display='none'; return; }
+  var h='';
+  match.forEach(function(s){
+    h += '<div onclick="pickStaffName(\''+s.name.replace(/'/g,"")+'\')" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;">👷 <b>'+s.name+'</b> <small>- Salary Rs.'+s.salary+'</small></div>';
+  });
+  box.innerHTML = h;
+  box.style.display = 'block';
+}
+function pickStaffName(n){
+  document.getElementById('staffSearch').value = n;
+  document.getElementById('staffSuggestBox').style.display='none';
+  // Badha Input Ma Pan Naam Bhari Do - Time Bachse!
+  ['att_staff','upad_name','pay_name'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=n; });
+  showStaffHistory(n);
+}
+
+function showStaffHistory(name){
+  name = (name||'').trim();
+  if(!name){ alert('Pela Staff Nu Naam Lakho!'); return; }
+  var staff = JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  var att = JSON.parse(localStorage.getItem(getUserKey('pagar_att'))||'[]');
+  var upad = JSON.parse(localStorage.getItem(getUserKey('pagar_upad'))||'[]');
+  var s = staff.find(function(x){ return x.name.toLowerCase()===name.toLowerCase(); });
+  var box = document.getElementById('staffHistoryBox');
+  if(!s){ box.innerHTML = '<p>❌ '+name+' - Staff List Ma Nathi. Pela Staff Add Karo.</p>'; return; }
+  var nl = s.name_l;
+  var myAtt = att.filter(function(x){ return x.name_l===nl; });
+  var present = myAtt.filter(function(x){ return x.status==='Present'; }).length;
+  var absent = myAtt.filter(function(x){ return x.status==='Absent'; }).length;
+  var half = myAtt.filter(function(x){ return x.status==='Half'; }).length;
+  var raja = myAtt.filter(function(x){ return x.status==='Raja'; }).length;
+  var perDay = s.salary/30;
+  var cut = (absent*perDay)+(raja*perDay)+(half*perDay*0.5);
+  var myUpad = upad.filter(function(x){ return x.name_l===nl && x.type==='upad'; });
+  var myPaid = upad.filter(function(x){ return x.name_l===nl && x.type==='paid'; });
+  var tUpad=0, tPaid=0;
+  myUpad.forEach(function(x){ tUpad+=Number(x.amt); });
+  myPaid.forEach(function(x){ tPaid+=Number(x.amt); });
+  var baki = s.salary - cut - tUpad - tPaid;
+
+  var h = '<div style="background:#f8f8ff; padding:12px; border-radius:12px; border:1px solid #7c3aed;">'
+    + '<h3>👷 '+s.name+' - FULL HISTORY</h3>'
+    + '<p><b>Monthly Salary:</b> Rs.'+s.salary+' | <b>1 Divas:</b> Rs.'+Math.round(perDay)+'</p>'
+    + '<p>✅ Present: '+present+' | ❌ Absent: '+absent+' | 🌓 Half: '+half+' | 🏖️ Raja: '+raja+'</p>'
+    + '<p>✂️ Hajri Kat: Rs.'+Math.round(cut)+' | 💰 Upad: Rs.'+tUpad+' | 💸 Pagar Aapyo: Rs.'+tPaid+'</p>'
+    + '<h3 style="color:'+(baki>0?'red':'green')+'">🔴 BAKI AAPVANO: Rs.'+Math.round(baki)+'</h3>'
+    + '<p><b>Upad History:</b><br>'+ (myUpad.length ? myUpad.map(function(x){ return 'Rs.'+x.amt+' - '+x.date+' '+x.time; }).join('<br>') : 'Koi Upad Nahi') +'</p>'
+    + '<p><b>Pagar Paid History:</b><br>'+ (myPaid.length ? myPaid.map(function(x){ return 'Rs.'+x.amt+' - '+x.date+' '+x.time; }).join('<br>') : 'Have Pagar Nathi Aapyo') +'</p>'
+    + '<p><b>Chhelli 5 Hajri:</b><br>'+ ([...myAtt].reverse().slice(0,5).map(function(x){ return x.status+' - '+x.date; }).join('<br>') || 'Nathi') +'</p>'
+    + '<button onclick="shareStaffHistory(\''+s.name+'\')" style="background:#25D366; width:100%; padding:10px; color:white; border:none; border-radius:8px;">📲 WhatsApp Par History Moklo</button>'
+    + '</div>';
+  box.innerHTML = h;
+}
+
+// 🆕 ADVANCE: Staff History WhatsApp Par
+function shareStaffHistory(name){
+  var staff = JSON.parse(localStorage.getItem(getUserKey('pagar_staff'))||'[]');
+  var s = staff.find(function(x){ return x.name===name; });
+  if(!s) return;
+  var msg = '👷 *Staff History - '+s.name+'*\n------------------------\nSalary: Rs.'+s.salary+'\nBaki Aapvano: Check App Ma\nMY SHOP PRO';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+
+// Bahar Click Karo To Suggestion Bandh Thai Jase
+document.addEventListener('click', function(e){
+  var box = document.getElementById('staffSuggestBox');
+  if(box && !e.target.closest('#staffSearch')) box.style.display='none';
+});
+// ===== HISAB - PERFECT + ADVANCE - 1 VAAR J =====
+let editAvakIndex = -1;
+
+function addAvak(){
+  let d = document.getElementById('avak_desc').value.trim();
+  let a = Number(document.getElementById('avak_amt').value);
+  let note = document.getElementById('avak_note').value;
+  let type = document.getElementById('type').value; // Khali income / expense
+  let month = document.getElementById('month').value;
+  let date = document.getElementById('avak_date').value || new Date().toISOString().split('T')[0];
+  let time = document.getElementById('avak_time').value || new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  if(!d || !a) return alert('Pela Description ane Amount Lakho!');
+  let all = JSON.parse(localStorage.getItem('avak')||'[]');
+  all.push({m:month, t:type, d:d, a:a, note:note, date:date, time:time, fromStaff:false});
+  localStorage.setItem('avak', JSON.stringify(all));
+  document.getElementById('avak_desc').value=''; document.getElementById('avak_amt').value='';
+  document.getElementById('hisab_date').value = date;
+  showAvak();
+  alert('Save Thai Gayu! ✅');
+}
+// ✅ 11. CUSTOMER FULL HISTORY - PER USER
+function searchHistory(){
+  let q = document.getElementById('histSearch').value.trim().toLowerCase();
+  let box = document.getElementById('histList');
+  if(!q){ box.innerHTML = '<p style="color:#64748b">👆 Upar Customer nu Naam Lakho Etle Aakhu History Dekhase!</p>'; return; }
+
+  // Badha Data - Per User
+  let udhaar = JSON.parse(localStorage.getItem(getUserKey('udhaar'))||'[]');
+  let avak = JSON.parse(localStorage.getItem(getUserKey('avak'))||'[]');
+  let pagar = JSON.parse(localStorage.getItem(getUserKey('pagar'))||'[]');
+  let stock = JSON.parse(localStorage.getItem(getUserKey('stock'))||'[]');
+
+  let html = '';
+  let totalUdhaar = 0, totalAvak = 0, totalPagar = 0;
+
+  // 1. UDHAAR / KHATA ma Shodho
+  
+
+  // 2. AVAK / JAVAK ma Shodho
+  let aList = avak.filter(x => (x.d||'').toLowerCase().includes(q) || (x.note||'').toLowerCase().includes(q));
+  if(aList.length){
+    html += '<h3 style="margin-top:10px">💰 Avak / Javak - '+aList.length+' Entry</h3>';
+    aList.forEach(x=>{
+      if(x.t=='income') totalAvak += Number(x.a||0);
+      html += '<div class="item"><span>'+(x.t=='income'?'🟢':'🔴')+' '+x.d+'<br><small>📅 '+x.date+' ⏰ '+x.time+'</small><br><small>'+(x.note||'')+'</small></span><b>Rs.'+x.a+'</b></div>';
+    });
+  }
+
+  // 3. PAGAR ma Shodho
+  let pList = pagar.filter(x => (x.name||x.worker||x.d||'').toLowerCase().includes(q));
+  if(pList.length){
+    html += '<h3 style="margin-top:10px">👷 Pagar - '+pList.length+' Entry</h3>';
+    pList.forEach(x=>{
+      let amt = Number(x.a||x.amount||x.pagar||0);
+      totalPagar += amt;
+      html += '<div class="item"><span>👷 '+(x.name||x.worker||x.d||'')+'<br><small>📅 '+(x.date||'')+'</small></span><b>Rs.'+amt+'</b></div>';
+    });
+  }
+
+  if(!html){
+    box.innerHTML = '<p style="color:red">❌ "'+q+'" Naam thi Koi History Nathi!</p>';
+    return;
+  }
+
+  // Upar Total Box
+  let totalHtml = '<div style="display:flex;gap:8px;margin-top:10px">'
+    + '<div style="flex:1;background:#fef3c7;padding:10px;border-radius:10px;text-align:center"><small>💳 UDHAAR TOTAL</small><br><b>Rs.'+totalUdhaar+'</b></div>'
+    + '<div style="flex:1;background:#dcfce7;padding:10px;border-radius:10px;text-align:center"><small>💰 AVAK TOTAL</small><br><b>Rs.'+totalAvak+'</b></div>'
+    + '<div style="flex:1;background:#dbeafe;padding:10px;border-radius:10px;text-align:center"><small>👷 PAGAR TOTAL</small><br><b>Rs.'+totalPagar+'</b></div>'
+    + '</div>';
+
+  box.innerHTML = totalHtml + html;
+}
+function save(){localStorage.setItem('avak',JSON.stringify(avak));localStorage.setItem('khata',JSON.stringify(khata));localStorage.setItem('pagar',JSON.stringify(pagar));localStorage.setItem('stock',JSON.stringify(stock));localStorage.setItem('profits',JSON.stringify(profits));show();}
+function showTab(id,btn){document.querySelectorAll('.box').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(e=>e.classList.remove('active'));if(btn)btn.classList.add('active');}
+function globalSearch(){let q=document.getElementById('globalSearch').value.toLowerCase();if(!q){show();return}let all=[...avak.map(x=>x.d),...khata.map(x=>x.n),...stock.map(x=>x.n)];let found=all.filter(x=>x.toLowerCase().includes(q));alert('Found: '+found.join(', '))}
+
+// ========== BILL ==========
+function addBill(){let c=document.getElementById('bill_cust').value;let item=document.getElementById('bill_item').value;let p=Number(document.getElementById('bill_price').value);let q=Number(document.getElementById('bill_qty').value);let disc=Number(document.getElementById('bill_discount').value||0);if(!c||!item||!p||!q)return alert('Fill Bill Details');document.getElementById('bill_cust_show').innerText='Customer: '+c;document.getElementById('bill_date_show').innerText='Date: '+new Date().toLocaleDateString('en-IN');let tot=p*q;bill.push({item,p,q,tot});billSub+=tot;billDisc=disc;billTotal=billSub-billDisc;let h='';bill.forEach(x=>{h+='<div class=item><span>'+x.item+' x '+x.q+' @ Rs.'+x.p+'</span><b>Rs.'+x.tot+'</b></div>'});document.getElementById('bill_list').innerHTML=h;document.getElementById('bill_sub').innerText='Rs.'+billSub;document.getElementById('bill_disc_show').innerText='Rs.'+billDisc;document.getElementById('bill_total').innerText='Total Bill: Rs.'+billTotal;document.getElementById('bill_item').value='';document.getElementById('bill_price').value='';document.getElementById('bill_qty').value='';}
+function newBill(){bill=[];billTotal=0;billSub=0;billDisc=0;document.getElementById('bill_list').innerHTML='';document.getElementById('bill_total').innerText='Total Bill: Rs.0';document.getElementById('bill_cust').value='';}
+function sendBillWhatsApp(){let c=document.getElementById('bill_cust').value;let ph=document.getElementById('bill_phone').value;let msg='Hello '+c+', Your Bill at MY SHOP PRO is Rs.'+billTotal+'. Thank You!';window.open('https://wa.me/91'+ph+'?text='+encodeURIComponent(msg),'_blank');}
+
+// ========== HISAB ==========
+function addAvak(){let m=document.getElementById('month').value;let t=document.getElementById('type').value;let d=document.getElementById('avak_desc').value;let a=Number(document.getElementById('avak_amt').value);let note=document.getElementById('avak_note').value;if(!d||!a)return alert('Fill all');avak.push({m,t,d,a,note,date:new Date().toLocaleDateString('en-IN')});save();document.getElementById('avak_desc').value='';document.getElementById('avak_amt').value='';document.getElementById('avak_note').value='';}
+function deleteAvak(i){avak.splice(i,1);save();}
+function addKhata(){let n=document.getElementById('khata_name').value;let a=Number(document.getElementById('khata_amt').value);let paid=Number(document.getElementById('khata_paid').value||0);if(!n||!a)return alert('Fill');khata.push({n,a,baki:a-paid,phone:document.getElementById('khata_phone').value});save();document.getElementById('khata_name').value='';document.getElementById('khata_amt').value='';document.getElementById('khata_paid').value='';}
+function sendWhatsApp(){let n=document.getElementById('khata_name').value;let a=document.getElementById('khata_amt').value;let ph=document.getElementById('khata_phone').value;if(!n||!a)return alert('Enter Name and Amount');let msg='Hello '+n+', Your Pending Credit at MY SHOP PRO is Rs.'+a+'. Please Pay Soon. Thank You!';let url=ph?'https://wa.me/91'+ph+'?text='+encodeURIComponent(msg):'https://wa.me/?text='+encodeURIComponent(msg);window.open(url,'_blank');}
+function addPagar(){let n=document.getElementById('nokar_name').value;let p=Number(document.getElementById('nokar_pagar').value);let adv=Number(document.getElementById('nokar_adv').value||0);let days=Number(document.getElementById('nokar_days').value||30);let leave=Number(document.getElementById('nokar_leave').value||0);if(!n||!p)return alert('Fill');let perDay=p/30;let total=perDay*days;let baki=total-adv;pagar.push({n,p,adv,days,leave,baki:Math.round(baki)});save();}
+function addStock(){let n=document.getElementById('stock_name').value;let q=Number(document.getElementById('stock_qty').value);let bp=Number(document.getElementById('stock_price').value||0);let sp=Number(document.getElementById('stock_sell').value||0);let min=Number(document.getElementById('stock_min').value||5);if(!n||!q)return alert('Fill');stock.push({n,q,bp,sp,min});save();document.getElementById('stock_name').value='';document.getElementById('stock_qty').value='';}
+function calcProfit(){let b=Number(document.getElementById('buy').value);let s=Number(document.getElementById('sell').value);let q=Number(document.getElementById('qty').value);let tr=Number(document.getElementById('transport').value||0);let n=document.getElementById('sell_name').value;if(!b||!s||!q)return alert('Fill Buy, Sell, Qty');let profit=(s-b)*q-tr;profits.push({n,profit});save();document.getElementById('profit_result').innerText=n+' - 1 Piece Profit Rs.'+(s-b)+' | Total Profit After Expense Rs.'+profit;}
+function clearAll(){if(confirm('Delete All Data?')){localStorage.clear();avak=[];khata=[];pagar=[];stock=[];profits=[];bill=[];billTotal=0;show();}}
+function exportData(){let data=JSON.stringify({avak,khata,pagar,stock,profits});let blob=new Blob([data],{type:'text/plain'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='myshop_backup.txt';a.click();}
+function downloadBackup(){exportData();alert('Backup Downloaded!')}
+function saveSettings(){localStorage.setItem('shopName',document.getElementById('shopName').value);alert('Settings Saved!')}
+
+// ========== SHOW ALL ==========
+function show(){
+let m=document.getElementById('month')?document.getElementById('month').value:'2026-11';
+let inc=0,exp=0;let h='';avak.forEach((x,i)=>{if(x.m==m||!x.m){if(x.t=='income')inc+=x.a;else exp+=x.a;h+='<div class=item><span>'+(x.t=='income'?'🟢 Income':'🔴 Expense')+' - '+x.d+'<small>'+(x.date||'')+' '+(x.note||'')+'</small></span><b>Rs.'+x.a+' <button style="width:auto;padding:4px 8px;background:#e74c3c;font-size:12px" onclick="deleteAvak('+i+')">X</button></b></div>'}});if(document.getElementById('avak_list'))document.getElementById('avak_list').innerHTML=h;
+if(document.getElementById('month_total'))document.getElementById('month_total').innerText='This Month: Income Rs.'+inc+' | Expense Rs.'+exp+' | Profit Rs.'+(inc-exp);
+if(document.getElementById('dInc'))document.getElementById('dInc').innerText='Rs.'+inc;
+if(document.getElementById('dExp'))document.getElementById('dExp').innerText='Rs.'+exp;
+let max=Math.max(inc,exp,1);if(document.getElementById('graph'))document.getElementById('graph').innerHTML='<div class=bar style="width:'+(inc/max*100)+'%;background:green">Income Rs.'+inc+'</div><div class=bar style="width:'+(exp/max*100)+'%;background:red">Expense Rs.'+exp+'</div><div class=bar style="width:100%;background:#1a5c2a">Profit Rs.'+(inc-exp)+'</div>';
+if(document.getElementById('report_total'))document.getElementById('report_total').innerText='Income Rs.'+inc+' | Expense Rs.'+exp+' | Profit Rs.'+(inc-exp);
+if(document.getElementById('report_list'))document.getElementById('report_list').innerHTML=h;
+let kTotal=0;h='';khata.forEach(x=>{kTotal+=x.baki||x.a;h+='<div class=item><span>👤 '+x.n+'<small>Phone: '+(x.phone||'-')+'</small></span><b style=color:red>Rs.'+(x.baki||x.a)+'</b></div>'});if(document.getElementById('khata_list'))document.getElementById('khata_list').innerHTML=h;
+if(document.getElementById('khata_total'))document.getElementById('khata_total').innerText='Total Credit: Rs.'+kTotal;
+if(document.getElementById('dUdhar'))document.getElementById('dUdhar').innerText='Rs.'+kTotal;
+h='';pagar.forEach(x=>{h+='<div class=item><span>👷 '+x.n+'<small>Days: '+(x.days||30)+' Leave: '+(x.leave||0)+'</small></span><b>Salary Rs.'+x.p+' - Adv Rs.'+x.adv+' = Balance Rs.'+x.baki+'</b></div>'});if(document.getElementById('pagar_list'))document.getElementById('pagar_list').innerHTML=h;
+h='';let stockCount=0;stock.forEach(x=>{stockCount+=x.q;let alertTxt=x.q<=x.min?'<span class=low> ⚠️ LOW STOCK!</span>':'';h+='<div class=item><span>📦 '+x.n+alertTxt+'<small>Buy Rs.'+x.bp+' Sell Rs.'+x.sp+' Profit Rs.'+(x.sp-x.bp)+'</small></span><b>'+x.q+' Qty</b></div>'});if(document.getElementById('stock_list'))document.getElementById('stock_list').innerHTML=h;
+if(document.getElementById('dStock'))document.getElementById('dStock').innerText=stockCount+' Qty';
+h='';profits.forEach(x=>{h+='<div class=item><span>🧮 '+x.n+'</span><b>Profit Rs.'+x.profit+'</b></div>'});if(document.getElementById('profit_history'))document.getElementById('profit_history').innerHTML=h;
+}// ===== AVAK JAVAK WALA FUNCTION - TE J RITE =====
+function addAvak(){
+  var d = document.getElementById('avak_desc').value;
+  var a = Number(document.getElementById('avak_amt').value);
+  var note = document.getElementById('avak_note').value;
+  var type = document.getElementById('type').value;
+  var month = document.getElementById('month').value;
+  var date = document.getElementById('avak_date').value;
+  var time = document.getElementById('avak_time').value;
+  if(!date){ date = new Date().toISOString().split('T')[0]; }
+  if(!time){ time = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!d || !a){ alert('Pela Description ane Amount Lakho!'); return; }
+  var all = JSON.parse(localStorage.getItem(getUserKey('avak')) || '[]');
+  all.push({m:month, t:type, d:d, a:a, note:note, date:date, time:time});
+  localStorage.setItem(getUserKey('avak'), JSON.stringify(all));
+  document.getElementById('avak_desc').value = '';
+  document.getElementById('avak_amt').value = '';
+  document.getElementById('hisab_date').value = date;
+  showAvak();
+}
+
+function showAvak(){
+  var all = JSON.parse(localStorage.getItem(getUserKey('avak')) || '[]');
+  var month = document.getElementById('month').value;
+  var selDate = document.getElementById('hisab_date').value || new Date().toISOString().split('T')[0];
+  if(!document.getElementById('hisab_date').value){ document.getElementById('hisab_date').value = selDate; }
+  var mInc = 0, mExp = 0;
+  all.filter(function(x){ return x.m == month; }).forEach(function(x){ if(x.t == 'income'){ mInc += x.a; } else { mExp += x.a; } });
+  document.getElementById('month_total').innerText = 'Rs.' + (mInc - mExp);
+  var dates = [];
+  all.filter(function(x){ return x.m == month; }).forEach(function(x){ if(dates.indexOf(x.date) === -1){ dates.push(x.date); } });
+  dates.sort();
+  var carry = 0, dayHtml = '', todayNet = 0, todayInc = 0, todayExp = 0, yestNet = 0;
+  dates.forEach(function(dt){
+    var dInc = 0, dExp = 0;
+    all.filter(function(x){ return x.date == dt; }).forEach(function(x){ if(x.t == 'income'){ dInc += x.a; } else { dExp += x.a; } });
+    var opening = carry;
+    var closing = opening + dInc - dExp;
+    carry = closing;
+    if(dt == selDate){ todayNet = closing; todayInc = dInc; todayExp = dExp; }
+    var sel = new Date(selDate); sel.setDate(sel.getDate() - 1);
+    var yestStr = sel.toISOString().split('T')[0];
+    if(dt == yestStr){ yestNet = closing; }
+    dayHtml += '<div class="item"><span><b>' + dt + '</b><br><small>Opening: Rs.' + opening + ' + Avak Rs.' + dInc + ' - Javak Rs.' + dExp + '</small></span><b>Closing: Rs.' + closing + '</b></div>';
+  });
+  document.getElementById('daywise_list').innerHTML = dayHtml || 'Koi Entry Nathi';
+  document.getElementById('today_total').innerText = 'Rs.' + todayNet;
+  document.getElementById('yesterday_total').innerText = 'Rs.' + yestNet;
+  var list = all.filter(function(x){ return x.date == selDate; });
+  var box = document.getElementById('avak_list');
+  if(list.length == 0){ box.innerHTML = 'Aa Divase Koi Entry Nathi'; return; }
+  var h = '';
+  list.forEach(function(x){
+    var idx = all.indexOf(x);
+    h += '<div class="item"><span>' + (x.t == 'income' ? '🟢' : '🔴') + ' ' + x.d + '<br><small>' + x.date + ' ' + x.time + '</small></span><b>Rs.' + x.a + ' <button onclick="delAvak(' + idx + ')" style="width:auto;padding:4px 8px;background:#ef4444;font-size:12px">Delete</button></b></div>';
+  });
+  box.innerHTML = h;
+}
+
+// ===== ✅ AHYA J - TE J JAGYA E - AVAK NI PACHI J UDHHAAR - BEEJI JAGYA E NAI =====
+function addUdhaar(){
+  var name = document.getElementById('u_name').value.trim();
+  var item = document.getElementById('u_item').value.trim();
+  var amt = Number(document.getElementById('u_amt').value);
+  var date = document.getElementById('u_date').value;
+  var time = document.getElementById('u_time').value;
+  if(!date){ date = new Date().toISOString().split('T')[0]; }
+  if(!time){ time = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!name){ alert('Pela Customer nu Naam Lakho!'); return; }
+  if(!item){ alert('Shu Aapyu E Lakho!'); return; }
+  if(!amt){ alert('Ketla Rupiya Lakho!'); return; }
+  var all = JSON.parse(localStorage.getItem(getUserKey('udhaar')) || '[]');
+  all.push({name:name, name_l:name.toLowerCase(), type:'udhaar', item:item, amt:amt, date:date, time:time});
+  localStorage.setItem(getUserKey('udhaar'), JSON.stringify(all));
+  document.getElementById('u_item').value = '';
+  document.getElementById('u_amt').value = '';
+  document.getElementById('khata_search').value = name;
+  showKhata();
+  alert(name + ' na Khata ma Add Thai Gayu! Rs.' + amt);
+}
+
+function addPayment(){
+  var name = document.getElementById('p_name').value.trim();
+  var amt = Number(document.getElementById('p_amt').value);
+  var date = document.getElementById('p_date').value;
+  var time = document.getElementById('p_time').value;
+  if(!date){ date = new Date().toISOString().split('T')[0]; }
+  if(!time){ time = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }
+  if(!name){ alert('Pela Customer nu Naam Lakho!'); return; }
+  if(!amt){ alert('Ketla Paisa Aavya E Lakho!'); return; }
+  var all = JSON.parse(localStorage.getItem(getUserKey('udhaar')) || '[]');
+  all.push({name:name, name_l:name.toLowerCase(), type:'payment', item:'Paisa Jama - Paid', amt:amt, date:date, time:time});
+  localStorage.setItem(getUserKey('udhaar'), JSON.stringify(all));
+  document.getElementById('p_amt').value = '';
+  document.getElementById('khata_search').value = name;
+  showKhata();
+  alert(name + ' na Khata mathi Rs.' + amt + ' Baad Thai Gaya!');
+}
+
+
+show();
+</script><!-- ===== PART 2 START - NEW FEATURES ===== -->
+<div class="box">
+<h2>💳 9. UPI Payment - Customer Paisa Mokalse</h2>
+<input id="upiId" placeholder="Tari UPI ID - Ex: 9876543210@okhdfc">
+<input id="upiAmt" type="number" placeholder="Amount - Ex: 1000">
+<input id="upiName" placeholder="Customer Name - Ex: Ramesh Bhai">
+<button class="wgreen" onclick="makeUPI()">Generate UPI Payment Link</button>
+<p class="total" id="upiLinkShow">UPI Link Aya Dekhase</p>
+<button class="blue" onclick="copyUPI()">Copy UPI Link</button>
+</div>
+
+<div class="box">
+<h2>⏰ 10. Due Date Reminder - Udhar Vasul Karva</h2>
+<input id="dueName" placeholder="Customer Name">
+<input id="dueAmt" type="number" placeholder="Baki Amount">
+<input id="dueDate" type="date">
+<button class="red" onclick="addDue()">Add Reminder</button>
+<div id="dueList"></div>
+</div>
+
+<div class="box">
+<h2>📜 11. Customer Full History</h2>
+<input id="histSearch" oninput="searchHistory()" placeholder="Customer Name Lakho - Ex: Ramesh">
+<div id="histList"></div>
+</div>
+
+<div class="box">
+<h2>🌙 12. Dark Mode / Light Mode</h2>
+<button class="black" onclick="toggleDark()">Dark Mode ON / OFF</button>
+</div>
+
+<div class="box">
+<h2>🗑️ 13. Delete / Edit - Koi Pan Entry Delete Karo</h2>
+<p style="font-size:14px">Have darek Entry ni baju ma <b>X</b> Button avi gayu che. X dabavo etle Entry Delete thai jase.</p>
+<button class="red" onclick="deleteKhataLast()">Last Khata Delete Karo</button>
+<button class="orange" onclick="deleteStockLast()">Last Stock Delete Karo</button>
+<button class="blue" onclick="deletePagarLast()">Last Pagar Delete Karo</button>
+</div>
+
+<script>
+// ===== PART 2 JAVASCRIPT =====
+let dues = JSON.parse(localStorage.getItem('dues')||'[]');
+
+function makeUPI(){
+let upi = document.getElementById('upiId').value;
+let amt = document.getElementById('upiAmt').value;
+let name = document.getElementById('upiName').value;
+if(!upi || !amt) return alert('UPI ID ane Amount Lakho');
+let link = 'upi://pay?pa='+upi+'&pn='+encodeURIComponent(name)+'&am='+amt+'&cu=INR';
+document.getElementById('upiLinkShow').innerText = link;
+window.myUPILink = link;
+alert('UPI Link Banigayo! Copy Kari ne Customer ne Mokli Do');
+}
+function copyUPI(){
+if(!window.myUPILink) return alert('Pela Generate Karo');
+navigator.clipboard.writeText(window.myUPILink);
+alert('UPI Link Copy Thai Gayo!');
+}
+function addDue(){
+let n = document.getElementById('dueName').value;
+let a = document.getElementById('dueAmt').value;
+let d = document.getElementById('dueDate').value;
+if(!n || !a || !d) return alert('Badhu Lakho');
+dues.push({n,a,d});
+localStorage.setItem('dues', JSON.stringify(dues));
+showDues();
+document.getElementById('dueName').value='';
+document.getElementById('dueAmt').value='';
+}
+function showDues(){
+let h='';
+dues.forEach((x,i)=>{
+h+='<div class=item><span>⏰ '+x.n+' - Date: '+x.d+'</span><b style=color:red>Rs.'+x.a+' <button style="width:auto;padding:4px 8px;background:#25D366;font-size:12px" onclick="remindDue('+i+')">WhatsApp</button> <button style="width:auto;padding:4px 8px;background:#e74c3c;font-size:12px" onclick="deleteDue('+i+')">X</button></b></div>';
+});
+document.getElementById('dueList').innerHTML = h || '<p style=text-align:center;color:#999>No Due Reminder</p>';
+}
+function remindDue(i){
+let x = dues[i];
+let msg = 'Hello '+x.n+', Reminder: Your Due Rs.'+x.a+' is pending on Date '+x.d+'. Please Pay Soon - MY SHOP PRO';
+window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+function deleteDue(i){ dues.splice(i,1); localStorage.setItem('dues', JSON.stringify(dues)); showDues(); }
+function searchHistory(){
+let q = document.getElementById('histSearch').value.toLowerCase();
+let allKhata = JSON.parse(localStorage.getItem('khata')||'[]');
+let allAvak = JSON.parse(localStorage.getItem('avak')||'[]');
+let h='';
+allKhata.forEach(x=>{ if(x.n.toLowerCase().includes(q)) h+='<div class=item><span>📒 Khata - '+x.n+'</span><b>Rs.'+x.a+'</b></div>'; });
+allAvak.forEach(x=>{ if(x.d.toLowerCase().includes(q)) h+='<div class=item><span>💰 Hisab - '+x.d+'</span><b>Rs.'+x.a+'</b></div>'; });
+document.getElementById('histList').innerHTML = h || '<p style=text-align:center;color:#999>Customer Lakho etle History Dekhase</p>';
+}
+function toggleDark(){
+document.body.style.background = document.body.style.background=='black' ? '#eef2f7' : 'black';
+document.body.style.color = document.body.style.color=='white' ? '#222' : 'white';
+alert('Dark Mode Change Thai Gayu!');
+}
+function deleteKhataLast(){
+let k = JSON.parse(localStorage.getItem('khata')||'[]');
+k.pop(); localStorage.setItem('khata', JSON.stringify(k)); show(); alert('Last Khata Delete Thai Gayu');
+}
+function deleteStockLast(){
+let s = JSON.parse(localStorage.getItem('stock')||'[]');
+s.pop(); localStorage.setItem('stock', JSON.stringify(s)); show(); alert('Last Stock Delete Thai Gayu');
+}
+function deletePagarLast(){
+let p = JSON.parse(localStorage.getItem('pagar')||'[]');
+p.pop(); localStorage.setItem('pagar', JSON.stringify(p)); show(); alert('Last Pagar Delete Thai Gayu');
+}
+showDues();
+searchHistory();
+</script>
+<!-- ===== PART 2 END ===== -->
+<!-- ===== PART 3 START - DIRECT SMS + PHOTO + BARCODE + ATTENDANCE ===== -->
+<div class="box">
+    <h2>📩 14. Direct SMS - WhatsApp Jevu j, Pan SMS Ma Jashe</h2>
+    <p style="font-size:14px;color:#555">Customer ne SMS mokalva mate - Number + Message lakho, SMS Button dabavo, Mobile no SMS App khulse, Send dabavo etle Direct SMS jashe!</p>
+    <input id="smsName" placeholder="Customer Name - Ex: Ramesh Bhai">
+    <input id="smsPhone" placeholder="Mobile Number - Ex: 9876543210">
+    <input id="smsAmt" type="number" placeholder="Baki Amount - Ex: 1000">
+    <select id="smsType">
+    <option value="udhar">Udhar Reminder SMS</option>
+    <option value="bill">Bill SMS</option>
+    <option value="payment">Payment Received SMS</option>
+    <option value="thankyou">Thank You SMS</option>
+    <option value="offer">Offer SMS</option>
+    </select>
+    <textarea id="smsMsg" placeholder="SMS Message Aya Auto Avse..."></textarea>
+    <button class="blue" onclick="makeSMS()">SMS Message Banavo</button>
+    <button class="wgreen" onclick="sendDirectSMS()">📩 DIRECT SMS MOKLO</button>
+    <button class="teal" onclick="sendDirectWhatsApp2()">📲 WhatsApp Par Pan Moklo</button>
+    <p style="font-size:12px;color:#999">Note: SMS Button dabso etle tamara Phone no SMS App khulse, tya Send dabvu padse. Aa j Direct SMS ni Rit che.</p>
+    </div>
+    
+    <div class="box">
+    <h2>📸 15. Photo Bill - Bill No Photo Leva / Moklva</h2>
+    <input id="photoCust" placeholder="Customer Name For Photo Bill">
+    <button class="orange" onclick="takePhotoBill()">📸 Photo Bill Banavo</button>
+    <div id="photoBillArea" class="bill">
+    <b id="photoShopName">MY SHOP PRO</b><br>
+    <span>------------------------------</span><br>
+    <span id="photoCustShow">Customer: -</span><br>
+    <span id="photoDateShow">Date: -</span><br>
+    <span>------------------------------</span><br>
+    <div id="photoItems">Items Aya Dekhase</div>
+    <span>------------------------------</span><br>
+    <b id="photoTotal">Total: Rs.0</b><br>
+    <span>Thank You - Visit Again!</span><br>
+    <span>------------------------------</span>
+    </div>
+    <div class="row"><button onclick="window.print()">🖨️ Print / Photo Save</button><button class="wgreen" onclick="sharePhotoBill()">📲 Photo Bill WhatsApp</button></div>
+    </div>
+    
+    <div class="box">
+    <h2>📊 16. Barcode - Maal No Barcode</h2>
+    <input id="barcodeProduct" placeholder="Product Name - Ex: Rice">
+    <input id="barcodePrice" type="number" placeholder="Price - Ex: 55">
+    <button class="black" onclick="makeBarcode()">Barcode Banavo</button>
+    <div id="barcodeArea" style="text-align:center;padding:16px;background:white;border:2px solid #000;border-radius:10px">
+    <p id="barcodeName">Product: -</p>
+    <p style="font-size:32px;letter-spacing:2px">|||| |||| || |||| ||||</p>
+    <p style="font-size:28px;letter-spacing:4px;font-weight:bold" id="barcodeCode">123456789</p>
+    <p id="barcodePriceShow">Price: Rs.0</p>
+    </div>
+    <button class="grey" onclick="printBarcode()">Print Barcode</button>
+    </div>
+    
+    
+    
+    <div class="box">
+    <h2>📞 18. Direct Call + SMS + WhatsApp - 1 Click Ma Badhu</h2>
+    <input id="quickPhone" placeholder="Number - Ex: 9876543210">
+    <input id="quickName" placeholder="Name - Ex: Ramesh Bhai">
+    <div class="row">
+    <button class="blue" onclick="directCall()">📞 Direct Call</button>
+    <button class="teal" onclick="directSMSQuick()">📩 Direct SMS</button>
+    </div>
+    <button class="wgreen" onclick="directWhatsAppQuick()">📲 Direct WhatsApp</button>
+    </div>
+    
+    <script>
+    // ===== PART 3 JAVASCRIPT - DIRECT SMS =====
+    let attendance = JSON.parse(localStorage.getItem('attendance')||'[]');
+    
+    function makeSMS(){
+    let name = document.getElementById('smsName').value || 'Customer';
+    let amt = document.getElementById('smsAmt').value || '0';
+    let type = document.getElementById('smsType').value;
+    let msg = '';
+    if(type=='udhar') msg = 'Hello '+name+', MY SHOP PRO ma Tamara Rs.'+amt+' Baki Che. Krupa Kari Ne Jaldi Chukvi Do. Thank You!';
+    if(type=='bill') msg = 'Hello '+name+', Tamaro Bill Rs.'+amt+' Che. MY SHOP PRO - Thank You Visit Again!';
+    if(type=='payment') msg = 'Hello '+name+', Tamara Rs.'+amt+' Malya Che. Thank You! - MY SHOP PRO';
+    if(type=='thankyou') msg = 'Hello '+name+', MY SHOP PRO ma Thi Kharidi Karva Badal Dhanyavad! Fari Jarur Aavjo!';
+    if(type=='offer') msg = 'Hello '+name+', MY SHOP PRO ma Navi Offer Che! Aaje j Mulakat Lo. Thank You!';
+    document.getElementById('smsMsg').value = msg;
+    }
+    function sendDirectSMS(){
+    let phone = document.getElementById('smsPhone').value;
+    let msg = document.getElementById('smsMsg').value;
+    if(!phone) return alert('Pela Phone Number Lakho');
+    if(!msg){ makeSMS(); msg = document.getElementById('smsMsg').value; }
+    // DIRECT SMS - Mobile no SMS App khulse
+    let smsLink = 'sms:+91'+phone+'?body='+encodeURIComponent(msg);
+    window.location.href = smsLink;
+    alert('SMS App Khuli Gayu! Tya SEND Dabavo Etle Direct SMS Jase!');
+    }
+    function sendDirectWhatsApp2(){
+    let phone = document.getElementById('smsPhone').value;
+    let msg = document.getElementById('smsMsg').value;
+    if(!msg){ makeSMS(); msg = document.getElementById('smsMsg').value; }
+    let url = phone ? 'https://wa.me/91'+phone+'?text='+encodeURIComponent(msg) : 'https://wa.me/?text='+encodeURIComponent(msg);
+    window.open(url,'_blank');
+    }
+    
+    // ===== ADVANCE PHOTO BILL - ONLY BILL =====
+function takePhotoBill(){
+  let c = document.getElementById('photoCust').value || 'Customer';
+  let items = document.querySelectorAll('#bill_list li');
+  
+  if(items.length == 0){
+    alert('Pehla Item Add Karo Bhai!');
+    return;
+  }
+
+  let html = '<table style="width:100%; border-collapse:collapse;">';
+  html += '<tr><th style="text-align:left; border-bottom:1px solid black;">Item</th><th>Qty</th><th style="text-align:right;">Price</th></tr>';
+  
+  let subTotal = 0;
+  items.forEach(it => {
+    // Item nu naam ane price kadho - button hatavi ne
+    let text = it.innerText.replace('❌','').replace('Delete','').trim();
+    html += '<tr><td style="padding:4px 0;">'+text+'</td></tr>';
+    // Total mate - bill_total mathi lesu
+  });
+  html += '</table>';
+  
+  let totalText = document.getElementById('bill_total') ? document.getElementById('bill_total').innerText : 'Rs.0';
+  let totalNum = parseInt(totalText.replace(/[^0-9]/g,'')) || 0;
+  let discount = Math.round(totalNum * 0.05); // 5% Discount Auto
+  let gst = Math.round((totalNum - discount) * 0.05); // 5% GST
+  let finalTotal = totalNum - discount + gst;
+
+  document.getElementById('photoCustShow').innerText = 'Customer: ' + c;
+  document.getElementById('photoDateShow').innerText = 'Date: ' + new Date().toLocaleDateString('en-IN') + ' | Time: ' + new Date().toLocaleTimeString('en-IN');
+  document.getElementById('photoItems').innerHTML = html;
+  document.getElementById('photoSubTotal').innerText = 'Sub Total: Rs.' + totalNum;
+  document.getElementById('photoDiscount').innerText = 'Discount (5%): - Rs.' + discount;
+  document.getElementById('photoGst').innerText = 'GST (5%): + Rs.' + gst;
+  document.getElementById('photoTotal').innerText = 'TOTAL: Rs.' + finalTotal;
+
+  let box = document.getElementById('photoBillBox');
+  box.style.display = 'block';
+  box.scrollIntoView({behavior:'smooth'});
+  alert('Photo Bill Taiyar Che! Have Screenshot Lo Ke Download Dabo!');
+}
+
+function sharePhotoBill(){
+  let c = document.getElementById('photoCust').value || 'Customer';
+  let total = document.getElementById('photoTotal').innerText;
+  let msg = 'Hello ' + c + ' 🙏\nMY SHOP PRO Bill\n' + total + '\nDate: ' + new Date().toLocaleDateString('en-IN') + '\nThank You! Visit Again!';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function downloadPhotoBill(){
+  window.print(); // Print Ma - Khali Bill Dekhase
+  alert('Print Ma - Photo Bill Select Karine PDF Save Karo!');
+}
+    
+    // ===== BARCODE =====
+    function makeBarcode(){
+    let p = document.getElementById('barcodeProduct').value || 'Product';
+    let price = document.getElementById('barcodePrice').value || '0';
+    let code = Math.floor(100000000 + Math.random()*900000000);
+    document.getElementById('barcodeName').innerText = 'Product: '+p;
+    document.getElementById('barcodeCode').innerText = code;
+    document.getElementById('barcodePriceShow').innerText = 'Price: Rs.'+price;
+    }
+    function printBarcode(){ window.print(); }
+    
+    
+    // ===== QUICK DIRECT CALL / SMS / WHATSAPP =====
+    function directCall(){
+    let ph = document.getElementById('quickPhone').value;
+    if(!ph) return alert('Number Lakho');
+    window.location.href = 'tel:+91'+ph;
+    }
+    function directSMSQuick(){
+    let ph = document.getElementById('quickPhone').value;
+    let name = document.getElementById('quickName').value || 'Customer';
+    if(!ph) return alert('Number Lakho');
+    let msg = 'Hello '+name+', MY SHOP PRO Thi Message Che. Thank You!';
+    window.location.href = 'sms:+91'+ph+'?body='+encodeURIComponent(msg);
+    }
+    function directWhatsAppQuick(){
+    let ph = document.getElementById('quickPhone').value;
+    let name = document.getElementById('quickName').value || 'Customer';
+    if(!ph) return alert('Number Lakho');
+    window.open('https://wa.me/91'+ph+'?text='+encodeURIComponent('Hello '+name+', MY SHOP PRO Thi Message Che.'),'_blank');
+    }
+    // ✅ SACHU LOGOUT - Khali Button Dabse Tyare j Chalse!
+// ✅ FINAL LOGOUT - 100% Kam Karse - Koi Confirm Nahi - Sidhu Login Par!
+function doLogout(){
+  console.log("Logout Click Thayvu!");
+  try{ localStorage.removeItem("raj_user"); }catch(e){}
+  try{ localStorage.removeItem("raj_last"); }catch(e){}
+  try{ sessionStorage.clear(); }catch(e){}
+  // Thodi Vaar Ruko - Pachi Login Par Moklo - Pakku Jase!
+  setTimeout(()=>{
+    window.location.replace("app.html?v=" + Date.now());
+  }, 300);
+}
+
+// Jo Button ID Thi Malto Hoi To Pan Bandhi Do - Double Safety!
+let lb = document.getElementById("logoutBtn");
+if(lb){
+  lb.addEventListener("click", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    doLogout();
+  });
+  if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js');
+}
+}
+// 
+// </script>
+      </body>
+
+</html>
