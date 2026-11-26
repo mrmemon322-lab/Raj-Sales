@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f172a">
+<title>MY SHOP PRO - Login v5.0</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,Arial;background:#f1f5f9;color:#0f172a;min-height:100vh;transition:.3s}
+body.dark{background:#0f172a;color:#f1f5f9}
+.wrap{max-width:440px;margin:0 auto;padding:14px}
+.glass-card{background:#fff;border-radius:24px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.12)}
+body.dark .glass-card{background:#1e293b;color:#fff}
+.label{font-size:12px;font-weight:700;color:#64748b;margin:12px 0 5px;display:block}
+.input-wrap{position:relative} .input-wrap .eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:none;background:none;font-size:18px;cursor:pointer}
+input,select{width:100%;padding:14px;border:1.5px solid #e2e8f0;border-radius:12px;background:#f8fafc;font-size:15px;outline:none;color:#000}
+body.dark input{background:#0f172a;color:#fff;border-color:#334155}
+.btn{width:100%;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;font-weight:800;font-size:16px;cursor:pointer;margin-top:14px}
+.btn.green{background:linear-gradient(135deg,#16a34a,#15803d)} .btn.outline{background:transparent;border:1.5px solid #e2e8f0;color:inherit}
+.btn.orange{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.msg{min-height:22px;text-align:center;font-weight:700;font-size:14px;margin-top:10px} .msg.ok{color:#16a34a} .msg.err{color:#dc2626}
+.hidden{display:none!important} .pill{font-size:11px;padding:5px 10px;border-radius:20px;background:#ecfdf5;color:#047857;font-weight:700;border:1px solid #a7f3d0}
+.strength{height:6px;background:#e2e8f0;border-radius:10px;margin-top:6px;overflow:hidden} .strength div{height:100%;width:0%;transition:.3s}
+.topbar{display:flex;justify-content:space-between;margin-bottom:10px} .icon-btn{width:40px;height:40px;border:none;border-radius:50%;background:#fff;cursor:pointer;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar">
+<div><b>🛍️ MY SHOP PRO</b><div style="font-size:11px;color:#64748b">v5.0 • Advance Secure</div></div>
+<div style="display:flex;gap:8px"><button class="icon-btn" onclick="toggleLang()">🌐</button><button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button></div>
+</div>
+
+<div class="glass-card">
+<div style="text-align:center;font-size:40px">🛍️</div>
+<h1 style="text-align:center;margin:8px 0" id="tTitle">MY SHOP PRO</h1>
+<p style="text-align:center;color:#64748b;font-size:13px" id="tSub">Tamara Shop Nu Digital Solution • 100% Secure</p>
+<div style="text-align:center;margin-bottom:12px"><span class="pill">✅ Verified</span> <span class="pill">🔒 SHA-256 Secure</span> <span class="pill">⚡ Fast Login</span></div>
+
+<!-- LANGUAGE -->
+<select id="langSelect" onchange="changeLang(this.value)" style="padding:10px"><option value="gu">🇮🇳 ગુજરાતી</option><option value="en">🇬🇧 English</option><option value="hi">🇮🇳 हिन्दी</option></select>
+
+<!-- LOGIN -->
+<div id="mode-pass">
+<label class="label">📱 Phone Number *</label>
+<input id="lPhone" placeholder="9876543210" inputmode="numeric" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+<label class="label">🔒 Password *</label>
+<div class="input-wrap"><input id="lPass" type="password" placeholder="••••••••" style="padding-right:45px"><button class="eye" onclick="togglePass('lPass',this)">👁️</button></div>
+<div style="display:flex;justify-content:space-between;font-size:13px;margin-top:8px"><label><input type="checkbox" id="rememberMe" checked> Remember Me</label><button style="color:#2563eb;font-weight:700;background:none;border:none;cursor:pointer" onclick="showForgot()">Forgot Password?</button></div>
+<button class="btn" onclick="doLogin()">Login Karo →</button>
+<div style="display:flex;gap:8px"><button class="btn outline" onclick="quickLogin()">⚡ Demo Login</button><button class="btn outline" onclick="clearAll()">🗑️ Clear</button></div>
+<p style="text-align:center;font-size:12px;color:#64748b" id="lockInfo"></p>
+</div>
+
+<!-- CREATE -->
+<div id="createBox" class="hidden">
+<label class="label">👤 Full Name *</label><input id="cName" placeholder="Tamaro Naam">
+<label class="label">📱 Phone *</label><input id="cPhone" placeholder="9876543210" inputmode="numeric" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+<label class="label">🏪 Shop Name</label><input id="cShop" placeholder="Shop Nu Naam">
+<label class="label">🔒 Password *</label><div class="input-wrap"><input id="cPass" type="password" placeholder="Min 4 Ank" oninput="checkStrength(this.value)" style="padding-right:45px"><button class="eye" onclick="togglePass('cPass',this)">👁️</button></div>
+<div class="strength"><div id="strengthBar"></div></div><div style="font-size:12px;color:#64748b" id="strengthText">Password Strength: -</div>
+<label class="label">🔒 Confirm Password *</label><input id="cPass2" type="password" placeholder="Fari Lakho">
+<button class="btn green" onclick="doCreate()">Account Banavo ✅</button>
+<button class="btn outline" onclick="hideCreate()">← Pachu Login Par Jao</button>
+</div>
+
+<!-- ✅ FORGOT PASSWORD - PACHU AVYU! -->
+<div id="forgotBox" class="hidden">
+<h3 style="text-align:center">🔑 Password Bhuli Gaya?</h3>
+<p style="text-align:center;font-size:13px;color:#64748b">Phone + Naam Lakho - Navo Password Muki Sako - OTP Ni Jarur Nathi!</p>
+<label class="label">📱 Phone Number *</label><input id="fPhone" placeholder="9876543210" inputmode="numeric" maxlength="10" oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)">
+<label class="label">👤 Full Name * (Account Vakhte Lakhelu)</label><input id="fName" placeholder="Tamaro Naam - Jevu Ke Raj Memon">
+<label class="label">🔒 Navo Password *</label><div class="input-wrap"><input id="fNewPass" type="password" placeholder="Navo Password - Min 4 Ank" style="padding-right:45px"><button class="eye" onclick="togglePass('fNewPass',this)">👁️</button></div>
+<label class="label">🔒 Navo Password Fari Lakho *</label><input id="fNewPass2" type="password" placeholder="Fari Lakho">
+<button class="btn orange" onclick="doForgot()">🔑 Password Badlo ✅</button>
+<button class="btn outline" onclick="hideForgot()">← Pachu Login Par Jao</button>
+</div>
+
+<!-- LOGIN HISTORY -->
+<div id="historyBox" style="margin-top:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:10px">
+<b style="font-size:13px">🕒 Chella Login History</b><div id="historyList" style="font-size:12px;color:#64748b;margin-top:6px">Have Koi History Nathi</div>
+</div>
+
+<div id="msg" class="msg"></div>
+<p style="text-align:center;font-size:13px">Account Nathi? <button style="color:#2563eb;font-weight:700;background:none;border:none;cursor:pointer" onclick="showCreate()">Create Karo →</button></p>
+<p style="text-align:center;font-size:12px;color:#64748b">Last Login: <span id="lastLogin">Pehli Vaar</span> • Device: <span id="deviceIdShow"></span></p>
+</div>
+<p style="text-align:center;font-size:11px;color:#94a3b8">© 2026 MY SHOP PRO • Made in 🇮🇳 Sidhpur • v5.0 Advance</p>
+</div>
+<div id="toast" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 18px;border-radius:30px;z-index:999"></div>
+
+<script>
+const KEY_USERS="my-shop-pro", KEY_ATTEMPTS="my_attempts", KEY_HISTORY="my_login_history", KEY_DEVICE="my_device_id";
+function getUsers(){ try{return JSON.parse(localStorage.getItem(KEY_USERS)||"{}")}catch(e){return{}} }
+function saveUsers(u){ localStorage.setItem(KEY_USERS, JSON.stringify(u)) }
+function cleanPhone(v){ return (v||"").replace(/\D/g,"").slice(0,10); }
+function showToast(t){ let el=document.getElementById("toast"); el.innerText=t; el.style.display="block"; setTimeout(()=>el.style.display="none",3000); }
+function showMsg(t,ok){ let m=document.getElementById("msg"); m.innerText=t; m.className="msg "+(ok?"ok":"err"); }
+function getDeviceId(){ let id=localStorage.getItem(KEY_DEVICE); if(!id){ id="DEV-"+Math.random().toString(36).slice(2,8).toUpperCase(); localStorage.setItem(KEY_DEVICE,id);} return id; }
+document.getElementById("deviceIdShow").innerText=getDeviceId();
+
+async function hashPass(pass){ let buf=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pass+"MY-SHOP-PRO-SALT-2026")); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join(""); }
+
+// THEME + LANG
+function toggleTheme(){ document.body.classList.toggle("dark"); document.getElementById("themeBtn").innerText=document.body.classList.contains("dark")?"☀️":"🌙"; }
+function toggleLang(){ let s=document.getElementById("langSelect"); s.value=s.value==="gu"?"en":s.value==="en"?"hi":"gu"; changeLang(s.value); }
+function changeLang(v){ let t={gu:["MY SHOP PRO","Tamara Shop Nu Digital Solution"],en:["MY SHOP PRO","Your Shop Digital Solution"],hi:["MY SHOP PRO","Aapki Shop Ka Digital Solution"]}[v]; document.getElementById("tTitle").innerText=t[0]; document.getElementById("tSub").innerText=t[1]; showToast("Language Badlai Gayi ✅"); }
+function togglePass(id,btn){ let el=document.getElementById(id); el.type=el.type==="password"?"text":"password"; btn.innerText=el.type==="password"?"👁️":"🙈"; }
+function checkStrength(v){ let s=0; if(v.length>=4)s+=25; if(v.length>=6)s+=25; if(/[0-9]/.test(v))s+=25; if(/[A-Z]/.test(v)||/[!@#]/.test(v))s+=25; let bar=document.getElementById("strengthBar"); bar.style.width=s+"%"; bar.style.background=s<50?"#dc2626":s<75?"#f59e0b":"#16a34a"; document.getElementById("strengthText").innerText="Password Strength: "+(s<50?"Weak 🔴":s<75?"Medium 🟡":"Strong 🟢")+" ("+s+"%)"; }
+
+if(!localStorage.getItem(KEY_USERS)){ let d={}; d["9876543210"]={name:"Raj Memon",pass:"1234",shop:"MY SHOP PRO"}; saveUsers(d); }
+if(localStorage.getItem("raj_last")) document.getElementById("lastLogin").innerText=new Date(parseInt(localStorage.getItem("raj_last"))).toLocaleString("en-IN");
+
+// HISTORY SHOW
+function showHistory(){ let h=JSON.parse(localStorage.getItem(KEY_HISTORY)||"[]"); let html=h.slice(-3).reverse().map(x=>`📱 ${x.phone} - ${x.device} - ${x.time}`).join("<br>"); if(html) document.getElementById("historyList").innerHTML=html; }
+showHistory();
+
+function clearAll(){ localStorage.removeItem(KEY_USER); document.getElementById("lPhone").value=""; document.getElementById("lPass").value=""; localStorage.setItem(KEY_ATTEMPTS,"0"); showMsg("✅ Clear Thai Gayu",true); }
+
+async function doLogin(){
+  let ph=cleanPhone(document.getElementById("lPhone").value);
+  let ps=document.getElementById("lPass").value.trim();
+  let attempts=parseInt(localStorage.getItem(KEY_ATTEMPTS)||"0");
+  if(attempts>=3){ showMsg("⛔ 3 Vakhat Khotu - 30 Sec Ruko"); return; }
+  if(ph.length!==10){ showMsg("❌ Sacho 10 Ank No Number Lakho"); return; }
+  if(!ps){ showMsg("❌ Password Lakho"); return; }
+  let u=getUsers(); if(!u[ph]){ showMsg("❌ Account Nathi! Create Karo"); return; }
+  let hashed=await hashPass(ps);
+  let ok = (u[ph].pass===ps) || (u[ph].passHash===hashed);
+  if(!ok){ attempts++; localStorage.setItem(KEY_ATTEMPTS,attempts); showMsg("❌ Password Khoto! ("+attempts+"/3)"); if(attempts>=3){ setTimeout(()=>{localStorage.setItem(KEY_ATTEMPTS,"0"); showMsg("✅ Have Fari Try Karo",true)},30000); } return; }
+  // Juno Password Hoi To Hash Ma Convert
+  if(!u[ph].passHash){ u[ph].passHash=hashed; delete u[ph].pass; saveUsers(u); }
+  // DEVICE CHECK - Navo Device?
+  let hist=JSON.parse(localStorage.getItem(KEY_HISTORY)||"[]"); let last=hist.filter(h=>h.phone===ph).pop();
+  if(last && last.device!==getDeviceId()){ if(!confirm("⚠️ Navo Device Thi Login! Last Device: "+last.device+"\n\nHave Pan Login Karvu Che?")) return; }
+  hist.push({phone:ph, device:getDeviceId(), time:new Date().toLocaleString('en-IN')}); if(hist.length>20) hist=hist.slice(-20); localStorage.setItem(KEY_HISTORY, JSON.stringify(hist));
+  localStorage.setItem(KEY_ATTEMPTS,"0"); localStorage.setItem(KEY_USER,ph); localStorage.setItem("raj_last",Date.now().toString());
+  showMsg("✅ Login Thai Gayu! App Khuli Rahi Che...",true); showToast("✅ Welcome, "+u[ph].name+"! 🙏");
+  setTimeout(()=>{ window.location.href="index.html?v="+Date.now(); },800);
+}
+function quickLogin(){ document.getElementById("lPhone").value="9876543210"; document.getElementById("lPass").value="1234"; doLogin(); }
+
+function showCreate(){ document.getElementById("mode-pass").classList.add("hidden"); document.getElementById("createBox").classList.remove("hidden"); document.getElementById("forgotBox").classList.add("hidden"); }
+function hideCreate(){ document.getElementById("createBox").classList.add("hidden"); document.getElementById("mode-pass").classList.remove("hidden"); }
+// ✅ FIXED doCreate - Juno Account Hoi To Pan Navo Password Save Thase!
+async function doCreate(){
+  let name=document.getElementById("cName").value.trim();
+  let ph=cleanPhone(document.getElementById("cPhone").value);
+  let shop=document.getElementById("cShop").value.trim()||"MY SHOP PRO";
+  let p1=document.getElementById("cPass").value.trim();
+  let p2=document.getElementById("cPass2").value.trim();
+  if(!name){showMsg("❌ Name Lakho");return}
+  if(ph.length!==10){showMsg("❌ Sacho Number Lakho");return}
+  if(p1.length<4){showMsg("❌ Password 4 Ank No Rakho");return}
+  if(p1!==p2){showMsg("❌ Be Password Sarhka Nathi");return}
+
+  let u=getUsers();
+  let hashed=await hashPass(p1);
+
+  // ✅ HAVE - Jo Account Hoi To Pan UPDATE Kari Do - Nava Password Thi!
+  if(u[ph]){
+    u[ph].name=name; u[ph].passHash=hashed; delete u[ph].pass; u[ph].shop=shop;
+    saveUsers(u);
+    showMsg("✅ Juno Account Update Thai Gayo! Have Navo Password Thi Login Karo",true);
+  } else {
+    u[ph]={name, passHash:hashed, shop, device:getDeviceId(), created:Date.now()};
+    saveUsers(u);
+    showMsg("✅ Navu Account Bani Gayu! Have Ej Password Thi Login Karo",true);
+  }
+  localStorage.removeItem(KEY_USER);
+  localStorage.setItem(KEY_ATTEMPTS,"0");
+  showToast("✅ Save Thai Gayu!");
+  setTimeout(()=>{ hideCreate(); document.getElementById("lPhone").value=ph; document.getElementById("lPass").value=p1; document.getElementById("lPass").focus(); },800);
+}
+
+// ✅ FORGOT PASSWORD - FULL FIX
+function showForgot(){ document.getElementById("mode-pass").classList.add("hidden"); document.getElementById("createBox").classList.add("hidden"); document.getElementById("forgotBox").classList.remove("hidden"); }
+function hideForgot(){ document.getElementById("forgotBox").classList.add("hidden"); document.getElementById("mode-pass").classList.remove("hidden"); }
+async function doForgot(){
+  let ph=cleanPhone(document.getElementById("fPhone").value);
+  let name=document.getElementById("fName").value.trim();
+  let np=document.getElementById("fNewPass").value.trim();
+  let np2=document.getElementById("fNewPass2").value.trim();
+  let u=getUsers();
+  if(ph.length!==10){ showMsg("❌ Sacho Phone Lakho"); return; }
+  if(!u[ph]){ showMsg("❌ Aa Number Thi Account Nathi! Pehla Create Karo"); return; }
+  if(u[ph].name.toLowerCase() !== name.toLowerCase()){ showMsg("❌ Naam Khotu Che! Account Vakhte Je Naam Lakhelu E j Lakho"); return; }
+  if(np.length<4){ showMsg("❌ Navo Password 4 Ank No Rakho"); return; }
+  if(np!==np2){ showMsg("❌ Be Navo Password Sarhka Nathi"); return; }
+  let hashed=await hashPass(np);
+  u[ph].passHash=hashed; delete u[ph].pass; saveUsers(u);
+  localStorage.setItem(KEY_ATTEMPTS,"0");
+  showMsg("✅ Password Badlai Gayu! Have Navo Password Thi Login Karo",true); showToast("✅ Password Badlai Gayu!");
+  setTimeout(()=>{ hideForgot(); document.getElementById("lPhone").value=ph; document.getElementById("lPass").value=np; document.getElementById("lPass").focus(); },1000);
+}
+document.getElementById("lPass").addEventListener("keyup",e=>{ if(e.key==="Enter") doLogin(); });
+</script>
+</body>
+</html>
