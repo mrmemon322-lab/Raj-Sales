@@ -81,7 +81,7 @@ button:active{opacity:0.8}
     
  <!-- ✅ SACHU BUTTON - AA J MUKO -->
 <!-- ✅ SACHU - type="button" Jaruri Che! Nahi To Form Reload Thase! -->
-<button type="button" id="logoutBtn" onclick="doLogout()" style="background:#dc2626;color:white;padding:12px;border:none;border-radius:10px;width:30%;font-weight:bold;cursor:pointer">🚪 Logout</button>
+<button type="button" id="logoutBtn" onclick="doLogout()" style="background:#dc2626;color:white;padding:12px;border:none;border-radius:10px;width:10%;font-weight:bold;cursor:pointer">🚪 Logout</button>
 <!-- ========== DASHBOARD ========== -->
 <div class="dashboard">
 <div class="card green"><small>Today Income</small><b id="dInc">Rs.0</b></div>
@@ -372,67 +372,64 @@ let bill=[]; let billTotal=0; let billSub=0; let billDisc=0;
 var td = document.getElementById('todayDate');
 if(td) td.innerText = new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
 //restore mate 
-// ===== PDF - TEXT + IMAGE - BANE VANCHSE =====
+// ===== PDF - TEXT + IMAGE - BANE VANCHSE =====// ✅ NAVU - PDF Vanchva Mate - Saral Rite - OCR Nahi - Library Nahi!
 async function readPDFText(file){
-  var buf = await file.arrayBuffer();
-  var pdf = await pdfjsLib.getDocument({data: buf}).promise;
-  var full = '';
-
-  for(var i=1; i<=pdf.numPages; i++){
-    var page = await pdf.getPage(i);
-    var content = await page.getTextContent();
-    var pageText = '';
-    content.items.forEach(function(it){ pageText += it.str + ' '; });
-    full += pageText + '\n';
-
-    // ✅ JO TEXT NA MALYO - ETELE IMAGE PDF CHE - TO OCR KARO!
-    if(pageText.trim().length < 20){
-      document.getElementById('restorePreview').innerHTML = '⏳ Page '+i+' Photo Che - OCR Thi Vanchu Chu... Thodu Roko... 📸';
-      var canvas = document.createElement('canvas');
-      var viewport = page.getViewport({scale: 2}); // Saaf Dekhava Mate 2x
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      await page.render({canvasContext: canvas.getContext('2d'), viewport: viewport}).promise;
-      try{
-        var result = await Tesseract.recognize(canvas, 'eng+guj', {logger: function(m){}});
-        full += result.data.text + '\n';
-      }catch(e){ console.log('OCR Error', e); }
+  // PDF Ne - Text Ma - Vanchva No Prayas Karo
+  try{
+    var buf = await file.arrayBuffer();
+    var pdf = await pdfjsLib.getDocument({data: buf}).promise;
+    var full = '';
+    for(var i=1; i<=pdf.numPages; i++){
+      var page = await pdf.getPage(i);
+      var content = await page.getTextContent();
+      content.items.forEach(function(it){ full += it.str + ' '; });
+      full += '\n';
     }
+    return full;
+  }catch(e){
+    return '';
   }
-  return full;
 }
-function parsePDFBackup(text){
-  var out = {};
-  var avak = [], udhaar = [], pagar = [];
-  var lines = text.split('\n');
 
+// ✅ NAVU - PDF Na Lakhan Ne - Data Ma - Badalva Mate
+function parsePDFBackup(text){
+  var avak = [], udhaar = [], pagar = [];
+  if(!text) return {};
+
+  var lines = text.split('\n');
   lines.forEach(function(line){
     line = line.trim();
-    if(!line) return;
-    // Date Shodho - 2026-11-26 Ke 26/11/2026 Ke 26-11-2026
-    var dm = line.match(/(\d{4}-\d{2}-\d{2})|(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/);
-    var amtM = line.match(/Rs\.?\s*(\d+)|(\d{3,})/);
-    if(!dm || !amtM) return;
+    if(line.length < 5) return;
 
-    var dateStr = dm[0];
-    // 26/11/2026 Ne 2026-11-26 Banavo
-    if(dateStr.includes('/')){
-      var p = dateStr.split('/');
-      dateStr = p[2].length==2 ? '20'+p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0') : p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+    // Rakkam Shodho - 1000, 5000 Jevu
+    var amtM = line.match(/(\d{3,})/);
+    if(!amtM) return;
+    var amt = Number(amtM[1].replace(/,/g,''));
+    if(amt <= 0) return;
+
+    // Tarikh - Aaje Ni - Jo PDF Ma Na Male To
+    var today = new Date().toISOString().slice(0,10);
+    var dm = line.match(/(\d{4}-\d{2}-\d{2})|(\d{1,2}\/\d{1,2}\/\d{2,4})/);
+    var dateStr = today;
+    if(dm){
+      dateStr = dm[0];
+      if(dateStr.includes('/')){
+        var p = dateStr.split('/');
+        dateStr = '20'+p[2].slice(-2)+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+      }
     }
-    var amt = Number((amtM[1]||amtM[2]).replace(/,/g,''));
-    var low = line.toLowerCase();
 
-    if(low.includes('pagar') || low.includes('upad') || low.includes('staff') || low.includes('nokar')){
+    var low = line.toLowerCase();
+    if(low.includes('pagar') || low.includes('upad')){
       pagar.push({name: line.slice(0,30), amt: amt, date: dateStr, time: '12:00', type: 'paid'});
-    } else if(low.includes('udhaar') || low.includes('udhar') || low.includes('khata') || low.includes('baki')){
+    } else if(low.includes('udhaar') || low.includes('udhar') || low.includes('baki') || low.includes('khata')){
       udhaar.push({name: line.slice(0,30), name_l: line.slice(0,30).toLowerCase(), type: 'udhaar', item: line.slice(0,40), amt: amt, date: dateStr, time: '12:00'});
     } else {
-      var isInc = low.includes('avak') || low.includes('income') || low.includes('aavy') || low.includes('vech');
-      avak.push({m: dateStr.slice(0,7), t: isInc ? 'income' : 'expense', d: line.slice(0,50), a: amt, note: 'PDF Thi Restore', date: dateStr, time: '12:00', fromStaff: false});
+      avak.push({m: dateStr.slice(0,7), t: 'income', d: line.slice(0,50), a: amt, note: 'PDF Thi Restore', date: dateStr, time: '12:00', fromStaff: false});
     }
   });
 
+  var out = {};
   if(avak.length) out['avak'] = avak;
   if(udhaar.length) out['udhaar'] = udhaar;
   if(pagar.length) out['pagar_upad'] = pagar;
