@@ -90,8 +90,9 @@ body.dark input{background:#0f172a;color:#fff;border-color:#334155}
 <div id="toast" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:12px 18px;border-radius:30px;z-index:999"></div>
 
 <script>
-const KEY_USERS="my-shop-pro", KEY_ATTEMPTS="my_attempts", KEY_HISTORY="my_login_history", KEY_DEVICE="my_device_id";
-function getUsers(){ try{return JSON.parse(localStorage.getItem(KEY_USERS)||"{}")}catch(e){return{}} }
+  const KEY_USERS="my-shop-pro", KEY_ATTEMPTS="my_attempts", KEY_HISTORY="my_login_history", KEY_DEVICE="my_device_id";
+  const KEY_USER="raj_user";
+  function getUsers(){ try{return JSON.parse(localStorage.getItem(KEY_USERS)||"{}")}catch(e){return{}} }
 function saveUsers(u){ localStorage.setItem(KEY_USERS, JSON.stringify(u)) }
 function cleanPhone(v){ return (v||"").replace(/\D/g,"").slice(0,10); }
 function showToast(t){ let el=document.getElementById("toast"); el.innerText=t; el.style.display="block"; setTimeout(()=>el.style.display="none",3000); }
@@ -136,7 +137,7 @@ async function doLogin(){
   hist.push({phone:ph, device:getDeviceId(), time:new Date().toLocaleString('en-IN')}); if(hist.length>20) hist=hist.slice(-20); localStorage.setItem(KEY_HISTORY, JSON.stringify(hist));
   localStorage.setItem(KEY_ATTEMPTS,"0"); localStorage.setItem(KEY_USER,ph); localStorage.setItem("raj_last",Date.now().toString());
   showMsg("✅ Login Thai Gayu! App Khuli Rahi Che...",true); showToast("✅ Welcome, "+u[ph].name+"! 🙏");
-  setTimeout(()=>{ window.location.href="app.html?v="+Date.now(); },800);
+  setTimeout(()=>{ window.location.href="index.html?v="+Date.now(); },800);
 }
 function quickLogin(){ document.getElementById("lPhone").value="9876543210"; document.getElementById("lPass").value="1234"; doLogin(); }
 
