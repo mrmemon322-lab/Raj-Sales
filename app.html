@@ -50,7 +50,7 @@ body.dark input{background:#0f172a;color:#fff;border-color:#334155}
 <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:8px"><label><input type="checkbox" id="rememberMe" checked> Remember Me</label><button style="color:#2563eb;font-weight:700;background:none;border:none;cursor:pointer" onclick="showForgot()">Forgot Password?</button></div>
 <button class="btn" onclick="doLogin()">Login Karo →</button>
 <div style="display:flex;gap:8px"><button class="btn outline" onclick="quickLogin()">⚡ Demo Login</button><button class="btn outline" onclick="clearAll()">🗑️ Clear</button></div>
-<p style="text-align:center;font-size:13px;color:#64748b" id="lockInfo"></p>
+<p style="text-align:center;font-size:12px;color:#64748b" id="lockInfo"></p>
 </div>
 
 <div id="createBox" class="hidden">
@@ -105,23 +105,17 @@ function phoneToEmail(phone){
   phone = (phone||"").replace(/\D/g,'').slice(0,10);
   return '91' + phone + '@myshoppro.com';
 }
-// FIX 1: Badhu Ek J Doc - 91+phone - uid Nahi - Etle Bija Mobile Ma Data Aavse
-function cloudDocId(phone){
-  phone = (phone||"").replace(/\D/g,'').slice(-10);
-  return '91' + phone;
-}
 async function cloudSaveUser(phone, data){
-  try{ await db.collection('users').doc(cloudDocId(phone)).set(data, {merge:true}); }catch(e){ console.log(e); }
+  try{ await db.collection('users').doc('91'+phone).set(data); }catch(e){ console.log(e); }
 }
 async function cloudGetUser(phone){
-  try{ let doc = await db.collection('users').doc(cloudDocId(phone)).get(); return doc.exists ? doc.data() : null; }catch(e){ return null; }
+  try{ let doc = await db.collection('users').doc('91'+phone).get(); return doc.exists ? doc.data() : null; }catch(e){ return null; }
 }
 // Bill / Udhaar / Setting - Cloud Ma Save - Bija Mobile Ma Malse!
-async function syncBillToCloud(phone){
+async function syncBillToCloud(){
   try{
-    phone = phone || localStorage.getItem('raj_user') || "";
-    if(!phone) return;
-    await db.collection('users').doc(cloudDocId(phone)).set({
+    let u = auth.currentUser; if(!u) return;
+    await db.collection('users').doc(u.uid).set({
       billHistory: localStorage.getItem('billHistory')||'[]',
       udhaar: localStorage.getItem('udhaar')||'[]',
       shopSetting: localStorage.getItem('SHOP_BILL_SETTING')||'{}',
@@ -130,35 +124,16 @@ async function syncBillToCloud(phone){
     }, {merge:true});
   }catch(e){}
 }
-async function syncBillFromCloud(phone){
+async function syncBillFromCloud(){
   try{
-    phone = phone || localStorage.getItem('raj_user') || "";
-    if(!phone) return;
-    let doc = await db.collection('users').doc(cloudDocId(phone)).get();
+    let u = auth.currentUser; if(!u) return;
+    let doc = await db.collection('users').doc(u.uid).get();
     if(!doc.exists) return;
     let d = doc.data();
     if(d.billHistory) localStorage.setItem('billHistory', d.billHistory);
     if(d.udhaar) localStorage.setItem('udhaar', d.udhaar);
     if(d.shopSetting) localStorage.setItem('SHOP_BILL_SETTING', d.shopSetting);
     if(d.billNo) localStorage.setItem('BILL_NO', d.billNo);
-  }catch(e){}
-}
-// FIX 2: LIVE SYNC - 1 Mobile Ma Data Umeryo - Bija Be Ma Tej Time Badlase - Refresh Vagar
-var _liveUnsub = null;
-function startLiveSync(phone){
-  try{
-    if(_liveUnsub) _liveUnsub();
-    phone = phone || localStorage.getItem('raj_user') || "";
-    if(!phone) return;
-    _liveUnsub = db.collection('users').doc(cloudDocId(phone)).onSnapshot(function(doc){
-      if(!doc.exists) return;
-      let d = doc.data();
-      if(d.billHistory && d.billHistory !== localStorage.getItem('billHistory')) localStorage.setItem('billHistory', d.billHistory);
-      if(d.udhaar && d.udhaar !== localStorage.getItem('udhaar')) localStorage.setItem('udhaar', d.udhaar);
-      if(d.shopSetting && d.shopSetting !== localStorage.getItem('SHOP_BILL_SETTING')) localStorage.setItem('SHOP_BILL_SETTING', d.shopSetting);
-      if(d.billNo && d.billNo !== localStorage.getItem('BILL_NO')) localStorage.setItem('BILL_NO', d.billNo);
-      window.dispatchEvent(new CustomEvent('cloudDataChanged', {detail: d}));
-    });
   }catch(e){}
 }
 
@@ -168,116 +143,6 @@ function startLiveSync(phone){
 function saveUsers(u){ localStorage.setItem(KEY_USERS, JSON.stringify(u)) }
 function cleanPhone(v){ return (v||"").replace(/\D/g,"").slice(0,10); }
 function showToast(t){ let el=document.getElementById("toast"); el.innerText=t; el.style.display="block"; setTimeout(()=>el.style.display="none",3000); }
-function showMsg(t,ok){ let m=document.getElementById("msg"); m.innerText=t; m.className="msg "+(ok?"ok":"err"); }
-function getDeviceId(){ let id=localStorage.getItem(KEY_DEVICE); if(!id){ id="DEV-"+Math.random().toString(36).slice(2,8).toUpperCase(); localStorage.setItem(KEY_DEVICE,id);} return id; }
-document.getElementById("deviceIdShow").innerText=getDeviceId();
-
-async function hashPass(pass){ let buf=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pass+"MY-SHOP-PRO-SALT-2026")); return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join(""); }
-
-function toggleTheme(){ document.body.classList.toggle("dark"); document.getElementById("themeBtn").innerText=document.body.classList.contains("dark")?"☀️":"🌙"; }
-function toggleLang(){ let s=document.getElementById("langSelect"); s.value=s.value==="gu"?"en":s.value==="en"?"hi":"gu"; changeLang(s.value); }
-function changeLang(v){ let t={gu:["MY SHOP PRO","Tamara Shop Nu Digital Solution"],en:["MY SHOP PRO","Your Shop Digital Solution"],hi:["MY SHOP PRO","Aapki Shop Ka Digital Solution"]}[v]; document.getElementById("tTitle").innerText=t[0]; document.getElementById("tSub").innerText=t[1]; showToast("Language Badlai Gayi ✅"); }
-function togglePass(id,btn){ let el=document.getElementById(id); el.type=el.type==="password"?"text":"password"; btn.innerText=el.type==="password"?"👁️":"🙈"; }
-function checkStrength(v){ let s=0; if(v.length>=4)s+=25; if(v.length>=6)s+=25; if(/[0-9]/.test(v))s+=25; if(/[A-Z]/.test(v)||/[!@#]/.test(v))s+=25; let bar=document.getElementById("strengthBar"); bar.style.width=s+"%"; bar.style.background=s<50?"#dc2626":s<75?"#f59e0b":"#16a34a"; document.getElementById("strengthText").innerText="Password Strength: "+(s<50?"Weak 🔴":s<75?"Medium 🟡":"Strong 🟢")+" ("+s+"%)"; }
-
-if(!localStorage.getItem(KEY_USERS)){ let d={}; d["9876543210"]={name:"Raj Memon",pass:"1234",shop:"MY SHOP PRO"}; saveUsers(d); }
-if(localStorage.getItem("raj_last")) document.getElementById("lastLogin").innerText=new Date(parseInt(localStorage.getItem("raj_last"))).toLocaleString("en-IN");
-
-function showHistory(){ let h=JSON.parse(localStorage.getItem(KEY_HISTORY)||"[]"); let html=h.slice(-3).reverse().map(x=>`📱 ${x.phone} - ${x.device} - ${x.time}`).join("<br>"); if(html) document.getElementById("historyList").innerHTML=html; }
-showHistory();
-
-function clearAll(){ localStorage.removeItem(KEY_USER); document.getElementById("lPhone").value=""; document.getElementById("lPass").value=""; localStorage.setItem(KEY_ATTEMPTS,"0"); showMsg("✅ Clear Thai Gayu",true); }
-
-async function doLogin(){
-  let ph=cleanPhone(document.getElementById("lPhone").value);
-  let ps=document.getElementById("lPass").value.trim();
-  let attempts=parseInt(localStorage.getItem(KEY_ATTEMPTS)||"0");
-  if(attempts>=3){ showMsg("⛔ 3 Vakhat Khotu - 30 Sec Ruko"); return; }
-  if(ph.length!==10){ showMsg("❌ Sacho 10 Ank No Number Lakho"); return; }
-  if(!ps){ showMsg("❌ Password Lakho"); return; }
-  // ===== EDIT - Cloud Mathi User Lai Levo - Bija Mobile Ma Pan Malse! =====
-  let u=getUsers();
-  let cloudUser = await cloudGetUser(ph);
-  if(cloudUser){ u[ph]=cloudUser; saveUsers(u); }
-  if(!u[ph]){
-    // Firebase Ma Check Karo - Jo Cloud Ma Hoi To
-    try{ await auth.signInWithEmailAndPassword(phoneToEmail(ph), ps); showMsg("✅ Cloud Thi Login Thai Gayu!",true); await syncBillFromCloud(ph); startLiveSync(ph); localStorage.setItem(KEY_USER,ph); setTimeout(()=>{ window.location.href="index.html?v="+Date.now(); },800); return; }catch(e){}
-    showMsg("❌ Account Nathi! Create Karo"); return;
-  }
-  let hashed=await hashPass(ps);
-  let ok = (u[ph].pass===ps) || (u[ph].passHash===hashed);
-  if(!ok){ attempts++; localStorage.setItem(KEY_ATTEMPTS,attempts); showMsg("❌ Password Khoto! ("+attempts+"/3)"); if(attempts>=3){ setTimeout(()=>{localStorage.setItem(KEY_ATTEMPTS,"0"); showMsg("✅ Have Fari Try Karo",true)},30000); } return; }
-  if(!u[ph].passHash){ u[ph].passHash=hashed; delete u[ph].pass; saveUsers(u); }
-  // ===== EDIT - Firebase Ma Pan Login - Etle Bill Data Sync Thase! =====
-  try{ await auth.signInWithEmailAndPassword(phoneToEmail(ph), ps); }catch(e){ try{ await auth.createUserWithEmailAndPassword(phoneToEmail(ph), ps); }catch(err){} }
-  await syncBillFromCloud(ph);
-  startLiveSync(ph);
-  // FIX 3: Device Lock Kadhyu - Have Confirm Nahi Aavse - 3 Mobile Ma Chalse!
-  let hist=JSON.parse(localStorage.getItem(KEY_HISTORY)||"[]");
-  hist.push({phone:ph, device:getDeviceId(), time:new Date().toLocaleString('en-IN')}); if(hist.length>20) hist=hist.slice(-20); localStorage.setItem(KEY_HISTORY, JSON.stringify(hist));
-  localStorage.setItem(KEY_ATTEMPTS,"0"); localStorage.setItem(KEY_USER,ph); localStorage.setItem("raj_last",Date.now().toString());
-  showMsg("✅ Login Thai Gayu! App Khuli Rahi Che...",true); showToast("✅ Welcome, "+u[ph].name+"! 🙏");
-  setTimeout(()=>{ window.location.href="index.html?v="+Date.now(); },800);
-}
-function quickLogin(){ document.getElementById("lPhone").value="9876543210"; document.getElementById("lPass").value="1234"; doLogin(); }
-
-function showCreate(){ document.getElementById("mode-pass").classList.add("hidden"); document.getElementById("createBox").classList.remove("hidden"); document.getElementById("forgotBox").classList.add("hidden"); }
-function hideCreate(){ document.getElementById("createBox").classList.add("hidden"); document.getElementById("mode-pass").classList.remove("hidden"); }
-async function doCreate(){
-  let name=document.getElementById("cName").value.trim();
-  let ph=cleanPhone(document.getElementById("cPhone").value);
-  let shop=document.getElementById("cShop").value.trim()||"MY SHOP PRO";
-  let p1=document.getElementById("cPass").value.trim();
-  let p2=document.getElementById("cPass2").value.trim();
-  if(!name){showMsg("❌ Name Lakho");return}
-  if(ph.length!==10){showMsg("❌ Sacho Number Lakho");return}
-  if(p1.length<4){showMsg("❌ Password 4 Ank No Rakho");return}
-  if(p1!==p2){showMsg("❌ Be Password Sarhka Nathi");return}
-  let hashed=await hashPass(p1);
-  // ===== EDIT - Firebase Ma Account Banavo =====
-  try{ await auth.createUserWithEmailAndPassword(phoneToEmail(ph), p1); }catch(e){ if(e.code!=='auth/email-already-in-use'){ showMsg("❌ "+e.message); return; } }
-  let u=getUsers();
-  if(u[ph]){
-    u[ph].name=name; u[ph].passHash=hashed; delete u[ph].pass; u[ph].shop=shop;
-    saveUsers(u);
-    showMsg("✅ Juno Account Update Thai Gayo! Have Navo Password Thi Login Karo",true);
-  } else {
-    // FIX: device:getDeviceId() Kadhyu - Have 3 Mobile Ma Chalse!
-    u[ph]={name, passHash:hashed, shop, created:Date.now()};
-    saveUsers(u);
-    showMsg("✅ Navu Account Bani Gayu! Have Ej Password Thi Login Karo",true);
-  }
-  // ===== EDIT - Cloud Ma Save =====
-  await cloudSaveUser(ph, u[ph]);
-  await syncBillToCloud(ph);
-  localStorage.removeItem(KEY_USER);
-  localStorage.setItem(KEY_ATTEMPTS,"0");
-  showToast("✅ Save Thai Gayu!");
-  setTimeout(()=>{ hideCreate(); document.getElementById("lPhone").value=ph; document.getElementById("lPass").value=p1; document.getElementById("lPass").focus(); },800);
-}
-
-function showForgot(){ document.getElementById("mode-pass").classList.add("hidden"); document.getElementById("createBox").classList.add("hidden"); document.getElementById("forgotBox").classList.remove("hidden"); }
-function hideForgot(){ document.getElementById("forgotBox").classList.add("hidden"); document.getElementById("mode-pass").classList.remove("hidden"); }
-async function doForgot(){
-  let ph=cleanPhone(document.getElementById("fPhone").value);
-  let name=document.getElementById("fName").value.trim();
-  let np=document.getElementById("fNewPass").value.trim();
-  let np2=document.getElementById("fNewPass2").value.trim();
-  let u=getUsers();
-  // Cloud Mathi Pan Check Karo
-  let cloudUser = await cloudGetUser(ph);
-  if(cloudUser){ u[ph]=cloudUser; saveUsers(u); }
-  if(ph.length!==10){ showMsg("❌ Sacho Phone Lakho"); return; }
-  if(!u[ph]){ showMsg("❌ Aa Number Thi Account Nathi! Pehla Create Karo"); return; }
-  if(u[ph].name.toLowerCase() !== name.toLowerCase()){ showMsg("❌ Naam Khotu Che! Account Vakhte Je Naam Lakhelu E j Lakho"); return; }
-  if(np.length<4){ showMsg("❌ Navo Password 4 Ank No Rakho"); return; }
-  if(np!==np2){ showMsg("❌ Be Navo Password Sarhka Nathi"); return; }
-  let hashed=await hashPass(np);
-  u[ph].passHash=hashed; delete u[ph].pass; saveUsers(u);
-  // ===== EDIT - Cloud Ma Pan Update =====
-  await cloudSaveUser(ph, u[ph]);
-  localStorage.setItem(KEY_ATTEMPTS,"0");
-  showt){ let el=document.getElementById("toast"); el.innerText=t; el.style.display="block"; setTimeout(()=>el.style.display="none",3000); }
 function showMsg(t,ok){ let m=document.getElementById("msg"); m.innerText=t; m.className="msg "+(ok?"ok":"err"); }
 function getDeviceId(){ let id=localStorage.getItem(KEY_DEVICE); if(!id){ id="DEV-"+Math.random().toString(36).slice(2,8).toUpperCase(); localStorage.setItem(KEY_DEVICE,id);} return id; }
 document.getElementById("deviceIdShow").innerText=getDeviceId();
@@ -393,4 +258,4 @@ document.getElementById("lPass").addEventListener("keyup",e=>{ if(e.key==="Enter
 </body>
 </html>  
    
-  
+    
